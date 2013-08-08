@@ -10,22 +10,22 @@ module.exports = {
             name: "Remix the City"
         },
         facebook: {
-            clientID: "FACEBOOK CLIENT ID",
-            clientSecret: "FACEBOOK CLIENT SECRET",
-            callbackURL: "http://localhost:3000/auth/facebook/callback"
+            clientID: "",
+            clientSecret: "",
+            callbackURL: ""
         }
     },
     test: {
-        db: "mongodb://localhost/remixcity_test", 
+        db: "mongodb://localhost/remixcity_dev", 
         root: rootPath, 
         app: {
             name: "Remix the City"
         },
         facebook: {
-            clientID: "FACEBOOK CLIENT ID",
-            clientSecret: "FACEBOOK CLIENT SECRET",
-            callbackURL: "http://example.com/auth/facebook/callback"
+            clientID: "",
+            clientSecret: "",
+            callbackURL: ""
         }
     },
-    production: {}
-};
+    production: {},
+}
