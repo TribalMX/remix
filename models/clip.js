@@ -15,10 +15,14 @@ var ClipSchema = new Schema({
 
 ClipSchema.statics = {
     findClips: function (options, cb) {
+        var query = {};
         if(!options.limit) {
             options.limit = 10;
         }
-        this.find({/*"created_at": {$lt: storedDateOfLastItem}*/}) 
+        if(options.date_lt){
+            query =  {created_at: {$lt: new Date(options.date_lt)}};
+        }
+        this.find(query) 
         .where('user').equals(options.user._id)
         .sort({'created_at': -1})
         .limit(options.limit)

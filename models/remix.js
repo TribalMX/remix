@@ -16,18 +16,22 @@ var RemixSchema = new Schema({
 
 RemixSchema.statics = {
     findRemixes: function(options, cb) {
+        var query = {};
         if(!options.limit) {
-            options.limit = 1000;
+            options.limit = 10;
+        }
+        if(options.date_lt){
+            query =  {created_at: {$lt: new Date(options.date_lt)}};
         }
         if(!options.user){
-            this.find({})
+            this.find(query)
                 .sort({'created_at': -1})
                 .limit(options.limit)
                 .populate('user', 'name username')
                 .populate('clips', 'videogami_vid gif')
                 .exec(cb);
         } else {
-            this.find({})
+            this.find(query)
                 .where('user').equals(options.user._id)
                 .sort({'created_at': -1})
                 .limit(options.limit)

@@ -12,14 +12,26 @@ jQuery(function ($){
           $.ajax({
             url: url,
             type: "GET",
-            data: {
-              limit: options.limit,
-              date_lt: options.date_lt,
-              data_gt: options.date_gt
-
-            },
+            data: query,
             success: function(models){
               collection = models;
+              options.success(models);
+            }
+          });
+        };
+        this.fetchAndAppend = function (query, options) {
+          $.ajax({
+            url: url,
+            type: "GET",
+            // data: {
+            //   limit: options.limit,
+            //   date_lt: options.date_lt,
+            //   data_gt: options.date_gt
+
+            // },
+            data: query,
+            success: function(models){
+              collection = collection.concat(models);
               options.success(models);
             }
           });
@@ -27,6 +39,9 @@ jQuery(function ($){
         this.get = function() {
           return collection;
         };
+        this.unshift = function(model) {
+          collection.unshift(model);
+        }
       };
       return newCollection;
     },
@@ -75,26 +90,29 @@ jQuery(function ($){
         panel3: null,
         panel4: null
       };
-      this.myMixTab = false;
+      this.selectedTab = "recent"; //recent or my
       this.remixesCursor = -1;
       this.pubRemixesCursor = -1;
 
 
       this.cacheElements();
       this.bindEvents();
+      // this.loadUserInfo();
       this.loadRecentMixes();
-      this.loadMyMixes();
       this.loadClips();
     },
     cacheElements: function() {
       //main page
-      this.$main = $('#home1');
+      this.$main = $('#main');
       this.$prevRemix = this.$main.find('#prevRemix');
       this.$nextRemix = this.$main.find('#nextRemix');
       this.$mixSlider = this.$main.find('#mixSlider');
       this.$newMixBtn = this.$main.find('#newMixBtn');
       this.$newClipBtn = this.$main.find('#newClipBtn');
       this.$newClip = this.$main.find('#newClip');
+      this.$recentMixes = this.$main.find('#recentMixes');
+      this.$myMixes = this.$main.find('#myMixes');
+      this.$username = this.$main.find("#username"); //Temp
 
       //newMix page
       this.$newMix = $('#newMix');
@@ -128,6 +146,8 @@ jQuery(function ($){
       // this.$newMixBtn.on('click', this.initMixPanel);
       this.$nextRemix.on('click', this.slideNext);
       this.$prevRemix.on('click', this.slidePrev);
+      this.$recentMixes.on('click', this.selectRecentMixes);
+      this.$myMixes.on('click', this.selectMyMixes);
 
       //newMix page
       this.$newMix.on('click', '.addClip', this.selectPanel);
@@ -145,21 +165,22 @@ jQuery(function ($){
     loadRecentMixes: function() {
       var $mixSlider = this.$mixSlider;
       App.$prevRemix.hide();
+      App.$nextRemix.hide();
       //fetch remixes
       this.publicRemixes.fetch({
-
+        limit: 10
       }, {
         success: function(remixes){
           for(var i=0; i < remixes.length && i < 2; i++) {
             if(i == 0) {
+              App.pubRemixesCursor = 0;
               $mix = App.$mixSlider.find('.mix:nth-child(2)');
             } else {
               $mix = App.$mixSlider.find('.mix:nth-child(3)');
             }
             App.loadRemix(remixes[i], $mix);
           }
-          App.pubRemixesCursor = 0;
-          if(remixes.length == 1) App.$nextRemix.hide();
+          if(remixes.length > 1) App.$nextRemix.show();
           console.log("public Remixes");
           console.log(remixes);
       }});
@@ -167,21 +188,22 @@ jQuery(function ($){
     loadMyMixes: function() {
       var $mixSlider = this.$mixSlider;
       App.$prevRemix.hide();
+      App.$nextRemix.hide();
       //fetch remixes
       this.remixes.fetch({
-
+        limit: 10
       }, {
         success: function(remixes){
           for(var i=0; i < remixes.length && i < 2; i++) {
             if(i == 0) {
+              App.remixesCursor = 0;
               $mix = App.$mixSlider.find('.mix:nth-child(2)');
             } else {
               $mix = App.$mixSlider.find('.mix:nth-child(3)');
             }
             App.loadRemix(remixes[i], $mix);
           }
-          App.pubRemixesCursor = 0;
-          if(remixes.length == 1) App.$nextRemix.hide();
+          if(remixes.length > 1) App.$nextRemix.show();
           console.log("My Remixes");
           console.log(remixes);
       }});
@@ -211,12 +233,11 @@ jQuery(function ($){
       $mix.find('.mixPanel1').css("background", "url('"+clips[0].gif+"') no-repeat");
       $mix.find('.mixPanel2').css("background", "url('"+clips[1].gif+"') no-repeat");
       $mix.find('.mixPanel3').css("background", "url('"+clips[2].gif+"') no-repeat");
-      $mix.find('.mixPanel4').css("background", "url('"+clips[3].gif+"') no-repeat");
+      $mix.find('.mixPanel4').css("background", "url('"+clips[3].gif+"') no-repeat");      
       $mix.addClass('loaded');
     },
 
     // Main Page Functionalities
-
     slideNext: function() {
       var str = '<div class="mix" style="display: none">'
         + '    <div class="row1">'
@@ -228,33 +249,53 @@ jQuery(function ($){
         + '        <div class="mixPanel mixPanel4"></div>'
         + '    </div>'
         + '</div>';
-      var cursor = App.pubRemixesCursor;
+      var curType = "pubRemixesCursor";
+      var remixes = App.publicRemixes;
+      if(App.selectedTab == "my") {
+        curType = "remixesCursor";
+        remixes = App.remixes;
+      }
+      var items = remixes.get();
+      var cursor = App[curType];
       console.log("before next cursor: " + cursor);
-      var remixes = App.publicRemixes.get();
-      if(cursor < 0 || cursor >= remixes.length) return;
+      if(cursor < 0 || cursor >= items.length) return;
       if(cursor == 0) App.$prevRemix.show();
-      if (cursor < remixes.length-1){
-        App.$mixSlider.append(str);
+
+      if (cursor < items.length-1){
         // App.$mixSlider.find('.mix:nth-child(2)').slideUp();
         // App.$mixSlider.find('.mix:nth-child(3)').slideDown();
         App.$mixSlider.find('.mix:nth-child(2)').hide();
         App.$mixSlider.find('.mix:nth-child(3)').show();
-        App.$mixSlider.find('.mix:nth-child(1)').remove();
-        App.pubRemixesCursor = ++cursor;
+        App.$mixSlider.find('.mix').first().remove();
+        App.$mixSlider.append(str);
+        cursor = cursor + 1;
+        App[curType] = cursor;
       }
-      if(cursor < remixes.length-1) {
-        //load last hidden item
-        App.loadRemix(remixes[cursor + 1], App.$mixSlider.find('.mix:nth-child(3)'));
-      } else if (cursor == remixes.length-1){
-        //last item is not loaded
+      if(cursor < items.length-1) {
+        //load to next mix which is hidden
+        App.loadRemix(items[cursor+1], App.$mixSlider.find('.mix:last'));
+      } else if (cursor == items.length-1){
+        //hide next button;
+        App.$nextRemix.hide();
+        //TODO
         //cursor is on the last index
         //
-        //Load More
-        //hide next button here;
-        App.$nextRemix.hide();
-        // alert("Need to Load more");
+        //Load More /TODO: show wheeling sign
+        remixes.fetchAndAppend({
+          limit: 5,
+          date_lt: items[items.length-1].created_at
+        },{
+          success: function(result){
+            if(result.length > 0) {
+              items = remixes.get();
+              App.loadRemix(items[cursor+1], App.$mixSlider.find('.mix:last'));
+              App.$nextRemix.show();
+            }
+            console.log(result);
+          }
+        });
       }
-      console.log("after next cursor: " + App.pubRemixesCursor);
+      console.log("after next cursor: " + App[curType]);
 
     }, 
     slidePrev: function() {
@@ -268,33 +309,124 @@ jQuery(function ($){
         + '        <div class="mixPanel mixPanel4"></div>'
         + '    </div>'
         + '</div>';
-      var cursor = App.pubRemixesCursor;
+      var curType = "pubRemixesCursor";
+      var remixes = App.publicRemixes;
+      if(App.selectedTab == "my") {
+        curType = "remixesCursor";
+        remixes = App.remixes;
+      }
+      var items = remixes.get();
+      var cursor = App[curType];
       console.log("before prev cursor: " + cursor);
-      var remixes = App.publicRemixes.get();
-      if(cursor <= 0 || cursor >= remixes.length) return;
-      if(cursor == remixes.length-1) App.$nextRemix.show();
+      if(cursor <= 0 || cursor >= items.length) return;
+      if(cursor == items.length-1) App.$nextRemix.show();
       if (cursor > 0){
         // App.$mixSlider.find('.mix:nth-child(1)').slideDown();
         // App.$mixSlider.find('.mix:nth-child(2)').slideUp();
         App.$mixSlider.find('.mix:nth-child(1)').show();
         App.$mixSlider.find('.mix:nth-child(2)').hide();
-        App.$mixSlider.find('.mix:nth-child(3)').remove();
+        App.$mixSlider.find('.mix:last').remove();
         App.$mixSlider.prepend(str);
-        App.pubRemixesCursor = --cursor;
+        cursor = cursor - 1;
+        App[curType] = cursor;
       }
       if(cursor > 0) {
-        //load first hidden item
-        App.loadRemix(remixes[cursor - 1], App.$mixSlider.find('.mix:nth-child(1)'));
+        //load to prev mix which is hidden
+        App.loadRemix(items[cursor - 1], App.$mixSlider.find('.mix:first'));
       } else if (cursor == 0){
-        //first item is not loaded
-        //cursor is on the first(0) index
-        //
-        //Load latest (Recent)
-        //hide prev button here;
+        //hide prev;
         App.$prevRemix.hide();
+        //TODO
+        //cursor is on the first(0) index
+        //Load latest (Recent)
         // alert("Need to Load more");
+      } 
+      console.log("after next cursor: " + App[curType]);
+    },
+    selectRecentMixes: function() {
+      if(App.selectedTab != "recent") {
+        App.selectedTab = "recent";
+        App.$mixSlider.find('.mixPanel').data('clip', null);
+        App.$mixSlider.find('.mixPanel').css("background", "");
+        App.$mixSlider.find('.mixPanel').removeClass('loaded');
+
+        var cursor = App.pubRemixesCursor;
+        var remixes = App.publicRemixes.get();
+        if (remixes.length < 1 || cursor < 0) return;
+
+        App.$prevRemix.hide();
+        App.$nextRemix.hide();
+
+        $prevMix = App.$mixSlider.find('.mix:nth-child(1)');
+        $curMix = App.$mixSlider.find('.mix:nth-child(2)');
+        $nextMix = App.$mixSlider.find('.mix:nth-child(3)');
+
+        if(remixes.length == 1) {
+          if(cursor == 0) App.loadRemix(remixes[cursor], $curMix);
+        } else if (remixes.length > 1){
+          if(cursor == 0) {
+            App.loadRemix(remixes[cursor], $curMix);
+            App.loadRemix(remixes[cursor + 1], $nextMix);
+            App.$nextRemix.show();
+          } else if(cursor == remixes.length -1) {
+            App.loadRemix(remixes[cursor - 1], $prevMix);
+            App.loadRemix(remixes[cursor], $curMix);
+            App.$prevRemix.show()
+          } else {
+            App.loadRemix(remixes[cursor - 1], $prevMix);
+            App.loadRemix(remixes[cursor], $curMix);
+            App.loadRemix(remixes[cursor + 1], $nextMix);
+            App.$prevRemix.show();
+            App.$nextRemix.show();
+          }
+        }
+        console.log(App.selectedTab);
       }
-      console.log("after next cursor: " + App.pubRemixesCursor);
+    },
+    selectMyMixes: function() {
+      if(App.selectedTab != "my") {
+        App.selectedTab = "my";
+        App.$mixSlider.find('.mixPanel').data('clip', null);
+        App.$mixSlider.find('.mixPanel').css("background", "");
+        App.$mixSlider.find('.mixPanel').removeClass('loaded');
+
+        var cursor = App.remixesCursor;
+        var remixes = App.remixes.get();
+
+        console.log(App.selectedTab);
+        //If my remixes is not loaded yet, load
+        if(remixes.length < 1 || cursor < 0){
+          App.loadMyMixes();
+          return;
+        }
+
+        App.$prevRemix.hide();
+        App.$nextRemix.hide();
+
+        $prevMix = App.$mixSlider.find('.mix:nth-child(1)');
+        $curMix = App.$mixSlider.find('.mix:nth-child(2)');
+        $nextMix = App.$mixSlider.find('.mix:nth-child(3)');
+
+        if(remixes.length == 1) {
+          if(cursor == 0) App.loadRemix(remixes[cursor], $curMix);
+        } else if (remixes.length > 1){
+          if(cursor == 0) {
+            App.loadRemix(remixes[cursor], $curMix);
+            App.loadRemix(remixes[cursor + 1], $nextMix);
+            App.$nextRemix.show();
+          } else if(cursor == remixes.length -1) {
+            App.loadRemix(remixes[cursor - 1], $prevMix);
+            App.loadRemix(remixes[cursor], $curMix);
+            App.$prevRemix.show()
+          } else {
+            App.loadRemix(remixes[cursor - 1], $prevMix);
+            App.loadRemix(remixes[cursor], $curMix);
+            App.loadRemix(remixes[cursor + 1], $nextMix);
+            App.$prevRemix.show();
+            App.$nextRemix.show();
+          }
+        }
+      }
     },
 
     //Mixing Functionalities
@@ -318,6 +450,19 @@ jQuery(function ($){
         remix.save({title: title, clips: clips}, {
           success: function(remix) {
             App.clearMixPanel();
+            //Check if result and input matches
+            for (var i =0; i < clips.length; i++ ){
+              if (remix.clips[i] == clips[i]._id) remix.clips[i] = clips[i];
+            }
+            //Add remix to the collection
+            App.remixes.unshift(remix);
+            App.publicRemixes.unshift(remix);
+            App.remixesCursor = 0;
+            App.pubRemixesCursor = 0;
+            $.mobile.changePage('/#main');
+            App.selectedTab = "";
+            App.$myMixes.click();
+
             console.log(remix); 
           }
         }); 
