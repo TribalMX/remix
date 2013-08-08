@@ -45,7 +45,7 @@ exports.getRemixes = function(req, res) {
 								remixes[i].clips[j].gif = body.video.gifs.fast;
 							} else {
 								remixes[i].gifs[j] = "Not Found";
-                remixes[i].clips[j].gif ="Not Found";
+                				remixes[i].clips[j].gif ="Not Found";
 							}
 							//When every gifs are loaded
 							if(numGifs == totalNumb){
