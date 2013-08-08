@@ -234,7 +234,6 @@ jQuery(function ($){
 
       //fetch clips
       this.clips.fetch({limit: 10}, {success: function(clips){
-        $clipContainer.html('');
         for( var i =0; i < clips.length; i++) {
           var gifUrl = clips[i].gif;
           var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" /></a>'); 
@@ -262,7 +261,7 @@ jQuery(function ($){
       //Load More /TODO: show wheeling sign
       App.clips.fetchAndAppend({
         limit: 5,
-        date_lt: clips[clips.length-1].created_a
+        date_lt: clips[clips.length-1].created_at
       },{
         success: function(clips){
           if(clips.length > 0) {
@@ -304,10 +303,10 @@ jQuery(function ($){
       if(cursor == 0) App.$prevRemix.show();
 
       if (cursor < items.length-1){
-        // App.$mixSlider.find('.mix:nth-child(2)').slideUp();
-        // App.$mixSlider.find('.mix:nth-child(3)').slideDown();
-        App.$mixSlider.find('.mix:nth-child(2)').hide();
-        App.$mixSlider.find('.mix:nth-child(3)').show();
+        App.$mixSlider.find('.mix:nth-child(2)').slideUp();
+        App.$mixSlider.find('.mix:nth-child(3)').slideDown();
+        // App.$mixSlider.find('.mix:nth-child(2)').hide();
+        // App.$mixSlider.find('.mix:nth-child(3)').show();
         App.$mixSlider.find('.mix').first().remove();
         App.$mixSlider.append(str);
         cursor = cursor + 1;
@@ -363,10 +362,10 @@ jQuery(function ($){
       if(cursor <= 0 || cursor >= items.length) return;
       if(cursor == items.length-1) App.$nextRemix.show();
       if (cursor > 0){
-        // App.$mixSlider.find('.mix:nth-child(1)').slideDown();
-        // App.$mixSlider.find('.mix:nth-child(2)').slideUp();
-        App.$mixSlider.find('.mix:nth-child(1)').show();
-        App.$mixSlider.find('.mix:nth-child(2)').hide();
+        App.$mixSlider.find('.mix:nth-child(1)').slideDown();
+        App.$mixSlider.find('.mix:nth-child(2)').slideUp();
+        // App.$mixSlider.find('.mix:nth-child(1)').show();
+        // App.$mixSlider.find('.mix:nth-child(2)').hide();
         App.$mixSlider.find('.mix:last').remove();
         App.$mixSlider.prepend(str);
         cursor = cursor - 1;
