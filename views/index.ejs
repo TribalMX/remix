@@ -1,0 +1,203 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Remix The City</title> 
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
+	<link rel="stylesheet" href="themes/rtc-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+	<link rel="stylesheet" media="only screen and (-webkit-min-device-pixel-ratio: 2)" type="text/css" href="stylesheets/retina.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/tolito-1.0.5.min.css" />
+</head> 
+<body> 
+<div data-role="page" id="home1"> <!--MAIN PAGE -->
+
+	<div data-role="header">
+		<h1 class='logoHeader'></h1>
+	</div><!-- /header -->
+	<div data-role="content">	
+
+		<div class="previewTitle">
+			<a id="prevRemix" href="#" data-role="button"  data-icon="arrow-l" data-theme="a" data-inline="true" class="back"/>back</a>
+			<div class="titleDiv">Rainy days...</div>
+			<a id="nextRemix" href="#" data-role="button"  data-icon="arrow-r" data-iconpos="right" data-theme="a" data-inline="true" class="next" />next</a>
+			<div style="clear:both;"></div>
+		</div>
+		<div id="mixSlider">
+			<div class="mix" style='display: none'>
+				<div class="row1">
+					<div class="mixPanel mixPanel1">
+					</div>
+					<div class="mixPanel mixPanel2">
+					</div>
+				</div>
+				<div class="row2">
+					<div class="mixPanel mixPanel3">
+					</div>
+					<div class="mixPanel mixPanel4">
+					</div>
+				</div>
+			</div>
+			<div class="mix">
+				<div class="row1">
+					<div class="mixPanel mixPanel1">
+					</div>
+					<div class="mixPanel mixPanel2">
+					</div>
+				</div>
+				<div class="row2">
+					<div class="mixPanel mixPanel3">
+					</div>
+					<div class="mixPanel mixPanel4">
+					</div>
+				</div>
+			</div>
+			<div class="mix" style='display: none'>
+				<div class="row1">
+					<div class="mixPanel mixPanel1">
+					</div>
+					<div class="mixPanel mixPanel2">
+					</div>
+				</div>
+				<div class="row2">
+					<div class="mixPanel mixPanel3">
+					</div>
+					<div class="mixPanel mixPanel4">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="text-align: center;">
+			<a id="newMixBtn" href="#newMix" data-role="button"  data-icon="plus" data-theme="a" data-inline="true"/>New Mix</a>
+			<a id="newClipBtn" href="#newClip" data-role="button"  data-icon="star" data-theme="b" data-inline="true"/>New Clip</a>
+		</div>
+	</div><!-- /content -->
+
+
+</div><!-- /page -->
+
+
+<div data-role="page" id="newMix">
+
+	<div data-role="header">
+		<h1 class='logoHeader'></h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+		<div data-role="fieldcontain" class="ui-hide-label">
+			<label for="mixTitle">Mix Title:</label>
+			<input type="text" name="mixTitle" id="mixTitle" value="" placeholder="Title of New Mix"/>
+		</div>
+		<div class="mix">
+			<div class="row1">
+				<div class="mixPanel" id="panel1">
+					<a href="#clipLibrary" class="addClip">+</a>
+				</div>
+				<div class="mixPanel" id="panel2" >
+					<a href="#clipLibrary" class="addClip">+</a>
+				</div>
+			</div>
+			<div class="row2">
+				<div class="mixPanel" id="panel3" >
+					<a href="#clipLibrary" class="addClip">+</a>
+				</div>
+				<div class="mixPanel" id="panel4">
+					<a href="#clipLibrary" class="addClip">+</a>
+				</div>
+			</div>
+		</div>
+		<div style="text-align: center;">
+			<a id="createMix" href="#" data-role="button"  data-icon="plus" data-theme="a" data-inline="true"/>Create Mix</a>
+			<a id="cancelCreateMix" href="#home1" data-role="button"  data-icon="back" data-theme="b" data-inline="true"/>Cancel</a>
+		</div>
+	</div><!-- /content -->
+
+</div><!-- /page -->
+
+<div data-role="page" id="clipLibrary">
+
+	<div data-role="header">
+		<h1 class='logoHeader'></h1>
+	</div><!-- /header -->
+	<div data-role="content">	
+		<div id="clipContainer" class="thumbnails">
+<!-- 			<a href="#newMix"><img src="gifs/1.gif" /></a>
+			<a href="#newMix"><img src="gifs/2.gif" /></a>
+			<a href="#newMix"><img src="gifs/3.gif" /></a>
+			<a href="#newMix"><img src="gifs/4.gif" /></a>
+			<a href="#newMix"><img src="gifs/toronto1.gif" /></a>
+			<a href="#newMix"><img src="gifs/graffiti1.gif" /></a>
+			<a href="#newMix"><img src="gifs/skate1.gif" /></a>
+			<a href="#newMix"><img src="gifs/skate3.gif" /></a>
+			<a href="#newMix"><img src="gifs/taxi1.gif" /></a> -->
+		</div>
+		<div style="text-align: center; background-color: #F7F7F7" data-position="fixed">
+			<a id='moreClipsButton' href="#" data-role="button"  data-icon="arrow-d" data-iconpos="right" data-theme="a" data-inline="true"/>More</a>
+			<a id ="closeLibrary" href="#newMix" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
+		</div>
+	</div><!-- /content -->
+
+</div><!-- /page -->
+
+
+<div data-role="page" id="newClip">
+
+	<div data-role="header">
+		<h1 class='logoHeader'></h1>
+	</div><!-- /header -->
+	<div data-role="content">	
+
+		<h1>Create a New Clip</h2>
+		<p>
+			Choose a video on your phone / tablet / computer to turn into a clip. Remix The City would upload it to the Clip Library and turn it into a 3 second animation that you can use in your mixes.
+		</p>
+		<p>
+			We recomend you use videos less then 10 seconds to speed up the process and look nicer :)
+		</p>
+		
+		<input id="fileInput" type="file" accept="video/*" style="position:absolute; top:-100px;">	
+		<div style="text-align: center;">
+			<a id="upload" href="#" onclick="" data-role="button"  data-icon="plus" data-theme="a" data-inline="true"/>Upload Video</a>
+			<a id="cancelNewClip" href="#home1" data-role="button"  data-icon="back" data-theme="b" data-inline="true"/>Cancel</a>
+		</div>
+	</div><!-- /content -->
+
+
+</div><!-- /page -->
+
+<div data-role="page" id="uploadingClip">
+
+	<div data-role="header">
+		<h1 class='logoHeader'></h1>
+	</div><!-- /header -->
+	<div data-role="content">	
+
+		<h1>Uploading New Video</h2>
+		
+		<div style="text-align: center;" id="whileUploading">
+			<p>
+			Please wait while Remix Your City is uploading and processing your new clip...
+			</p>
+			<div id="progressbar"></div>
+			<a id="cancelUploading" href="#newClip" data-role="button"  data-icon="back" data-theme="b" data-inline="true"/>Cancel</a>
+		</div>
+		<div style="text-align: center; display:none;" id="afterUploading">
+			<p style="color:Green;">
+			Upload completed! You and others can now find this clip when creating a new Mix :)
+			</p>
+			<a id="backHome" href="#" data-role="button"  data-icon="back" data-theme="a" data-inline="true"/>Back Home</a>
+		</div>
+	</div><!-- /content -->
+</div><!-- /page -->
+	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+	<script type="text/javascript" src="javascripts/tolito-1.0.5.min.js"></script>
+	<script src="javascripts/functions.js"></script>
+	<script src="javascripts/async.js"></script>
+	<!-- // <script src="javascripts/script.js"></script>  -->
+  <script src="javascripts/app.js"></script> 
+</body>
+</html>
+
+
+

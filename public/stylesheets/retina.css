@@ -1,0 +1,7 @@
+h1.logoHeader {
+	width: 100%;
+	height: 36px;
+	background: url('../imagesX2/logo.png') no-repeat;
+	display: inline-block !important;
+	background-size: contain;
+}

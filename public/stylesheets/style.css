@@ -1,0 +1,267 @@
+/*-------------------------------------------------------------------------------------------*/
+/* RESET - http://meyerweb.com/eric/tools/css/reset/ | v1.0 | 20080212 */
+/*-------------------------------------------------------------------------------------------*/
+
+body,html{height:100%;}
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent;margin:0;padding:0;}
+body{line-height:1;}
+ol,ul{list-style:none;}
+blockquote,q{quotes:none;}
+blockquote:before,blockquote:after,q:before,q:after{content:none;}
+:focus{outline:0;}
+del{text-decoration:line-through;}
+table{border-collapse:collapse;border-spacing:0;}
+
+/* Floating & Alignment  */
+.fl{float:left;}
+.fr{float:right;}
+.ac{text-align:center;}
+.ar{text-align:right;}
+
+/* Clear Floats  */
+.col-full:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.fix{clear:both;height:1px;overflow:hidden;margin:-1px 0 0;}
+html body * span.clear,html body * div.clear,html body * li.clear,html body * dd.clear{background:none;border:0;clear:both;display:block;float:none;font-size:0;list-style:none;overflow:hidden;visibility:hidden;width:0;height:0;margin:0;padding:0;}
+div {margin:0; padding:0; border:none;}
+
+
+/*-------------------------------------------------------------------------------------------*/
+/* 1. LAYOUT */
+/*-------------------------------------------------------------------------------------------*/
+
+body {
+}
+
+div.ui-content {
+	padding:5px;
+	text-align: center;
+}
+
+h1.logoHeader {
+	width: 330px;
+	height: 36px;
+	background: url('../images/logo.png') no-repeat;
+	display: inline-block !important;
+
+}
+
+.ui-header .ui-title {
+	margin:0 !important; 
+	text-align: center;
+}
+
+div.ui-header {
+	background: White !important;
+	border: 0 !important;
+	padding:10px;
+	text-align: center;
+	-webkit-box-shadow: 0 8px 6px -6px #bbb;
+	   -moz-box-shadow: 0 8px 6px -6px #bbb;
+	        box-shadow: 0 8px 6px -6px #bbb;
+}
+
+div.ui-field-contain {
+	margin: 0 !important;
+}
+
+div.mix {
+	text-align: center;
+	background: black;
+	margin: 5px 0;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+div.mixPanel {
+	display: inline-block;
+	width: 45%;
+	background: #ccc;
+	position:relative;
+	background-size: cover !important;
+}
+
+
+div.mixPanel a {
+	left: 38px;
+	top: 40px;
+	opacity: 0.4;
+	background: #000;
+	border-radius: 65px;
+	display: inline-block;
+	padding: 11px 19px;
+	color: white !important;
+	text-shadow: none;
+	text-decoration: none;
+	font-size: 35px;
+	position: absolute;
+}
+
+
+div.mixPanel a:hover {
+	background: #000;
+	opacity: 0.8;
+}
+
+
+
+.thumbnails {
+	text-align: center;
+}
+.thumbnails img {
+	width:124px;
+	height:124px;
+	margin:4px;
+}
+
+
+div.previewTitle  .back{
+	float:left;
+} 
+
+div.previewTitle  .titleDiv{
+	float:left;
+	display: inline-block;
+	padding: 0px 0 0 4px;
+	display: none;
+} 
+div.previewTitle  .next{
+	float:right;
+} 
+
+
+h1 {
+	font-size: 24px;
+	padding:14px;
+}
+
+p {
+	padding:20px;
+	color:#888;
+}
+
+#progressbar {
+	margin-bottom:15px;
+}
+
+
+.ui-tolito-progressbar-corner-all {
+	line-height: 2em;
+}
+
+
+
+
+
+h4{
+	font-family: 'Open Sans', cursive;
+position: absolute;
+left: 605px;
+top: 422px;
+font-weight: 100;
+color: white;
+font-size: 17px;
+line-height: 2em;
+}
+
+.form {
+	position: absolute;
+	left: 600px;
+	top: 520px;
+}
+
+.form input {
+	padding: 20px;
+	font-size: 20px;
+	width: 300px;
+	border-radius: 10px;
+	border: 1px solid #bbb;
+}
+
+.form button {
+border-radius: 10px;
+font-size: 20px;
+border:0;
+background: #5b7dc2;
+ border-bottom: 4px solid #4e6ca9;
+ color:White;
+top: -2px;
+position: relative;
+padding: 19px;
+font-weight: 400;
+text-decoration: none;
+}
+
+.form button:hover {
+	background: #4e6ca9;
+  border-bottom: 4px solid #5b7dc2;
+  color:White;
+}
+
+div.phone {
+	position:absolute;
+	width:400px;
+	height: 847px;
+	background: transparent url(../images/phone.png) no-repeat;
+	left:100px;
+	top:50px;
+	margin-bottom:50px;
+}
+div.phone img.header {
+	left: 33px;
+	position: absolute;
+	top: 123px;
+}
+div.phone img.footer {
+	left: 33px;
+	position: absolute;
+	bottom: 123px;
+}
+div.container { 
+	margin: 0 auto;
+	width: 340px;
+	position: absolute;
+	left: 32px;
+	text-align: center;
+	top: 263px;
+	background:Black;
+	padding-top: 5px;
+padding-bottom: 3px;
+}
+
+div.container img {
+	margin:1px;
+}
+
+
+div.logo { 
+	position: absolute;
+	top: 100px;
+	left: 600px;
+}
+.logo div.logoRemix {
+	width: 354px;
+	height: 84px;
+	overflow: hidden;
+	background: url('../gifs/backRemix.gif') no-repeat -5px -100px;
+	background-size: cover;
+}
+.logo div.logoThe {
+	width: 354px;
+	height: 89px;
+	overflow: hidden;
+	background: url('../gifs/backThe.gif') no-repeat -70px -20px;
+	background-size: cover;
+}
+.logo div.logoCity {
+	width: 354px;
+	height: 89px;
+	overflow: hidden;
+	background: url('../gifs/backCity.gif') no-repeat -10px -80px;
+	background-size: cover;
+}
+
+
+
+
+
+
