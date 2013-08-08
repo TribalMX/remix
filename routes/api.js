@@ -6,6 +6,9 @@ var request = require('request')
   , Remix = mongoose.model('Remix')
   , Clip = mongoose.model('Clip');
 
+exports.getUsers = function(req, res) {
+	res.send({name: req.user.name, username: req.user.username});
+};
 exports.getRemixes = function(req, res) {
 	//get from db and query by id, or username
 	var data = {}

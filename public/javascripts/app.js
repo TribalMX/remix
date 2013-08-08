@@ -77,6 +77,9 @@ jQuery(function ($){
       this.remixes = new this.Remixes();
       this.clips = new this.Clips();
 
+      //User
+      this.user = {};
+
       //For main
       this.selectedTab = "recent"; //recent or my
       this.remixesCursor = -1;
@@ -98,8 +101,9 @@ jQuery(function ($){
       //initiate
       this.cacheElements();
       this.bindEvents();
-      // this.loadUserInfo();
+      this.loadUserInfo();
       this.loadRecentMixes();
+      this.loadMyMixes();
       this.loadClips();
     },
     cacheElements: function() {
@@ -169,11 +173,15 @@ jQuery(function ($){
       //uploadingClip page
       this.$cancelUploading.on('click', this.cancelUploading);
       this.$backHome.on('click', this.backToHome);
-
-
     },
 
-    // Loaders
+    // Loaderso
+    loadUserInfo: function() {
+      $.get('/api/users', function(user) {
+        App.user = user; 
+        App.$username.html('Hello ' + user.name);
+      })
+    },
 
     loadRecentMixes: function() {
       var $mixSlider = this.$mixSlider;
@@ -254,7 +262,7 @@ jQuery(function ($){
       //Load More /TODO: show wheeling sign
       App.clips.fetchAndAppend({
         limit: 5,
-        date_lt: clips[clips.length-1].created_at
+        date_lt: clips[clips.length-1].created_a
       },{
         success: function(clips){
           if(clips.length > 0) {
@@ -268,7 +276,7 @@ jQuery(function ($){
           console.log(clips);
         }
       });
-    },
+    }, 
 
     // Main Page Functionalities
 
@@ -427,9 +435,10 @@ jQuery(function ($){
         var remixes = App.remixes.get();
 
         console.log(App.selectedTab);
+        console.log(cursor);
+        console.log(remixes);
         //If my remixes is not loaded yet, load
         if(remixes.length < 1 || cursor < 0){
-          App.loadMyMixes();
           return;
         }
 
@@ -441,17 +450,21 @@ jQuery(function ($){
         $nextMix = App.$mixSlider.find('.mix:nth-child(3)');
 
         if(remixes.length == 1) {
+          console.log("here");
           if(cursor == 0) App.loadRemix(remixes[cursor], $curMix);
         } else if (remixes.length > 1){
           if(cursor == 0) {
+          console.log("here1");
             App.loadRemix(remixes[cursor], $curMix);
             App.loadRemix(remixes[cursor + 1], $nextMix);
             App.$nextRemix.show();
           } else if(cursor == remixes.length -1) {
+          console.log("here2");
             App.loadRemix(remixes[cursor - 1], $prevMix);
             App.loadRemix(remixes[cursor], $curMix);
             App.$prevRemix.show()
           } else {
+          console.log("here3");
             App.loadRemix(remixes[cursor - 1], $prevMix);
             App.loadRemix(remixes[cursor], $curMix);
             App.loadRemix(remixes[cursor + 1], $nextMix);
