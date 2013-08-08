@@ -50,16 +50,12 @@ if ('development' == app.get('env')) {
 }
 
 //RESTfull Routes
-app.get('/api/allremixes', api.getAllRemixes); // return {status: , mix: [{clipid, gif}, {clipid, gif}, {clipid, gif}, {clipid, gif}], mix_id: , created: }
-
 app.get('/api/public/remixes', api.getRemixes);
-// app.get('/api/clips/{:rID}', api.getClips);
 
 app.get('/api/remixes', auth.requiresLogin, api.getRemixes);
 app.post('/api/remixes', auth.requiresLogin, api.postRemix);
 
-app.get('/api/clips', auth.requiresLogin, api.getClips); //{clip_id: , gif: }
-app.get('/api/clips/:id', auth.requiresLogin, api.getClips);
+app.get('/api/clips', auth.requiresLogin, api.getClips);
 app.post('/api/clips', auth.requiresLogin, api.postClip);
 
 //uploading api

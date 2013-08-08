@@ -6,21 +6,6 @@ var request = require('request')
   , Remix = mongoose.model('Remix')
   , Clip = mongoose.model('Clip');
 
-exports.getAllRemixes = function(req, res) {
-
-	var data= req.query;
-	data.username = videogami.user;
-	data.token = videogami.api_key;
-
-	request.get({
-		url: videogami.host + "/remixes",
-		qs: data,
-		json: true,
-	}, function (error, response, body) {
-	   res.send(body); 
-	});
-};
-
 exports.getRemixes = function(req, res) {
 	//get from db and query by id, or username
 	var data = {}
