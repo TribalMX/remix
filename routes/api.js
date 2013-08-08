@@ -140,6 +140,9 @@ exports.postRemix = function(req, res) {
 };
 
 exports.postClip = function(req, res) {
+	var tmpGif = req.body.gif;
+	//don't save gif to db
+	delete req.body.gif;
 	var clip = new Clip(req.body);  
 	clip.user = req.user;
 	if(!req.body.created_by) {
@@ -150,7 +153,7 @@ exports.postClip = function(req, res) {
 			console.log("Error saving clip", err);
 			return res.send(500);
 		}
-		clip.gif = req.body.gif;
+		clip.gif = tmpGif;
 		res.send(clip);
 	});
 };

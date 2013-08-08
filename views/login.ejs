@@ -10,31 +10,75 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/tolito-1.0.5.min.css" />
 </head> 
 <body> 
-<div data-role="page" id="login"> 
+<div data-role="page" id="main"> <!--MAIN PAGE -->
+
     <div data-role="header">
         <h1 class='logoHeader'></h1>
     </div><!-- /header -->
     <div data-role="content">   
+        <div style="text-align: center;">
+            <a href="/auth/facebook" rel="external" data-role="button"  data-icon="plus" data-theme="a" data-inline="true"/>Login With Facebook</a>
+        </div>
+        <div id="mixSlider">
+            <div class="mix" style='display: none'>
+                <div class="row1">
+                    <div class="mixPanel mixPanel1">
+                    </div>
+                    <div class="mixPanel mixPanel2">
+                    </div>
+                </div>
+                <div class="row2">
+                    <div class="mixPanel mixPanel3">
+                    </div>
+                    <div class="mixPanel mixPanel4">
+                    </div>
+                </div>
+            </div>
+            <div class="mix">
+                <div class="row1">
+                    <div class="mixPanel mixPanel1">
+                    </div>
+                    <div class="mixPanel mixPanel2">
+                    </div>
+                </div>
+                <div class="row2">
+                    <div class="mixPanel mixPanel3">
+                    </div>
+                    <div class="mixPanel mixPanel4">
+                    </div>
+                </div>
+            </div>
+            <div class="mix" style='display: none'>
+                <div class="row1">
+                    <div class="mixPanel mixPanel1">
+                    </div>
+                    <div class="mixPanel mixPanel2">
+                    </div>
+                </div>
+                <div class="row2">
+                    <div class="mixPanel mixPanel3">
+                    </div>
+                    <div class="mixPanel mixPanel4">
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="previewTitle">
             <a id="prevRemix" href="#" data-role="button"  data-icon="arrow-l" data-theme="a" data-inline="true" class="back"/>back</a>
             <div class="titleDiv">Rainy days...</div>
             <a id="nextRemix" href="#" data-role="button"  data-icon="arrow-r" data-iconpos="right" data-theme="a" data-inline="true" class="next" />next</a>
             <div style="clear:both;"></div>
         </div>
-        <div id="mixSlider">
 
-        </div>
-        <div style="text-align: center;">
-            <a href="/auth/facebook" rel="external" data-role="button"  data-icon="plus" data-theme="a" data-inline="true"/>Login With Facebook</a>
-        </div>
-    </div>
-</div>
+    </div><!-- /content -->
+</div><!-- /page -->
     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
     <script type="text/javascript" src="javascripts/tolito-1.0.5.min.js"></script>
     <script src="javascripts/functions.js"></script>
     <script src="javascripts/async.js"></script>
-    <script src="javascripts/script.js"></script> 
-    <script src="javascripts/app.js"></script> 
+    <script src="javascripts/vdloader.js"></script> 
+  <script src="javascripts/app.js"></script> 
 </body>
 </html>

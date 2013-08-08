@@ -23,12 +23,6 @@ jQuery(function ($){
           $.ajax({
             url: url,
             type: "GET",
-            // data: {
-            //   limit: options.limit,
-            //   date_lt: options.date_lt,
-            //   data_gt: options.date_gt
-
-            // },
             data: query,
             success: function(models){
               collection = collection.concat(models);
@@ -83,6 +77,12 @@ jQuery(function ($){
       this.remixes = new this.Remixes();
       this.clips = new this.Clips();
 
+      //For main
+      this.selectedTab = "recent"; //recent or my
+      this.remixesCursor = -1;
+      this.pubRemixesCursor = -1;
+
+      //For new mix
       this.mixpanel = {
         selectedPanel: null,
         panel1: null,
@@ -90,11 +90,12 @@ jQuery(function ($){
         panel3: null,
         panel4: null
       };
-      this.selectedTab = "recent"; //recent or my
-      this.remixesCursor = -1;
-      this.pubRemixesCursor = -1;
 
+      //For uploading
+      this.selectedFile = null;
+      this.uploader = null;
 
+      //initiate
       this.cacheElements();
       this.bindEvents();
       // this.loadUserInfo();
@@ -127,7 +128,7 @@ jQuery(function ($){
       //clipLibrary page
       this.$clipLibrary = $('#clipLibrary');
       this.$clipContainer = this.$clipLibrary.find('#clipContainer');
-      this.$moreClipsBtn = this.$clipLibrary.find('#moreClipsButton');
+      this.$moreClipsBtn = this.$clipLibrary.find('#moreClipsBtn');
       this.$closeLibrary = this.$clipLibrary.find('#closeLibrary');
 
       //newClip page
@@ -139,6 +140,9 @@ jQuery(function ($){
       //uploadingClip page
       this.$uploadingClip = $('#uploadingClip');
       this.$progressbar = this.$uploadingClip.find('#progressbar');
+      this.$cancelUploading = this.$uploadingClip.find('#cancelUploading');
+      this.$whileUploading = this.$uploadingClip.find('#whileUploading');
+      this.$afterUploading = this.$uploadingClip.find('#afterUploading');
       this.$backHome = this.$uploadingClip.find('#backHome');
     },
     bindEvents: function() {
@@ -156,16 +160,25 @@ jQuery(function ($){
 
       //clipLibrary page
       this.$clipLibrary.on('click', '.clip', this.addToMixPanel);
+      this.$moreClipsBtn.on('click', this.loadMoreClips);
 
       //newClip page
+      this.$upload.on('click', this.openFileChooser);
+      this.$fileInput.on('change', this.startUploading);
 
       //uploadingClip page
+      this.$cancelUploading.on('click', this.cancelUploading);
+      this.$backHome.on('click', this.backToHome);
+
 
     },
+
+    // Loaders
+
     loadRecentMixes: function() {
       var $mixSlider = this.$mixSlider;
       App.$prevRemix.hide();
-      App.$nextRemix.hide();
+      // App.$nextRemix.hide();
       //fetch remixes
       this.publicRemixes.fetch({
         limit: 10
@@ -188,7 +201,7 @@ jQuery(function ($){
     loadMyMixes: function() {
       var $mixSlider = this.$mixSlider;
       App.$prevRemix.hide();
-      App.$nextRemix.hide();
+      // App.$nextRemix.hide();
       //fetch remixes
       this.remixes.fetch({
         limit: 10
@@ -212,7 +225,7 @@ jQuery(function ($){
       var $clipContainer = this.$clipContainer;
 
       //fetch clips
-      this.clips.fetch(null, {success: function(clips){
+      this.clips.fetch({limit: 10}, {success: function(clips){
         $clipContainer.html('');
         for( var i =0; i < clips.length; i++) {
           var gifUrl = clips[i].gif;
@@ -236,8 +249,29 @@ jQuery(function ($){
       $mix.find('.mixPanel4').css("background", "url('"+clips[3].gif+"') no-repeat");      
       $mix.addClass('loaded');
     },
+    loadMoreClips: function() {
+      var clips = App.clips.get();
+      //Load More /TODO: show wheeling sign
+      App.clips.fetchAndAppend({
+        limit: 5,
+        date_lt: clips[clips.length-1].created_at
+      },{
+        success: function(clips){
+          if(clips.length > 0) {
+            for( var i =0; i < clips.length; i++) {
+              var gifUrl = clips[i].gif;
+              var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" /></a>'); 
+              $clip.data("obj", clips[i]);
+              $clip.appendTo(App.$clipContainer);
+            }
+          }
+          console.log(clips);
+        }
+      });
+    },
 
     // Main Page Functionalities
+
     slideNext: function() {
       var str = '<div class="mix" style="display: none">'
         + '    <div class="row1">'
@@ -339,7 +373,6 @@ jQuery(function ($){
         //TODO
         //cursor is on the first(0) index
         //Load latest (Recent)
-        // alert("Need to Load more");
       } 
       console.log("after next cursor: " + App[curType]);
     },
@@ -485,8 +518,81 @@ jQuery(function ($){
     }, 
     cancelMixing: function() {
       App.clearMixPanel()
-    }
+    }, 
 
+    // Uploading Functionalites
+
+    openFileChooser: function() {
+       App.$fileInput.click();
+    },
+    startUploading: function(event) {
+      App.selectedFile = event.target.files[0];
+      if(App.selectedFile){
+        $.mobile.changePage('#uploadingClip');
+        $("#whileUploading").show();
+        $("#afterUploading").hide();
+
+        //Progress bar //TODO: remove this and create new one
+        var tolito = TolitoProgressBar('progressbar')
+            .setOuterTheme('b')
+            .setInnerTheme('e')
+            .isMini(false)
+            .setMax(100)
+            .setStartFrom(0)
+            .setInterval(50)
+            .showCounter(true)
+            .logOptions()
+            .build();
+
+        //From vdloader.js
+        App.uploader = new Uploader({
+          uploadURL: "/uploadApi",
+          file: App.selectedFile,
+          title: App.selectedFile.name,
+          progress: function(update){
+            if (update.percent) tolito.setValue(Math.round(update.percent));                
+          },
+          success: function(result){
+            App.selectedFile = null;
+            if(result.video) {
+              //create a clip and save
+              var clip = new App.Clip();
+              clip.save({videogami_vid: result.video._id, gif: result.video.gifs.fast}, {
+                success: function(clip) {
+                  //Add clip to the collection
+                  App.clips.unshift(clip);
+
+                  //prepend the clip to the library
+                  var gifUrl = clip.gif;
+                  var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" /></a>'); 
+                  $clip.data("obj", clip);
+                  $clip.prependTo(App.$clipContainer);
+
+                  App.$whileUploading.hide();
+                  App.$afterUploading.show();
+                  console.log(clip);
+                }
+              });
+            }
+            console.log("########### upload done " + JSON.stringify(result, 0, 2));
+          },
+          failure: function(er){
+            App.selectedFile = null;
+            console.log(JSON.stringify(er, 0, 2))
+          }
+        });
+      } 
+    },
+    cancelUploading: function() {
+      App.selectedFile = null;
+      App.uploader.cancel();
+    },
+    backToHome: function() {
+      $.mobile.changePage('#main');
+    },
+    sample: function(){
+
+    }
   };
   App.init();
 });
