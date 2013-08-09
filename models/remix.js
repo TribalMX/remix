@@ -23,7 +23,7 @@ RemixSchema.statics = {
         if(options.date_lt){
             query =  {created_at: {$lt: new Date(options.date_lt)}};
         }
-        if(!options.user){
+        if(options.pub){
             this.find(query)
                 .sort({'created_at': -1})
                 .limit(options.limit)
@@ -36,7 +36,7 @@ RemixSchema.statics = {
                 .sort({'created_at': -1})
                 .limit(options.limit)
                 .populate('user', 'name username')
-                .populate('clips', 'videogami_vid gif')
+                .populate('clips', 'videogami_vid gif created_by created_at')
                 .exec(cb);
         }
     },

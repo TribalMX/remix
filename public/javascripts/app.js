@@ -99,12 +99,17 @@ jQuery(function ($){
       this.uploader = null;
 
       //initiate
-      this.cacheElements();
-      this.bindEvents();
-      this.loadUserInfo();
-      this.loadRecentMixes();
-      this.loadMyMixes();
-      this.loadClips();
+      if($('#loginPage').length > 0) {
+        this.cacheElements();
+        this.bindEvents();
+        this.fetchRecentMixes();
+      } else {
+        this.cacheElements();
+        this.bindEvents();
+        this.fetchRecentMixes();
+        this.fetchMyMixes();
+        this.fetchClips();
+      }
     },
     cacheElements: function() {
       //main page
@@ -118,6 +123,11 @@ jQuery(function ($){
       this.$recentMixes = this.$main.find('#recentMixes');
       this.$myMixes = this.$main.find('#myMixes');
       this.$username = this.$main.find("#username"); //Temp
+
+      //clip page
+      this.$clip = $('#clip');
+      this.$clipWrapper = this.$clip.find('#clipWrapper');
+      this.$saveClip = this.$clip.find('#saveClip');
 
       //newMix page
       this.$newMix = $('#newMix');
@@ -151,7 +161,7 @@ jQuery(function ($){
     },
     bindEvents: function() {
       //main page
-      // this.$newMixBtn.on('click', this.initMixPanel);
+      this.$mixSlider.on('click', '.mixPanel', this.selectClip);
       this.$nextRemix.on('click', this.slideNext);
       this.$prevRemix.on('click', this.slidePrev);
       this.$recentMixes.on('click', this.selectRecentMixes);
@@ -164,6 +174,7 @@ jQuery(function ($){
 
       //clipLibrary page
       this.$clipLibrary.on('click', '.clip', this.addToMixPanel);
+      this.$clipLibrary.on('click', '.notReady', this.openClipLibrary)
       this.$moreClipsBtn.on('click', this.loadMoreClips);
 
       //newClip page
@@ -175,15 +186,8 @@ jQuery(function ($){
       this.$backHome.on('click', this.backToHome);
     },
 
-    // Loaderso
-    loadUserInfo: function() {
-      $.get('/api/users', function(user) {
-        App.user = user; 
-        App.$username.html('Hello ' + user.name);
-      })
-    },
-
-    loadRecentMixes: function() {
+    // Loaders
+    fetchRecentMixes: function() {
       var $mixSlider = this.$mixSlider;
       App.$prevRemix.hide();
       // App.$nextRemix.hide();
@@ -206,7 +210,7 @@ jQuery(function ($){
           console.log(remixes);
       }});
     },
-    loadMyMixes: function() {
+    fetchMyMixes: function() {
       var $mixSlider = this.$mixSlider;
       App.$prevRemix.hide();
       // App.$nextRemix.hide();
@@ -229,20 +233,25 @@ jQuery(function ($){
           console.log(remixes);
       }});
     },
-    loadClips: function() {
+    fetchClips: function() {
       var $clipContainer = this.$clipContainer;
 
       //fetch clips
       this.clips.fetch({limit: 10}, {success: function(clips){
-        for( var i =0; i < clips.length; i++) {
-          var gifUrl = clips[i].gif;
-          var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" /></a>'); 
-          $clip.data("obj", clips[i]);
-          $clip.appendTo($clipContainer);
-        }
+        App.loadClips(clips);
         console.log("my Clips");
         console.log(clips);
       }});
+    },
+    loadClips: function(clips) {
+      App.$clipContainer.html('');
+      for( var i =0; i < clips.length; i++) {
+        var gifUrl = clips[i].gif;
+        var onerror = "this.src='/images/agifClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";               
+        var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>');
+        $clip.data("obj", clips[i]);
+        $clip.appendTo(App.$clipContainer);
+      }
     },
     loadRemix: function(remix, $mix) {
       var clips = remix.clips;
@@ -267,7 +276,8 @@ jQuery(function ($){
           if(clips.length > 0) {
             for( var i =0; i < clips.length; i++) {
               var gifUrl = clips[i].gif;
-              var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" /></a>'); 
+              var onerror = "this.src='/images/agifClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
+              var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>');
               $clip.data("obj", clips[i]);
               $clip.appendTo(App.$clipContainer);
             }
@@ -279,6 +289,12 @@ jQuery(function ($){
 
     // Main Page Functionalities
 
+    selectClip: function() {
+      console.log($(this).data('clip'));
+      var clip = $(this).data('clip');
+      App.$clip.find('.info').html("hello")
+      $.mobile.changePage('#clip');
+    },
     slideNext: function() {
       var str = '<div class="mix" style="display: none">'
         + '    <div class="row1">'
@@ -449,21 +465,17 @@ jQuery(function ($){
         $nextMix = App.$mixSlider.find('.mix:nth-child(3)');
 
         if(remixes.length == 1) {
-          console.log("here");
           if(cursor == 0) App.loadRemix(remixes[cursor], $curMix);
         } else if (remixes.length > 1){
           if(cursor == 0) {
-          console.log("here1");
             App.loadRemix(remixes[cursor], $curMix);
             App.loadRemix(remixes[cursor + 1], $nextMix);
             App.$nextRemix.show();
           } else if(cursor == remixes.length -1) {
-          console.log("here2");
             App.loadRemix(remixes[cursor - 1], $prevMix);
             App.loadRemix(remixes[cursor], $curMix);
             App.$prevRemix.show()
           } else {
-          console.log("here3");
             App.loadRemix(remixes[cursor - 1], $prevMix);
             App.loadRemix(remixes[cursor], $curMix);
             App.loadRemix(remixes[cursor + 1], $nextMix);
@@ -474,10 +486,20 @@ jQuery(function ($){
       }
     },
 
-    //Mixing Functionalities
+    //Mixing, Clip Library Functionalities
 
     selectPanel: function() {
       App.mixpanel['selectedPanel'] = $(this).closest('.mixPanel').attr('id');
+      App.openClipLibrary();
+    },
+    openClipLibrary: function() {
+      $.mobile.changePage('#clipLibrary');
+      
+      //Reload notready clips
+      App.$clipLibrary.find('.notReady').each(function(){
+        var gifUrl = $(this).data('obj').gif;
+        $(this).find('img').attr('src',gifUrl);
+      });
     },
     addToMixPanel: function() {
       var clip = $(this).data("obj");
@@ -576,7 +598,8 @@ jQuery(function ($){
 
                   //prepend the clip to the library
                   var gifUrl = clip.gif;
-                  var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" /></a>'); 
+                  var onerror = "this.src='/images/agifClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
+                  var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>'); 
                   $clip.data("obj", clip);
                   $clip.prependTo(App.$clipContainer);
 

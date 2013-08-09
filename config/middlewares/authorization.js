@@ -3,7 +3,7 @@
  */
 exports.requiresLogin = function (req, res, next) {
     if (!req.isAuthenticated()) {
-        return res.send('{status:Requires Authentication}', 404);
+        return res.send('{status:Requires Authentication}', 401);
     }
     next();
 };

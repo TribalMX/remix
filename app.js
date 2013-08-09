@@ -50,8 +50,8 @@ if ('development' == app.get('env')) {
 }
 
 //RESTfull Routes
-
-app.get('/api/users', auth.requiresLogin, api.getUsers);
+app.get('/api/users/login', auth.requiresLogin, api.getLoginUser);
+// app.get('/api/users/:id')
 
 app.get('/api/public/remixes', api.getRemixes);
 app.get('/api/remixes', auth.requiresLogin, api.getRemixes);

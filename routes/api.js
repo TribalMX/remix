@@ -6,7 +6,7 @@ var request = require('request')
   , Remix = mongoose.model('Remix')
   , Clip = mongoose.model('Clip');
 
-exports.getUsers = function(req, res) {
+exports.getLoginUser = function(req, res) {
 	res.send({name: req.user.name, username: req.user.username});
 };
 exports.getRemixes = function(req, res) {
@@ -16,6 +16,7 @@ exports.getRemixes = function(req, res) {
 	data.username = videogami.user;
 	data.token = videogami.api_key;
 	options.user = req.user;
+	if(req.path.indexOf('public/remixes') > 0) options.pub = true;
 
 	Remix.findRemixes(options, function(err, remixes){
 		 if (err) {
