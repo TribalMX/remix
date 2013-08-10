@@ -248,7 +248,7 @@ jQuery(function ($){
       for( var i =0; i < clips.length; i++) {
         var gifUrl = clips[i].gif;
         var onerror = "this.src='/images/agifClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";               
-        var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>');
+        var $clip = $('<a class="clip"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>');
         $clip.data("obj", clips[i]);
         $clip.appendTo(App.$clipContainer);
       }
@@ -277,7 +277,7 @@ jQuery(function ($){
             for( var i =0; i < clips.length; i++) {
               var gifUrl = clips[i].gif;
               var onerror = "this.src='/images/agifClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
-              var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>');
+              var $clip = $('<a class="clip"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>');
               $clip.data("obj", clips[i]);
               $clip.appendTo(App.$clipContainer);
             }
@@ -498,6 +498,8 @@ jQuery(function ($){
       //Reload notready clips
       App.$clipLibrary.find('.notReady').each(function(){
         var gifUrl = $(this).data('obj').gif;
+        $(this).removeClass('notReady');
+        $(this).addClass('clip');
         $(this).find('img').attr('src',gifUrl);
       });
     },
@@ -507,6 +509,7 @@ jQuery(function ($){
       App.mixpanel[panelId] = clip;
       App['$'+ panelId].css("background", "url('"+clip.gif+"') no-repeat");
       console.log(App.mixpanel);
+      $.mobile.changePage('#newMix');
     },
     createMix: function () {
       var clips = [App.mixpanel['panel1'], App.mixpanel['panel2'], App.mixpanel['panel3'], App.mixpanel['panel4']];
@@ -526,7 +529,7 @@ jQuery(function ($){
             App.publicRemixes.unshift(remix);
             App.remixesCursor = 0;
             App.pubRemixesCursor = 0;
-            $.mobile.changePage('/#main');
+            $.mobile.changePage('#main');
             App.selectedTab = "";
             App.$myMixes.click();
 
@@ -599,7 +602,7 @@ jQuery(function ($){
                   //prepend the clip to the library
                   var gifUrl = clip.gif;
                   var onerror = "this.src='/images/agifClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
-                  var $clip = $('<a class="clip" href="#newMix"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>'); 
+                  var $clip = $('<a class="clip"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>'); 
                   $clip.data("obj", clip);
                   $clip.prependTo(App.$clipContainer);
 
