@@ -1,86 +1,105 @@
 <!DOCTYPE html> 
 <html> 
 <head> 
-    <title>Remix The City</title> 
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
-    <link rel="stylesheet" href="themes/rtc-theme.min.css" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
-    <link rel="stylesheet" media="only screen and (-webkit-min-device-pixel-ratio: 2)" type="text/css" href="stylesheets/retina.css" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/tolito-1.0.5.min.css" />
+  <title>Remix The City</title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
+  <link rel="stylesheet" href="themes/rtc-theme.min.css" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+  <link rel="stylesheet" media="only screen and (-webkit-min-device-pixel-ratio: 2)" type="text/css" href="stylesheets/retina.css" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/tolito-1.0.5.min.css" />
 </head> 
 <body> 
 
 <div data-role="page" id="main"> <!--MAIN PAGE -->
-    <div id="loginPage"></div>
+  <div id="loginPage"></div>
 
-    <div data-role="header">
-        <h1 class='logoHeader'></h1>
-    </div><!-- /header -->
-    <div data-role="content">   
-        <div style="text-align: center;">
-            <a href="/auth/facebook" rel="external" data-role="button"  data-theme="a" data-inline="true"/>Login With Facebook</a> 
-            <a href="#endterPwd" data-rel="dialog" data-role="button"  data-theme="a" data-inline="true"/>I'm a Kid</a>
+  <div data-role="header">
+    <h1 class='logoHeader'></h1>
+  </div><!-- /header -->
+  <div data-role="content">   
+    <div style="text-align: center;">
+      <a href="/auth/facebook" rel="external" data-role="button"  data-theme="a" data-inline="true"/>Login With Facebook</a> 
+      <a href="#kidpopup" data-rel="popup" data-role="button"  data-theme="a" data-inline="true"/>I'm a Kid</a>
+      <div data-role="popup" id="kidpopup" style="padding: 10px;">
+        <p>Enter Your Password</p>
+        <input id="pwdField" type="text">
+        <button id="kidLoginBtn">Submit</button>
+      </div>
+    </div>
+    <div id="mixSlider">
+      <div class="mix" style='display: none'>
+        <div class="row1">
+          <div class="mixPanel mixPanel1">
+          </div>
+          <div class="mixPanel mixPanel2">
+          </div>
         </div>
-        <div id="mixSlider">
-            <div class="mix" style='display: none'>
-                <div class="row1">
-                    <div class="mixPanel mixPanel1">
-                    </div>
-                    <div class="mixPanel mixPanel2">
-                    </div>
-                </div>
-                <div class="row2">
-                    <div class="mixPanel mixPanel3">
-                    </div>
-                    <div class="mixPanel mixPanel4">
-                    </div>
-                </div>
-            </div>
-            <div class="mix">
-                <div class="row1">
-                    <div class="mixPanel mixPanel1">
-                    </div>
-                    <div class="mixPanel mixPanel2">
-                    </div>
-                </div>
-                <div class="row2">
-                    <div class="mixPanel mixPanel3">
-                    </div>
-                    <div class="mixPanel mixPanel4">
-                    </div>
-                </div>
-            </div>
-            <div class="mix" style='display: none'>
-                <div class="row1">
-                    <div class="mixPanel mixPanel1">
-                    </div>
-                    <div class="mixPanel mixPanel2">
-                    </div>
-                </div>
-                <div class="row2">
-                    <div class="mixPanel mixPanel3">
-                    </div>
-                    <div class="mixPanel mixPanel4">
-                    </div>
-                </div>
-            </div>
+        <div class="row2">
+          <div class="mixPanel mixPanel3">
+          </div>
+          <div class="mixPanel mixPanel4">
+          </div>
         </div>
+      </div>
+      <div class="mix">
+        <div class="row1">
+          <div class="mixPanel mixPanel1">
+          </div>
+          <div class="mixPanel mixPanel2">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="mixPanel mixPanel3">
+          </div>
+          <div class="mixPanel mixPanel4">
+          </div>
+        </div>
+      </div>
+      <div class="mix" style='display: none'>
+        <div class="row1">
+          <div class="mixPanel mixPanel1">
+          </div>
+          <div class="mixPanel mixPanel2">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="mixPanel mixPanel3">
+          </div>
+          <div class="mixPanel mixPanel4">
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <div class="previewTitle">
-            <a id="prevRemix" href="#" data-role="button"  data-icon="arrow-l" data-theme="a" data-inline="true" class="back"/>back</a>
-            <div class="titleDiv">Rainy days...</div>
-            <a id="nextRemix" href="#" data-role="button"  data-icon="arrow-r" data-iconpos="right" data-theme="a" data-inline="true" class="next" />next</a>
-            <div style="clear:both;"></div>
-        </div>
+    <div class="previewTitle">
+      <a id="prevRemix" href="#" data-role="button"  data-icon="arrow-l" data-theme="a" data-inline="true" class="back"/>back</a>
+      <div class="titleDiv">Rainy days...</div>
+      <a id="nextRemix" href="#" data-role="button"  data-icon="arrow-r" data-iconpos="right" data-theme="a" data-inline="true" class="next" />next</a>
+      <div style="clear:both;"></div>
+    </div>
 
-    </div><!-- /content -->
+  </div><!-- /content -->
 </div><!-- /page -->
-    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
-    <script type="text/javascript" src="javascripts/tolito-1.0.5.min.js"></script>
-  <script src="javascripts/functions.js"></script>
-  <script src="javascripts/async.js"></script>
-  <script src="javascripts/app.js"></script> 
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+<script type="text/javascript" src="javascripts/tolito-1.0.5.min.js"></script>
+<script src="javascripts/functions.js"></script>
+<script src="javascripts/app.js"></script> 
+<script src="javascripts/async.js"></script>
+<script type="text/javascript">
+  $('#kidLoginBtn').click( function() {
+    if($('#pwdField').val()){
+      $.post( '/login', {password: $('#pwdField').val()}, function(data) {
+        if(data.user){
+          window.location.replace("/");
+        } else {
+          alert("Wrong Password");
+        }
+      });
+    }
+  }); 
+</script> 
+
 </body>
 </html>

@@ -2,7 +2,6 @@
 /**
  * Module dependencies.
  */
-
 var express = require('express')
   , fs = require('fs')
   , http = require('http')
@@ -70,8 +69,22 @@ app.get('/', routes.index);
 app.get('/logout', routes.logout);
 
 //Authentication Routes
+// app.post('/login', function(req, res, next) {
+//   passport.authenticate('local', function(err, user, info) {
+//     if (err) { return next(err) }
+//     if (!user) {
+//       req.session.messages =  [info.message];
+//       return res.send(req.session.messages);
+//     }
+//     req.logIn(user, function(err) {
+//       if (err) { return next(err); }
+//       res.send({user: req.user.username});
+//     });
+//   })(req, res, next);
+// });
+app.post('/login', passport.authenticate('local', {failureRedirect: '/'}), routes.login);
 app.get('/auth/facebook', passport.authenticate('facebook'));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login'}));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/'}));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Remix the City listening on port ' + app.get('port') + " for " + env);

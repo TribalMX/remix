@@ -10,7 +10,11 @@ exports.index = function(req, res){
         res.render('index');
     }
 };
-
+exports.login = function(req, res){
+    var data = "";
+    if(req.user) data = {user: req.user.username};
+    res.send(data);
+};
 exports.logout = function(req, res){
     req.logout();
     res.redirect('/');

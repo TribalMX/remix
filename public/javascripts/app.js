@@ -161,7 +161,7 @@ jQuery(function ($){
     },
     bindEvents: function() {
       //main page
-      this.$mixSlider.on('click', '.mixPanel', this.selectClip);
+      // this.$mixSlider.on('click', '.mixPanel', this.selectClip);
       this.$nextRemix.on('click', this.slideNext);
       this.$prevRemix.on('click', this.slidePrev);
       this.$recentMixes.on('click', this.selectRecentMixes);
