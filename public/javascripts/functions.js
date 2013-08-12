@@ -7,28 +7,6 @@ $(function() {
 	
 	
 });
-// function runProgress() {
-	// TolitoProgressBar('progressbar')
- //                    .setOuterTheme('b')
- //                    .setInnerTheme('e')
- //                    .isMini(false)
- //                    .setMax(1000)
- //                    .setStartFrom(0)
- //                    .setInterval(10)
- //                    .showCounter(true)
- //                    .logOptions()
- //                    .build();
- //                    .run();
-
- //    $(document)
- //            .on('complete', '#progressbar', function () {
- //                $("#whileUploading").hide()
- //                $("#afterUploading").show()
- //        });
-// }
-
-
-
 function resizePanel(){
 	var o = getOrientation()
 	var mpsize;

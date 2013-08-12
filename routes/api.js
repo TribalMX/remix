@@ -109,6 +109,7 @@ exports.postRemix = function(req, res) {
 	data.title = req.body.title;
 	data.username = videogami.user;
 	data.token = videogami.api_key;
+	data.author = req.user._id;
 	data.videos = [];
 	for(var i = 0; i < clips.length; i++){
 		data.videos.push(clips[i].videogami_vid);
@@ -170,8 +171,10 @@ exports.upload = function(req, res) {
 	  , query = req.query;
 	body.username = videogami.user;
 	body.token = videogami.api_key;
+	body.author = req.user._id;
 	query.username = videogami.user;
 	query.token = videogami.api_key;
+	query.author = req.user._id;
 
 	var reqObj = {
 		method: req.method,
