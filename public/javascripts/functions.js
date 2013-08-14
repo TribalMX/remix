@@ -22,6 +22,9 @@ function resizePanel(){
 	$('.mixPanel').height(mpsize);
 	$('.mixPanel').width(mpsize)
 	$('.mixPanel a').center();
+	$('#clipWrapper img').height(mpsize*2);
+	$('#clipWrapper img').width(mpsize*2);
+
 }
 
 jQuery.fn.center = function () {

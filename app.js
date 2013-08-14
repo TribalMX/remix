@@ -50,7 +50,7 @@ if ('development' == app.get('env')) {
 
 //RESTfull Routes
 app.get('/api/users/login', auth.requiresLogin, api.getLoginUser);
-// app.get('/api/users/:id')
+app.get('/api/users/:id', auth.requiresLogin, api.getUserById);
 
 app.get('/api/public/remixes', api.getRemixes);
 app.get('/api/remixes', auth.requiresLogin, api.getRemixes);
@@ -69,19 +69,6 @@ app.get('/', routes.index);
 app.get('/logout', routes.logout);
 
 //Authentication Routes
-// app.post('/login', function(req, res, next) {
-//   passport.authenticate('local', function(err, user, info) {
-//     if (err) { return next(err) }
-//     if (!user) {
-//       req.session.messages =  [info.message];
-//       return res.send(req.session.messages);
-//     }
-//     req.logIn(user, function(err) {
-//       if (err) { return next(err); }
-//       res.send({user: req.user.username});
-//     });
-//   })(req, res, next);
-// });
 app.post('/login', passport.authenticate('local', {failureRedirect: '/'}), routes.login);
 app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/'}));

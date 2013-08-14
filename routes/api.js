@@ -9,6 +9,12 @@ var request = require('request')
 exports.getLoginUser = function(req, res) {
 	res.send({name: req.user.name, username: req.user.username});
 };
+exports.getUserById = function(req, res) {
+  User.findOne({'_id': req.params.id}, function(err, user){
+    if (err) {console.log(err); return res.send(500);}
+    res.send({name: user.name, username: user.username, _id: user._id});
+  }); 
+};
 exports.getRemixes = function(req, res) {
 	//get from db and query by id, or username
 	var data = {}
@@ -49,7 +55,7 @@ exports.getRemixes = function(req, res) {
 								remixes[i].clips[j].gif = body.video.gifs.fast;
 							} else {
 								remixes[i].gifs[j] = "Not Found";
-                				remixes[i].clips[j].gif ="Not Found";
+								remixes[i].clips[j].gif ="Not Found";
 							}
 							//When every gifs are loaded
 							if(numGifs == totalNumb){
