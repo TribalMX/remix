@@ -9,6 +9,7 @@ var ClipSchema = new Schema({
     user: {type : Schema.ObjectId, ref : 'User'},
     created_by: {type : Schema.ObjectId, ref : 'User'},
     created_at: {type : Date, default : Date.now},
+    // approved: Boolean,
     videogami_vid: {},
     gif: {}
 });

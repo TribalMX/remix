@@ -131,8 +131,8 @@
 			</div>
 		</div>
 		<div style="text-align: center;">
-			<a id="createMix" href="#" data-role="button"  data-theme="a" data-inline="true"/>Create Mix</a>
 			<a id="cancelCreateMix" href="#main" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
+			<a id="createMix" href="#" data-role="button"  data-theme="a" data-inline="true"/>Create New Mix</a>
 		</div>
 	</div><!-- /content -->
 
@@ -145,15 +145,7 @@
 	</div><!-- /header -->
 	<div data-role="content">	
 		<div id="clipContainer" class="thumbnails">
-<!-- 			<a href="#newMix"><img src="gifs/1.gif" /></a>
-			<a href="#newMix"><img src="gifs/2.gif" /></a>
-			<a href="#newMix"><img src="gifs/3.gif" /></a>
-			<a href="#newMix"><img src="gifs/4.gif" /></a>
-			<a href="#newMix"><img src="gifs/toronto1.gif" /></a>
-			<a href="#newMix"><img src="gifs/graffiti1.gif" /></a>
-			<a href="#newMix"><img src="gifs/skate1.gif" /></a>
-			<a href="#newMix"><img src="gifs/skate3.gif" /></a>
-			<a href="#newMix"><img src="gifs/taxi1.gif" /></a> -->
+			<!-- Contains Clips -->
 		</div>
 		<br>
 		<a id='moreClipsBtn' href="#" data-role=""  data-iconpos="right" data-theme="a" data-inline="false"/>Load More...</a>
@@ -165,7 +157,6 @@
 	</div><!-- /content -->
 
 </div><!-- /page -->
-
 
 <div data-role="page" id="newClip">
 
@@ -181,6 +172,8 @@
 		<p>
 			We recomend you use videos less then 10 seconds to speed up the process and look nicer :)
 		</p>
+		<img src="/images/lanscape_mobile.png" style="max-width: 30%"/>
+		<p>Record in Landscape</p>
 		
 		<input id="fileInput" type="file" accept="video/*" style="position:absolute; top:-100px;">	
 		<div style="text-align: center;">
@@ -216,25 +209,25 @@
 		</div>
 	</div><!-- /content -->
 </div><!-- /page -->
-	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-	<script type="text/javascript">
-		$(document).ajaxError(function(event, request, settings){
-			if(request.status == 401) {
-				window.location.replace('/');
-			}	
-		//JQM Configuration
-		}).bind('mobileinit', function(){
-			$.extend($.mobile, {
-				defaultPageTransition: "none"
-			});
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+	$(document).ajaxError(function(event, request, settings){
+		if(request.status == 401) {
+			window.location.replace('/');
+		}	
+	//JQM Configuration
+	}).bind('mobileinit', function(){
+		$.extend($.mobile, {
+			defaultPageTransition: "none"
 		});
-	</script>
-	<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
-	<script type="text/javascript" src="javascripts/tolito-1.0.5.min.js"></script>
-	<script src="javascripts/functions.js"></script>
-	<script src="javascripts/async.js"></script>
-	<script src="javascripts/uploader.js"></script> 
-  	<script src="javascripts/app.js"></script> 
+	});
+</script>
+<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+<script type="text/javascript" src="javascripts/tolito-1.0.5.min.js"></script>
+<script src="javascripts/functions.js"></script>
+<script src="javascripts/async.js"></script>
+<script src="javascripts/uploader.js"></script> 
+<script src="javascripts/app.js"></script> 
 </body>
 </html>
 

@@ -41,22 +41,24 @@ module.exports = function(passport, config) {
       });
     }
   ));
-  passport.use(new LocalStrategy({usernameField: "password"},
+  // passport.use(new LocalStrategy({usernameField: "password"},
+  passport.use(new LocalStrategy(
     function(username, password, done) {
-      username="remixKid";
       User.findOne({'username': username}, function(err, user) {
         if (err) { return done(err); }
-        if (!user) {
+        if (!user && username == "remixKid") {
           user = new User({
-            name: "rmixKid",
+            name: "remixKid",
             username: "remixKid"
           });
           user.save(function(err) {
             if (err) console.log(err);
             return done(err, user);
           }); 
+        } else if (!user) {
+          return done(null, false, { message: 'Unknown user' });
         }
-        if (!(password == "helloCity")) {
+        if ( username == "remixKid" && !(password == "fabspaces")) {
           return done(null, false, { message: 'Incorrect password.' });
         }
         return done(null, user);

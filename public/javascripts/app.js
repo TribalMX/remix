@@ -242,13 +242,13 @@ jQuery(function ($){
           for(var i=0; i < remixes.length && i < 2; i++) {
             if(i == 0) {
               App.remixesCursor = 0;
-              $mix = App.$mixSlider.find('.mix:nth-child(2)');
+              // $mix = App.$mixSlider.find('.mix:nth-child(2)');
             } else {
-              $mix = App.$mixSlider.find('.mix:nth-child(3)');
+              // $mix = App.$mixSlider.find('.mix:nth-child(3)');
             }
-            App.loadRemix(remixes[i], $mix);
+            // App.loadRemix(remixes[i], $mix);
           }
-          if(remixes.length > 1) App.$nextRemix.show();
+          // if(remixes.length > 1) App.$nextRemix.show();
           console.log("My Remixes");
           console.log(remixes);
       }});
