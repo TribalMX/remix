@@ -3,6 +3,7 @@
  * Module dependencies.
  */
 var express = require('express')
+  , mongoStore = require('connect-mongo')(express)
   , fs = require('fs')
   , http = require('http')
   , path = require('path')
@@ -29,19 +30,25 @@ var routes = require('./routes')
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
-// app.set('view engine', 'jade')   ;
 app.set('view engine', 'ejs');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('thisisthecitysecret'));
-app.use(express.session());
+// express/mongo session storage
+app.use(express.session({
+  secret: 'thisisthecitysecretsession',
+  store: new mongoStore({
+    url: config.db,
+    collection : 'sessions'
+  })
+}));
+// use passport session
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(express.static(__dirname +'public'));
 
 // development only
 if ('development' == app.get('env')) {

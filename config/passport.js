@@ -45,16 +45,7 @@ module.exports = function(passport, config) {
     function(username, password, done) {
       User.findOne({'username': username}, function(err, user) {
         if (err) { return done(err); }
-        if (!user && username == "remixKid") {
-          user = new User({
-            name: "remixKid",
-            username: "remixKid"
-          });
-          user.save(function(err) {
-            if (err) console.log(err);
-            return done(err, user);
-          }); 
-        } else if (!user) {
+        if (!user) {
           return done(null, false, { message: 'Unknown user' });
         }
         //Passwords are hardcoded for now
