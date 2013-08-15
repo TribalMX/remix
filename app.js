@@ -65,13 +65,15 @@ app.post('/uploadApi/upload', auth.requiresLogin, api.upload);
 app.post('/uploadApi/video', auth.requiresLogin,  api.upload);
 app.delete('/uploadApi/upload/:id/cancel', auth.requiresLogin,  api.upload);
 
+//Serve pages
 app.get('/', routes.index);
-app.get('/logout', routes.logout);
+app.get('/admin', routes.admin);
 
 //Authentication Routes
 app.post('/login', passport.authenticate('local', {failureRedirect: '/'}), routes.login);
 app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/'}));
+app.get('/logout', routes.logout);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Remix the City listening on port ' + app.get('port') + " for " + env);

@@ -1,0 +1,50 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+  <title>Remix The City - Admin Page</title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
+  <link rel="stylesheet" href="themes/rtc-theme.min.css" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+  <link rel="stylesheet" media="only screen and (-webkit-min-device-pixel-ratio: 2)" type="text/css" href="stylesheets/retina.css" />
+</head> 
+<body> 
+<% if (isAdmin) { %>
+<!-- Admin Page -->
+<div data-role="page" id="admin"> 
+  <div data-role="header">
+    <h1 class='logoHeader'></h1>
+  </div>
+  <div data-role="content">   
+    Admin page, admin loged in with <%= username%>
+  </div>
+</div>
+<% } else { %>
+<!--  Admin Login Page-->
+<div data-role="page" id="login"> 
+  <div data-role="header">
+    <h1 class='logoHeader'></h1>
+  </div>
+  <div data-role="content">   
+    login page
+  </div>
+</div>
+<% } %>
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+<script type="text/javascript">
+  // $('#kidLoginBtn').click( function() {
+  //   if($('#pwdField').val()){
+  //     $.post( '/login', {username: "remixKid", password: $('#pwdField').val()}, function(data) {
+  //       if(data.user){
+  //         window.location.replace("/");
+  //       } else {
+  //         alert("Wrong Password");
+  //       }
+  //     });
+  //   }
+  // }); 
+</script> 
+
+</body>
+</html>

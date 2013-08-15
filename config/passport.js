@@ -41,7 +41,6 @@ module.exports = function(passport, config) {
       });
     }
   ));
-  // passport.use(new LocalStrategy({usernameField: "password"},
   passport.use(new LocalStrategy(
     function(username, password, done) {
       User.findOne({'username': username}, function(err, user) {
@@ -58,7 +57,10 @@ module.exports = function(passport, config) {
         } else if (!user) {
           return done(null, false, { message: 'Unknown user' });
         }
+        //Passwords are hardcoded for now
         if ( username == "remixKid" && !(password == "fabspaces")) {
+          return done(null, false, { message: 'Incorrect password.' });
+        } else if (username == "remixAdmin" && !(password == "adminPassword")) {
           return done(null, false, { message: 'Incorrect password.' });
         }
         return done(null, user);

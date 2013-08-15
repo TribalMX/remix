@@ -9,6 +9,17 @@ exports.index = function(req, res){
   } else {
     res.render('index');
   }
+}
+exports.admin = function(req, res){
+  if(!req.isAuthenticated()) {
+    res.render('admin', {isAdmin: false});
+  } else {
+    if(req.user.username == "remixAdmin") {
+      res.render('admin', {isAdmin: true, username: req.user.username});
+    } else {
+      res.render('admin', {isAdmin: false});
+    };
+  }
 };
 exports.login = function(req, res){
   var data = "";
