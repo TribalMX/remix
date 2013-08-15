@@ -90,6 +90,17 @@ jQuery(function ($){
       this.selectedTab = "recent"; //recent or my
       this.remixesCursor = -1;
       this.pubRemixesCursor = -1;
+      this.mixTemplate = '<div class="mix" style="display: none">'
+                      + '    <div class="row1">'
+                      + '        <div class="mixPanel mixPanel1"></div>'
+                      + '        <div class="mixPanel mixPanel2"></div>'
+                      + '    </div>'
+                      + '    <div class="row2">'
+                      + '        <div class="mixPanel mixPanel3"></div>'
+                      + '        <div class="mixPanel mixPanel4"></div>'
+                      + '    </div>'
+                      + '    <div class="titleRow"></div>'
+                      + '</div>';
 
       //For new mix
       this.mixpanel = {
@@ -283,6 +294,7 @@ jQuery(function ($){
       $mix.find('.mixPanel2').css("background", "url('"+clips[1].gif+"') no-repeat");
       $mix.find('.mixPanel3').css("background", "url('"+clips[2].gif+"') no-repeat");
       $mix.find('.mixPanel4').css("background", "url('"+clips[3].gif+"') no-repeat");      
+      $mix.find('.titleRow').html(remix.title);
       $mix.addClass('loaded');
     },
     loadMoreClips: function() {
@@ -377,16 +389,6 @@ jQuery(function ($){
       $.mobile.changePage('#main');
     },
     slideNext: function() {
-      var str = '<div class="mix" style="display: none">'
-        + '    <div class="row1">'
-        + '        <div class="mixPanel mixPanel1"></div>'
-        + '        <div class="mixPanel mixPanel2"></div>'
-        + '    </div>'
-        + '    <div class="row2">'
-        + '        <div class="mixPanel mixPanel3"></div>'
-        + '        <div class="mixPanel mixPanel4"></div>'
-        + '    </div>'
-        + '</div>';
       var curType = "pubRemixesCursor";
       var remixes = App.publicRemixes;
       if(App.selectedTab == "my") {
@@ -405,7 +407,7 @@ jQuery(function ($){
         // App.$mixSlider.find('.mix:nth-child(2)').hide();
         // App.$mixSlider.find('.mix:nth-child(3)').show();
         App.$mixSlider.find('.mix').first().remove();
-        App.$mixSlider.append(str);
+        App.$mixSlider.append(App.mixTemplate);
         cursor = cursor + 1;
         App[curType] = cursor;
       }
@@ -437,16 +439,6 @@ jQuery(function ($){
 
     }, 
     slidePrev: function() {
-      var str = '<div class="mix" style="display: none">'
-        + '    <div class="row1">'
-        + '        <div class="mixPanel mixPanel1"></div>'
-        + '        <div class="mixPanel mixPanel2"></div>'
-        + '    </div>'
-        + '    <div class="row2">'
-        + '        <div class="mixPanel mixPanel3"></div>'
-        + '        <div class="mixPanel mixPanel4"></div>'
-        + '    </div>'
-        + '</div>';
       var curType = "pubRemixesCursor";
       var remixes = App.publicRemixes;
       if(App.selectedTab == "my") {
@@ -464,7 +456,7 @@ jQuery(function ($){
         // App.$mixSlider.find('.mix:nth-child(1)').show();
         // App.$mixSlider.find('.mix:nth-child(2)').hide();
         App.$mixSlider.find('.mix:last').remove();
-        App.$mixSlider.prepend(str);
+        App.$mixSlider.prepend(App.mixTemplate);
         cursor = cursor - 1;
         App[curType] = cursor;
       }
@@ -596,7 +588,7 @@ jQuery(function ($){
       var clips = [App.mixpanel['panel1'], App.mixpanel['panel2'], App.mixpanel['panel3'], App.mixpanel['panel4']];
       var title = App.$mixTitle.val();
       if(clips[0] && clips[1] && clips[2] && clips[3]) {
-        if(!title) title = "Remix";
+        if(!title) title = "No Title Mix";
         var remix = new App.Remix(); 
         remix.save({title: title, clips: clips}, {
           success: function(remix) {
