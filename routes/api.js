@@ -105,6 +105,50 @@ exports.getClips = function(req, res) {
 		}
 	});
 };
+exports.getAllUnapprovedClips = function(req, res) {
+  var data = {}
+    , options = req.query;
+  data.username = videogami.user;
+  data.token = videogami.api_key;
+  Clip.findAllUnapproved(options, function(err, clips){
+    var length  = 0;
+    if (err) {
+      console.log(err);
+      return res.send(500);
+    }
+    if(clips.length == 0) res.send([]);
+    //query by id from vdgami server   //Later, get all by this user and then query from here maybe
+    for (var i = 0; i < clips.length; i++) {
+      (function(i) {
+        //Request to videogami server
+        request.get({
+          url: videogami.host + "/video/" + clips[i].videogami_vid,
+          qs: data,
+          json: true,
+        }, function (error, response, body) {
+          length++;
+          if(body.video && body.video.gifs) {
+            clips[i].gif = body.video.gifs.fast;
+          } else {
+            clips[i].gif = "Not Found";
+          }
+          if(length == clips.length){
+            res.send(clips);
+          }
+        });
+      })(i);
+    }
+  });
+};
+exports.approveClip = function(req, res) {
+    // Clip.update({'_id': req.params.id},{'approved': true},function(err, clip){
+
+    Clip.findByIdAndUpdate(req.params.id,req.body,function(err, clip){
+      console.log(clip);
+      if (err) {console.log(err); return res.send(500);}
+      res.send(clip);
+    }); 
+};
 
 exports.postRemix = function(req, res) {
 	var data= {} //form data for reqeust to videogami server
