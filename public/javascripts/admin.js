@@ -42,7 +42,7 @@ jQuery(function ($){
       this.$logoutBtn.on('click', Main.logout);
     },
     openClipsPage: function() {
-      ClipsPage.init();
+      ClipsPage.loadClips();
     },
     logout: function() {
       $.get('/logout', function() {
@@ -55,17 +55,19 @@ jQuery(function ($){
       this.clips = [];
       this.cacheElements();
       this.bindEvents();
-      this.loadClips();
     },
     cacheElements: function() {
       this.$clipsPage = $('#clipsPage');
       this.$clipsContainer = this.$clipsPage.find('#clipsContainer');
       this.$approveAll = this.$clipsPage.find('#approveAll');
       this.$cancelApproval = this.$clipsPage.find('#cancelApproval');
+      this.$removeUnprocessed = this.$clipsPage.find('#removeUnprocessed');
     },
     bindEvents: function() {
       this.$clipsContainer.on('click', '.clip', this.removeClip);
       this.$approveAll.on('click', this.aproveAllClips);
+      this.$cancelApproval.on('click', this.cancelApproval);
+      this.$removeUnprocessed.on('click', this.removeUnprocessed);
     },
     loadClips: function() {
       $.ajax({
@@ -73,6 +75,7 @@ jQuery(function ($){
         url: '/admin/clips/unapproved',
         beforeSend: function() {
           ClipsPage.$clipsContainer.html('');
+          ClipsPage.clips = [];
           $.mobile.loading( 'show', {textVisible: true, theme: 'b'});
         },
         success: function(clips) {
@@ -87,6 +90,7 @@ jQuery(function ($){
         complete: function() {
           $.mobile.changePage('#clipsPage');
           $.mobile.loading( 'hide', {textVisible: true, theme: 'b'});
+          console.log( ClipsPage.$clipsContainer.find('.notReady').length);
         }
       });
     },
@@ -113,11 +117,23 @@ jQuery(function ($){
         });
         $.when.apply($, requests).then(function(){
           $.mobile.loading( 'hide', {textVisible: true, theme: 'b'});
-          $.mobile.changePage('#main');
+          window.location.replace("/admin");
         });
       }
+    },
+    removeUnprocessed: function() {
+      var notReadyClips = ClipsPage.$clipsContainer.find('.notReady');
+      $.each(notReadyClips, function(i, clip){
+        var index = ClipsPage.$clipsContainer.find('.clip').index(clip);
+        ClipsPage.clips.splice(index, 1);
+        $(clip).remove();
+      });
+    },
+    cancelApproval: function() {
+      window.location.replace("/admin");
     }
   };
   Login.init();
   Main.init();
+  ClipsPage.init();
 });

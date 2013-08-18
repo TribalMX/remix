@@ -28,7 +28,7 @@ RemixSchema.statics = {
                 .sort({'created_at': -1})
                 .limit(options.limit)
                 .populate('user', 'name username')
-                .populate('clips', 'videogami_vid gif created_by created_at')
+                .populate('clips', 'videogami_vid gif created_by created_at approved')
                 .exec(cb);
         } else {
             this.find(query)

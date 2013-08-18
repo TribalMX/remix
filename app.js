@@ -59,6 +59,7 @@ if ('development' == app.get('env')) {
 app.get('/api/users/login', auth.requiresLogin, api.getLoginUser);
 app.get('/api/users/:id', auth.requiresLogin, api.getUserById);
 
+app.get('/test', api.getRemixes);
 app.get('/api/public/remixes', api.getRemixes);
 app.get('/api/remixes', auth.requiresLogin, api.getRemixes);
 app.post('/api/remixes', auth.requiresLogin, api.postRemix);

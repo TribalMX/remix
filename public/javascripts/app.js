@@ -5,9 +5,7 @@ jQuery(function ($){
       var newCollection = function() {
         var collection = [];
         var url = settings.url;
-        for (var key in settings.method) {
-          this[key] = settings.method[key]; 
-        }
+
         this.fetch = function(query, options) {
           $.ajax({
             url: url,
@@ -37,6 +35,16 @@ jQuery(function ($){
         this.get = function() {
           return collection;
         };
+        this.getApproved = function() {
+          var result = [];
+          result = collection.filter(function(element, index, array){
+            return element.clips[0].approved && element.clips[1].approved && element.clips[2].approved && element.clips[3].approved;
+          });
+          return result;
+        };
+        this.getLast = function() {
+          return collection[collection.length-1];
+        }
         this.unshift = function(model) {
           collection.unshift(model);
         }
@@ -227,6 +235,10 @@ jQuery(function ($){
         limit: 10
       }, {
         success: function(remixes){
+          //filter out unapproved results
+          remixes = remixes.filter(function(element, index, array){
+            return element.clips[0].approved && element.clips[1].approved && element.clips[2].approved && element.clips[3].approved;
+          });
           for(var i=0; i < remixes.length && i < 2; i++) {
             if(i == 0) {
               App.pubRemixesCursor = 0;
@@ -391,11 +403,12 @@ jQuery(function ($){
     slideNext: function() {
       var curType = "pubRemixesCursor";
       var remixes = App.publicRemixes;
+      var items = remixes.getApproved();
       if(App.selectedTab == "my") {
         curType = "remixesCursor";
         remixes = App.remixes;
+        items = remixes.get();
       }
-      var items = remixes.get();
       var cursor = App[curType];
       console.log("before next cursor: " + cursor);
       if(cursor < 0 || cursor >= items.length) return;
@@ -419,15 +432,20 @@ jQuery(function ($){
         App.$nextRemix.hide();
         //TODO
         //cursor is on the last index
+        //remove below and load more only when user click button
         //
         //Load More /TODO: show wheeling sign
         remixes.fetchAndAppend({
-          limit: 5,
-          date_lt: items[items.length-1].created_at
+          limit: 10,
+          // date_lt: items[items.length-1].created_at
+          date_lt: remixes.getLast().created_at
         },{
           success: function(result){
             if(result.length > 0) {
-              items = remixes.get();
+              //TODO: Handle case where approved results are none
+              items = remixes.getApproved();
+              if(App.selectedTab == "my") items = remixes.get();
+
               App.loadRemix(items[cursor+1], App.$mixSlider.find('.mix:last'));
               App.$nextRemix.show();
             }
@@ -441,11 +459,12 @@ jQuery(function ($){
     slidePrev: function() {
       var curType = "pubRemixesCursor";
       var remixes = App.publicRemixes;
+      var items = remixes.getApproved();
       if(App.selectedTab == "my") {
         curType = "remixesCursor";
         remixes = App.remixes;
+        items = remixes.get();
       }
-      var items = remixes.get();
       var cursor = App[curType];
       console.log("before prev cursor: " + cursor);
       if(cursor <= 0 || cursor >= items.length) return;
@@ -466,9 +485,6 @@ jQuery(function ($){
       } else if (cursor == 0){
         //hide prev;
         App.$prevRemix.hide();
-        //TODO
-        //cursor is on the first(0) index
-        //Load latest (Recent)
       } 
       console.log("after next cursor: " + App[curType]);
     },
@@ -599,9 +615,7 @@ jQuery(function ($){
             }
             //Add remix to the collection
             App.remixes.unshift(remix);
-            App.publicRemixes.unshift(remix);
             App.remixesCursor = 0;
-            App.pubRemixesCursor = 0;
             $.mobile.changePage('#main');
             App.selectedTab = "";
             App.$myMixes.click();

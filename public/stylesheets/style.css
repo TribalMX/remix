@@ -72,6 +72,12 @@ div.mix {
 	padding: 5px;
 }
 
+div.mix .titleRow {
+	color: white;	
+	text-align: left;
+	padding: 10px;
+}
+
 div.mixPanel {
 	display: inline-block;
 	width: 45%;
@@ -79,7 +85,6 @@ div.mixPanel {
 	position:relative;
 	background-size: 100% 100% !important;
 }
-
 
 div.mixPanel a {
 	left: 38px;
