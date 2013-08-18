@@ -2,7 +2,7 @@ var request = require('request')
   , qs = require('querystring')
   , mongoose = require('mongoose')
   , videogami = require('../config/videogami')
-  , User = mongoose.model('User') 
+  , User = mongoose.model('User')
   , Remix = mongoose.model('Remix')
   , Clip = mongoose.model('Clip');
 
@@ -13,7 +13,7 @@ exports.getUserById = function(req, res) {
   User.findOne({'_id': req.params.id}, function(err, user){
     if (err) {console.log(err); return res.send(500);}
     res.send({name: user.name, username: user.username, _id: user._id});
-  }); 
+  });
 };
 exports.getRemixes = function(req, res) {
 	//get from db and query by id, or username
@@ -37,8 +37,8 @@ exports.getRemixes = function(req, res) {
 			}
 		}
 		if(totalNumb == 0) res.send([]);
-		var numGifs = 0; 
-		//Get gif url for each clips of eaxh remix 
+		var numGifs = 0;
+		//Get gif url for each clips of eaxh remix
 		for (var i = 0; i < remixes.length; i++) {
 			(function(i) {
 				for(var j = 0; j < remixes[i].clips.length; j++) {
@@ -185,7 +185,7 @@ exports.postRemix = function(req, res) {
 				if (err) {
 					console.log("Error saving remix", err);
 					return res.send(500);
-				} 
+				}
 				res.send(remix);
 			});
 		} else {
@@ -198,11 +198,11 @@ exports.postClip = function(req, res) {
 	var tmpGif = req.body.gif;
 	//don't save gif to db
 	delete req.body.gif;
-	var clip = new Clip(req.body);  
+	var clip = new Clip(req.body);
 	clip.user = req.user;
 	if(!req.body.created_by) {
 		clip.created_by = req.user;
-	} 
+	}
 	clip.save(function(err, result){
 		if (err) {
 			console.log("Error saving clip", err);

@@ -22,7 +22,11 @@ function Uploader(args){
     var request                 // use this to abort ajax request
     var aborted = false         //
 
-    postVideo();
+    if (file.slice){
+        postVideo(true)
+    } else {
+        postVideo(false)
+    }
 
     this.pause = function(){
         isUploading = false;
@@ -32,7 +36,7 @@ function Uploader(args){
     this.resume = function(){
         isUploading = true;
         if (vID) getChunks(vID)
-        else postVideo()
+        else alert("No video in progress")
     }
 
     this.cancel = function(){
@@ -45,7 +49,7 @@ function Uploader(args){
         })
     }
 
-    function postVideo(){
+    function postVideo(hasSlice){
         request = $.ajax({
             url: uploadURL + "/video",
             type: "POST",
@@ -53,7 +57,8 @@ function Uploader(args){
                 title: title,
                 description: description,
                 tags: tags,
-                filesize: file.size
+                filesize: file.size,
+                slice: hasSlice
             },
             success: function(json){
                 if (json.video && json.video._id){
@@ -65,6 +70,12 @@ function Uploader(args){
                 })
             },
         })
+    }
+
+    function delayGetChunks(vID){
+        setTimeout(function(){
+            getChunks(vID)
+        }, 5000)
     }
 
     function getChunks(vID){
@@ -80,20 +91,11 @@ function Uploader(args){
                     else if (json.video) success({
                         video: json.video
                     })
-                    else getChunks(vID)
-                    // else failure({
-                    //     msg: "getting chunks",
-                    //     er: JSON.stringify(json, 0, 2)
-                    // })
+                    else delayGetChunks(vID)
                 },
                 timeout: 10000,
                 error: function(xhr, status, er){
-                    getChunks(vID)
-                    // if (er == "timeout") getChunks(vID) // try again
-                    // else failure({
-                    //     msg: "getting chunks error",
-                    //     er: JSON.stringify(xhr, 0, 2)
-                    // })
+                    delayGetChunks(vID)
                 }
             })
         }
@@ -115,10 +117,14 @@ function Uploader(args){
             }, function(er){
                 // retry if any chunk fails. Successful chunks in the
                 // batch won't be returned, so duplicates aren't an issue
-                if (er) console.log(JSON.stringify(er, 0, 2))
-                getChunks(vID)
-            })
+                if (er){
+                    console.log(JSON.stringify(er, 0, 2))
+                    delayGetChunks(vID)
+                } else {
+                    getChunks(vID)
                 }
+            })
+        }
     }
 
     function postChunk(chunk, done){
@@ -144,11 +150,13 @@ function Uploader(args){
     }
 
     function upload(chunk, done){
-        var newfile;
-        var start = chunk.position * CHUNK_SIZE;
-        var end = start + Math.min(CHUNK_SIZE, file.size - start);
-        if (file.webkitSlice) newfile = file.webkitSlice(start, end)
-        else newfile = file.slice(start, end)
+        if (!chunk.size){
+            var start = chunk.position * CHUNK_SIZE;
+            var end = start + Math.min(CHUNK_SIZE, file.size - start);
+            var newfile = file.slice(start, end)
+        } else {
+            var newfile = file
+        }
 
         var key = chunk.key
         var s3key = chunk.policy.s3Key
@@ -178,10 +186,7 @@ function Uploader(args){
                 done(null)
             },
             error: function(xhr, status, er){
-                done({
-                    message: "s3 upload error",
-                    er: JSON.stringify(xhr, 0, 2)
-                })
+                done({message: "s3 upload error", xhr: xhr, status: status, er: er})
             },
             xhr: function(){
                 var xhr = $.ajaxSettings.xhr();
