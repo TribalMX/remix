@@ -26,6 +26,11 @@ exports.login = function(req, res){
   if(req.user) data = {user: req.user.username};
   res.send(data);
 };
+exports.loginAdmin = function(req, res){
+  var data = null;
+  if(req.user && req.user.username == "remixAdmin") data = {user: req.user.username};
+  res.send(data);
+};
 exports.logout = function(req, res){
   req.logout();
   res.redirect('/');
