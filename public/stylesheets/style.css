@@ -51,6 +51,7 @@ h1.logoHeader {
 }
 
 div.ui-header {
+	cursor: pointer;
 	background: White !important;
 	border: 0 !important;
 	padding:10px;
@@ -72,12 +73,18 @@ div.mix {
 	padding: 5px;
 }
 
-div.mix .titleRow {
+div.mix .titleRow{
 	color: white;	
 	text-align: left;
 	padding: 10px;
 }
-
+div.mix .titleRow .title{
+	color: white;
+}
+div.mix .titleRow .share{
+	color: white;
+	float: right;
+}
 div.mixPanel {
 	display: inline-block;
 	width: 45%;

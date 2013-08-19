@@ -79,6 +79,7 @@ app.put('/admin/clips/unapproved/:id', auth.requiresAdmin, api.approveClip);
 
 //Serve pages
 app.get('/', routes.index);
+app.get('/remixes/:id', routes.remix);
 app.get('/admin', routes.admin);
 
 //Authentication Routes

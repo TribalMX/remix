@@ -297,6 +297,9 @@ jQuery(function ($){
       }
     },
     loadRemix: function(remix, $mix) {
+      var remixUrl = encodeURIComponent(location.href+"remixes/" + remix._id);
+      console.log(remixUrl);
+      var str = '<a class="share" href="https://www.facebook.com/sharer/sharer.php?u='+remixUrl+'" target="_blank">Share on Facebook</a>';
       var clips = remix.clips;
       $mix.find('.mixPanel1').data('clip',clips[0]);
       $mix.find('.mixPanel2').data('clip',clips[1]);
@@ -306,7 +309,7 @@ jQuery(function ($){
       $mix.find('.mixPanel2').css("background", "url('"+clips[1].gif+"') no-repeat");
       $mix.find('.mixPanel3').css("background", "url('"+clips[2].gif+"') no-repeat");
       $mix.find('.mixPanel4').css("background", "url('"+clips[3].gif+"') no-repeat");      
-      $mix.find('.titleRow').html(remix.title);
+      $mix.find('.titleRow').html('<a class="title" href="/remixes/'+remix._id+'">'+remix.title+'</a>' + str);
       $mix.addClass('loaded');
     },
     loadMoreClips: function() {

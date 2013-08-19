@@ -1,0 +1,41 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+  <title>Remix The City</title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
+  <link rel="stylesheet" href="../themes/rtc-theme.min.css" />
+  <link rel="stylesheet" type="text/css" href="../stylesheets/style.css" />
+  <link rel="stylesheet" media="only screen and (-webkit-min-device-pixel-ratio: 2)" type="text/css" href="../stylesheets/retina.css" />
+</head> 
+<body> 
+
+<div data-role="page" id="main"> <!--MAIN PAGE -->
+  <div data-role="header" class="banner">
+    <h1 class='logoHeader'></h1>
+  </div><!-- /header -->
+  <div data-role="content">   
+    <div id="mixSlider">
+      <div class="mix">
+        <div class="row1">
+          <div class="mixPanel mixPanel1" style="background: url('<%= remix.gifs[0] %>') no-repeat">
+          </div>
+          <div class="mixPanel mixPanel2" style="background: url('<%= remix.gifs[1] %>') no-repeat">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="mixPanel mixPanel3" style="background: url('<%= remix.gifs[2] %>') no-repeat">
+          </div>
+          <div class="mixPanel mixPanel4" style="background: url('<%= remix.gifs[3] %>') no-repeat">
+          </div>
+        </div>
+        <div class="titleRow"><%= remix.title %></div>
+      </div>
+    </div>
+  </div><!-- /content -->
+</div><!-- /page -->
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+<script src="../javascripts/functions.js"></script>
+</body>
+</html>

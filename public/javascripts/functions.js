@@ -3,10 +3,14 @@
 $(function() {
 	
 	var rP = setInterval(resizePanel, 100)
-
+	$('.banner').on('click', gotoMain);
 	
 	
 });
+function gotoMain(){
+	window.location.replace('/');
+}
+
 function resizePanel(){
 	var o = getOrientation()
 	var mpsize;
