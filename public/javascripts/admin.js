@@ -185,6 +185,7 @@ jQuery(function ($){
             RemixesPage.loadRemix(remixes[i], $mix);
             $mix.appendTo(RemixesPage.$mixSlider);
           }
+          console.log(remixes);
         },
         complete: function() {
           RemixesPage.curMix = RemixesPage.$mixSlider.find('.mix').first();
@@ -291,7 +292,7 @@ jQuery(function ($){
       $.ajax({
         type: "PUT",
         url: '/admin/remixes/' + $fBtn.data("id"),
-        data: {'featured': true}, 
+        data: {'featured': false}, 
         beforeSend: function() {
           $fBtn.hide();
           $fBtn.next().show();
