@@ -133,6 +133,7 @@ jQuery(function ($){
       } else {
         this.cacheElements();
         this.bindEvents();
+        //TODO: loading screen
         this.fetchRecentMixes();
         this.fetchMyMixes();
         this.fetchClips();
@@ -227,12 +228,20 @@ jQuery(function ($){
 
     // Loaders
     //Preload gifs for remixes
-    cacheGifs: function(remixes) {
+    preloadGifs: function(remixes) {
+      var total = 0;
+      var loaded = 0;
       for (var i=0; i < remixes.length; i++) {
         for(var j =0; j < remixes[i].clips.length; j++) {
+          total++;
           $('<img src="'+ remixes[i].clips[j].gif +'">').hide().appendTo('body').one('load', function(){
             // console.log('Image: '+$(this).attr('src')+' is cached...');
             $(this).remove();
+            loaded++;
+            if(loaded == total) {
+              //cb
+              console.log("Loaded all images");
+            }
           });
         }
       }
@@ -246,9 +255,6 @@ jQuery(function ($){
         limit: 10
       }, {
         success: function(remixes){
-          //Preload gifs and cache them
-          //cache the user img
-          App.cacheGifs(remixes); 
           //filter out unapproved results
           remixes = remixes.filter(function(element, index, array){
             return element.clips[0].approved && element.clips[1].approved && element.clips[2].approved && element.clips[3].approved;
@@ -263,6 +269,10 @@ jQuery(function ($){
             App.loadRemix(remixes[i], $mix);
           }
           if(remixes.length > 1) App.$nextRemix.show();
+
+          //Preload gifs and cache them
+          App.preloadGifs(remixes); 
+
           console.log("public Remixes");
           console.log(remixes);
       }});
@@ -276,10 +286,6 @@ jQuery(function ($){
         limit: 10
       }, {
         success: function(remixes){
-          //Preload gifs and cache them
-          //cache the user img
-          App.cacheGifs(remixes);
-
           for(var i=0; i < remixes.length && i < 2; i++) {
             if(i == 0) {
               App.remixesCursor = 0;
@@ -290,6 +296,8 @@ jQuery(function ($){
             // App.loadRemix(remixes[i], $mix);
           }
           // if(remixes.length > 1) App.$nextRemix.show();
+          //Preload gifs and cache them
+          App.preloadGifs(remixes);
           console.log("My Remixes");
           console.log(remixes);
       }});
@@ -316,7 +324,6 @@ jQuery(function ($){
     },
     loadRemix: function(remix, $mix) {
       var remixUrl = encodeURIComponent(location.href+"remixes/" + remix._id);
-      console.log(remixUrl);
       var str = '<a class="share" href="https://www.facebook.com/sharer/sharer.php?u='+remixUrl+'" target="_blank">Share on Facebook</a>';
       var clips = remix.clips;
       $mix.find('.mixPanel1').data('clip',clips[0]);
@@ -438,8 +445,6 @@ jQuery(function ($){
       if (cursor < items.length-1){
         App.$mixSlider.find('.mix:nth-child(2)').slideUp();
         App.$mixSlider.find('.mix:nth-child(3)').slideDown();
-        // App.$mixSlider.find('.mix:nth-child(2)').hide();
-        // App.$mixSlider.find('.mix:nth-child(3)').show();
         App.$mixSlider.find('.mix').first().remove();
         App.$mixSlider.append(App.mixTemplate);
         cursor = cursor + 1;
@@ -481,7 +486,7 @@ jQuery(function ($){
               console.log("all of them all none approved, fetch again");
               App.fetchMoreRecentMixes();
             } else {
-              App.cacheGifs(approved); 
+              App.preloadGifs(approved); 
               items = remixes.getApproved();
               App.loadRemix(items[cursor+1], App.$mixSlider.find('.mix:last'));
               App.$nextRemix.show();
@@ -499,7 +504,7 @@ jQuery(function ($){
       },{
         success: function(result){
           if(result.length > 0) {
-            App.cacheGifs(result); 
+            App.preloadGifs(result); 
             var items = remixes.get();
             App.loadRemix(items[cursor+1], App.$mixSlider.find('.mix:last'));
             App.$nextRemix.show();

@@ -18,6 +18,7 @@
     <div data-role="content">   
       Admin page, admin loged in with <%= username%>
       <br>
+      <button id="remixes" data-inline="true">Remixes</button>
       <button id="approveClips" data-inline="true">Approve Clips</button>
       <button id="logoutBtn" data-inline="true">Logout</button>
     </div>
@@ -33,6 +34,20 @@
         <button id="approveAll" data-inline="true">Approve All</button>
         <button id="removeUnprocessed" data-inline="true">Remove All Unprocessed</button>
         <button id="cancelApproval" data-role="button" data-inline="true">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <div data-role="page" id="remixesPage"> 
+    <div data-role="header" class="banner">
+      <h1 class='logoHeader'></h1>
+    </div>
+    <div data-role="content">   
+      <div id="mixSlider">
+      </div>
+      <div class="previewTitle">
+        <a id="prevRemix" href="#" data-role="button"  data-icon="arrow-l" data-theme="a" data-inline="true" class="back"/>back</a>
+        <a id="nextRemix" href="#" data-role="button"  data-icon="arrow-r" data-iconpos="right" data-theme="a" data-inline="true" class="next" />next</a>
+        <div style="clear:both;"></div>
       </div>
     </div>
   </div>
@@ -55,8 +70,18 @@
     </div>
   </div>
 <% } %>
+<script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-195726-9', 'remixthecity.com');
+   ga('send', 'pageview');
+</script>
 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+<script src="javascripts/functions.js"></script>
 <script src="javascripts/admin.js"></script>
 </body>
 </html>

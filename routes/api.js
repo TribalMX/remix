@@ -68,6 +68,13 @@ exports.getRemixes = function(req, res) {
 		}
 	});
 };
+exports.updateRemix = function(req, res) {
+    Remix.findByIdAndUpdate(req.params.id,req.body,function(err, remix){
+      console.log(remix);
+      if (err) {console.log(err); return res.send(500);}
+      res.send(remix);
+    }); 
+};
 exports.getClips = function(req, res) {
 	var data = {}
 	  , options = req.query;
@@ -141,8 +148,6 @@ exports.getAllUnapprovedClips = function(req, res) {
   });
 };
 exports.approveClip = function(req, res) {
-    // Clip.update({'_id': req.params.id},{'approved': true},function(err, clip){
-
     Clip.findByIdAndUpdate(req.params.id,req.body,function(err, clip){
       console.log(clip);
       if (err) {console.log(err); return res.send(500);}

@@ -1,6 +1,5 @@
 //Admin page functionality
 jQuery(function ($){
-
   var Login = {
     init: function() {
       this.cacheElements();
@@ -36,13 +35,18 @@ jQuery(function ($){
       this.$main = $('#main');
       this.$logoutBtn = this.$main.find('#logoutBtn');
       this.$approveClips = this.$main.find('#approveClips');
+      this.$remixes = this.$main.find('#remixes');
     },
     bindEvents: function() {
       this.$approveClips.on('click', Main.openClipsPage);
+      this.$remixes.on('click', Main.openRemixesPage);
       this.$logoutBtn.on('click', Main.logout);
     },
     openClipsPage: function() {
       ClipsPage.loadClips();
+    },
+    openRemixesPage: function() {
+      RemixesPage.fetchMixes();
     },
     logout: function() {
       $.get('/logout', function() {
@@ -55,6 +59,7 @@ jQuery(function ($){
       this.clips = [];
       this.cacheElements();
       this.bindEvents();
+      if(location.hash=="#clipsPage") this.loadClips();
     },
     cacheElements: function() {
       this.$clipsPage = $('#clipsPage');
@@ -133,7 +138,178 @@ jQuery(function ($){
       window.location.replace("/admin");
     }
   };
+  var RemixesPage = {
+    init: function() {
+      this.remixes = [];
+      this.cacheElements();
+      this.bindEvents();
+      if(location.hash=="#remixesPage") this.fetchMixes();;
+
+      this.mixTemplate = '<div class="mix" style="display: none">'
+                + '    <div class="row1">'
+                + '        <div class="mixPanel mixPanel1"></div>'
+                + '        <div class="mixPanel mixPanel2"></div>'
+                + '    </div>'
+                + '    <div class="row2">'
+                + '        <div class="mixPanel mixPanel3"></div>'
+                + '        <div class="mixPanel mixPanel4"></div>'
+                + '    </div>'
+                + '    <div class="titleRow"></div>'
+                + '</div>';
+      this.curMix = null;
+    },
+    cacheElements: function() {
+      this.$remixesPage = $('#remixesPage');
+      this.$mixSlider = this.$remixesPage.find('#mixSlider');
+      this.$prevRemix = this.$remixesPage.find('#prevRemix');
+      this.$nextRemix = this.$remixesPage.find('#nextRemix');
+    },
+    bindEvents: function() {
+      this.$prevRemix.on('click', this.prevRemix);
+      this.$nextRemix.on('click', this.nextRemix);
+      this.$mixSlider.on('click', '.nFeatured', this.makeFetured);
+      this.$mixSlider.on('click', '.featured', this.makeUnFetured);
+    },
+    fetchMixes: function() {
+      $.ajax({
+        type: "GET",
+        url: "/api/public/remixes",
+        beforeSend: function() {
+         $.mobile.loading( 'show', {textVisible: true, theme: 'b'});
+        },
+        success: function(remixes) {
+          RemixesPage.remixes = remixes;
+          RemixesPage.$mixSlider.html('');
+          for(var i = 0; i < remixes.length; i++) {
+            $mix = $(RemixesPage.mixTemplate);
+            RemixesPage.loadRemix(remixes[i], $mix);
+            $mix.appendTo(RemixesPage.$mixSlider);
+          }
+        },
+        complete: function() {
+          RemixesPage.curMix = RemixesPage.$mixSlider.find('.mix').first();
+          RemixesPage.curMix.show();
+          RemixesPage.$prevRemix.hide();
+          $.mobile.changePage('#remixesPage');
+          $.mobile.loading( 'hide', {textVisible: true, theme: 'b'});
+        },
+      });
+    },
+    loadRemix: function(remix, $mix) {
+      var clips = remix.clips;
+      var fClass = remix.featured ? "featured" : "nFeatured";
+      var fText = remix.featured ? "Featured" : "Mark as Featured";
+
+      $mix.find('.mixPanel1').css("background", "url('"+clips[0].gif+"') no-repeat");
+      $mix.find('.mixPanel2').css("background", "url('"+clips[1].gif+"') no-repeat");
+      $mix.find('.mixPanel3').css("background", "url('"+clips[2].gif+"') no-repeat");
+      $mix.find('.mixPanel4').css("background", "url('"+clips[3].gif+"') no-repeat");      
+      $mix.find('.titleRow').html('<a class="title" href="/remixes/'+remix._id+'">'+remix.title+'</a> <a class="'+fClass+' fr" data-id="'+remix._id+'">'+fText+'</a><a class="updating fr" style="display: none">Updating...</a>');
+
+    },
+    nextRemix: function() {
+      var curMix = RemixesPage.curMix; 
+      var mixes = RemixesPage.$mixSlider.find('.mix');
+      var curIndex = mixes.index(curMix[0]);
+      if (curIndex == 0) RemixesPage.$prevRemix.show();
+      if(curIndex < (mixes.length -1)) {
+        RemixesPage.curMix = mixes.eq(curIndex+1);
+        curMix.hide();
+        RemixesPage.curMix.show();
+      } else if (curIndex == (mixes.length-1)){
+        $.ajax({
+          type: "GET",
+          url: "/api/public/remixes",
+          data: {
+            limit: 5,
+            date_lt: RemixesPage.remixes[RemixesPage.remixes.length-1].created_at
+          },
+          beforeSend: function() {  
+            $.mobile.loading( 'show', {textVisible: true, theme: 'b'});
+            RemixesPage.$nextRemix.hide();
+          },
+          success: function(remixes) {
+            console.log(remixes);
+            if(remixes.length > 0) {
+              RemixesPage.remixes = RemixesPage.remixes.concat(remixes);
+              for(var i = 0; i < remixes.length; i++) {
+                $mix = $(RemixesPage.mixTemplate);
+                RemixesPage.loadRemix(remixes[i], $mix);
+                $mix.appendTo(RemixesPage.$mixSlider);
+              }
+              mixes = RemixesPage.$mixSlider.find('.mix');
+              console.log(mixes);
+              RemixesPage.curMix = mixes.eq(curIndex+1);
+              curMix.hide();
+              RemixesPage.curMix.show();
+              RemixesPage.$nextRemix.show();
+            }
+          }, 
+          complete: function() {
+            $.mobile.loading( 'hide', {textVisible: true, theme: 'b'}); 
+          }
+        });
+      }
+    },
+    prevRemix: function() {
+      var curMix = RemixesPage.curMix; 
+      var mixes = RemixesPage.$mixSlider.find('.mix');
+      var curIndex = mixes.index(curMix[0]);
+      if (curIndex == (mixes.length-1)) RemixesPage.$nextRemix.show();
+      if (curIndex == 1) RemixesPage.$prevRemix.hide();
+      if(curIndex > 0) {
+        RemixesPage.curMix = mixes.eq(curIndex-1);
+        curMix.hide();
+        RemixesPage.curMix.show();
+      }
+    },
+    makeFetured: function() {
+      $fBtn = $(this);
+      //DO AJAX
+      $.ajax({
+        type: "PUT",
+        url: '/admin/remixes/' + $fBtn.data("id"),
+        data: {'featured': true}, 
+        beforeSend: function() {
+          $fBtn.hide();
+          $fBtn.next().show();
+        }, 
+        success: function(result) {
+          $fBtn.text('Featured');
+          $fBtn.removeClass('nFeatured');
+          $fBtn.addClass('featured');
+        },
+        complete: function() {
+          $fBtn.show();
+          $fBtn.next().hide();
+        }
+      });
+    }, 
+    makeUnFetured: function() {
+      $fBtn = $(this);
+      //DO AJAX
+      $.ajax({
+        type: "PUT",
+        url: '/admin/remixes/' + $fBtn.data("id"),
+        data: {'featured': true}, 
+        beforeSend: function() {
+          $fBtn.hide();
+          $fBtn.next().show();
+        }, 
+        success: function(result) {
+          $fBtn.text('Mark as Featured');
+          $fBtn.addClass('nFeatured');
+          $fBtn.removeClass('featured');
+        },
+        complete: function() {
+          $fBtn.show();
+          $fBtn.next().hide();
+        }
+      });
+    }
+  };
   Login.init();
   Main.init();
   ClipsPage.init();
+  RemixesPage.init();
 });

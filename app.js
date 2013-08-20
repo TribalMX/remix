@@ -77,6 +77,8 @@ app.delete('/uploadApi/upload/:id/cancel', auth.requiresLogin,  api.upload);
 app.get('/admin/clips/unapproved', auth.requiresAdmin, api.getAllUnapprovedClips);
 app.put('/admin/clips/unapproved/:id', auth.requiresAdmin, api.approveClip);
 
+app.put('/admin/remixes/:id', auth.requiresAdmin, api.updateRemix);
+
 //Serve pages
 app.get('/', routes.index);
 app.get('/remixes/:id', routes.remix);
