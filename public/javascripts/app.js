@@ -226,6 +226,17 @@ jQuery(function ($){
     },
 
     // Loaders
+    //Preload gifs for remixes
+    cacheGifs: function(remixes) {
+      for (var i=0; i < remixes.length; i++) {
+        for(var j =0; j < remixes[i].clips.length; j++) {
+          $('<img src="'+ remixes[i].clips[j].gif +'">').hide().appendTo('body').one('load', function(){
+            // console.log('Image: '+$(this).attr('src')+' is cached...');
+            $(this).remove();
+          });
+        }
+      }
+    },
     fetchRecentMixes: function() {
       var $mixSlider = this.$mixSlider;
       App.$prevRemix.hide();
@@ -235,6 +246,9 @@ jQuery(function ($){
         limit: 10
       }, {
         success: function(remixes){
+          //Preload gifs and cache them
+          //cache the user img
+          App.cacheGifs(remixes); 
           //filter out unapproved results
           remixes = remixes.filter(function(element, index, array){
             return element.clips[0].approved && element.clips[1].approved && element.clips[2].approved && element.clips[3].approved;
@@ -262,6 +276,10 @@ jQuery(function ($){
         limit: 10
       }, {
         success: function(remixes){
+          //Preload gifs and cache them
+          //cache the user img
+          App.cacheGifs(remixes);
+
           for(var i=0; i < remixes.length && i < 2; i++) {
             if(i == 0) {
               App.remixesCursor = 0;
@@ -435,30 +453,61 @@ jQuery(function ($){
         App.$nextRemix.hide();
         //TODO
         //cursor is on the last index
-        //remove below and load more only when user click button
-        //
         //Load More /TODO: show wheeling sign
-        remixes.fetchAndAppend({
-          limit: 10,
-          // date_lt: items[items.length-1].created_at
-          date_lt: remixes.getLast().created_at
-        },{
-          success: function(result){
-            if(result.length > 0) {
-              //TODO: Handle case where approved results are none
-              items = remixes.getApproved();
-              if(App.selectedTab == "my") items = remixes.get();
+        if(App.selectedTab == "my"){
+          App.fetchMoreMixes(remixes, cursor);
+        } else {
+          App.fetchMoreRecentMixes(remixes, cursor);
+        }
 
-              App.loadRemix(items[cursor+1], App.$mixSlider.find('.mix:last'));
-              App.$nextRemix.show();
-            }
-            console.log(result);
-          }
-        });
+
       }
       console.log("after next cursor: " + App[curType]);
 
-    }, 
+    },
+    fetchMoreRecentMixes: function(remixes, cursor) {
+      remixes.fetchAndAppend({
+        limit: 5,
+        // date_lt: items[items.length-1].created_at
+        date_lt: remixes.getLast().created_at
+      },{
+        success: function(result){
+          if(result.length > 0) {
+            var approved = [];
+            approved = result.filter(function(element, index, array){
+              return element.clips[0].approved && element.clips[1].approved && element.clips[2].approved && element.clips[3].approved;
+            });
+            if(approved.length == 0){
+              console.log("all of them all none approved, fetch again");
+              App.fetchMoreRecentMixes();
+            } else {
+              App.cacheGifs(approved); 
+              items = remixes.getApproved();
+              App.loadRemix(items[cursor+1], App.$mixSlider.find('.mix:last'));
+              App.$nextRemix.show();
+            }
+          }
+          console.log(result);
+        }
+      });
+    },
+    fetchMoreMixes: function(remixes, cursor) {
+      remixes.fetchAndAppend({
+        limit: 5,
+        // date_lt: items[items.length-1].created_at
+        date_lt: remixes.getLast().created_at
+      },{
+        success: function(result){
+          if(result.length > 0) {
+            App.cacheGifs(result); 
+            var items = remixes.get();
+            App.loadRemix(items[cursor+1], App.$mixSlider.find('.mix:last'));
+            App.$nextRemix.show();
+          }
+          console.log(result);
+        }
+      });
+    },
     slidePrev: function() {
       var curType = "pubRemixesCursor";
       var remixes = App.publicRemixes;
