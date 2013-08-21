@@ -17,29 +17,38 @@ var RemixSchema = new Schema({
 
 RemixSchema.statics = {
 	findRemixes: function(options, cb) {
-		var query = {};
+		var qr = {};
+		if(options.date_lt){
+			qr =  {created_at: {$lt: new Date(options.date_lt)}};
+		}
 		if(!options.limit) {
 			options.limit = 10;
 		}
-		if(options.date_lt){
-			query =  {created_at: {$lt: new Date(options.date_lt)}};
-		}
-		if(options.pub){
-			this.find(query)
-				.sort({'created_at': -1})
-				.limit(options.limit)
-				.populate('user', 'name username')
-				.populate('clips', 'videogami_vid gif created_by created_at approved')
-				.exec(cb);
-		} else {
-			this.find(query)
-				.where('user').equals(options.user._id)
-				.sort({'created_at': -1})
-				.limit(options.limit)
-				.populate('user', 'name username')
-				.populate('clips', 'videogami_vid gif created_by created_at')
-				.exec(cb);
-		}
+		var query = this.find(qr)
+			.sort({'created_at': -1})
+			.limit(options.limit)
+			.populate('user', 'name username')
+			.populate('clips', 'videogami_vid gif created_by created_at approved');	
+		if(!options.pub) {query.where('user').equals(options.user._id);}
+		if(typeof options.featured !== "undefined") {query.where('featured', options.featured);}
+		query.exec(cb);
+		// if(options.pub){
+		// 	var qr = this.find(qr)
+		// 		.sort({'created_at': -1})
+		// 		.limit(options.limit)
+		// 		.populate('user', 'name username')
+		// 		.populate('clips', 'videogami_vid gif created_by created_at approved');
+		// 	if(options.featured) qr.where('featured', true);
+		// 	qr.exec(cb);
+		// } else {
+		// 	this.find(qr)
+		// 		.where('user').equals(options.user._id)
+		// 		.sort({'created_at': -1})
+		// 		.limit(options.limit)
+		// 		.populate('user', 'name username')
+		// 		.populate('clips', 'videogami_vid gif created_by created_at')
+		// 		.exec(cb);
+		// }
 	},
 	findById: function(id, cb) {
 		this.findOne({'_id': id})

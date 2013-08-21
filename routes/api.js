@@ -24,6 +24,7 @@ exports.getRemixes = function(req, res) {
 	options.user = req.user;
 	if(req.path.indexOf('public/remixes') > 0) options.pub = true;
 
+    console.log(options);
 	Remix.findRemixes(options, function(err, remixes){
 		 if (err) {
 			console.log(err);

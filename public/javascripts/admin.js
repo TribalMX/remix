@@ -157,23 +157,32 @@ jQuery(function ($){
                 + '    <div class="titleRow"></div>'
                 + '</div>';
       this.curMix = null;
+
+      this.selectedTab = "all";
     },
     cacheElements: function() {
       this.$remixesPage = $('#remixesPage');
       this.$mixSlider = this.$remixesPage.find('#mixSlider');
       this.$prevRemix = this.$remixesPage.find('#prevRemix');
       this.$nextRemix = this.$remixesPage.find('#nextRemix');
+      this.$allMixes = this.$remixesPage.find('#allMixes');
+      this.$featuredMixes = this.$remixesPage.find('#featuredMixes');
     },
     bindEvents: function() {
       this.$prevRemix.on('click', this.prevRemix);
       this.$nextRemix.on('click', this.nextRemix);
       this.$mixSlider.on('click', '.nFeatured', this.makeFetured);
       this.$mixSlider.on('click', '.featured', this.makeUnFetured);
+      this.$allMixes.on('click', this.showAllMixes);
+      this.$featuredMixes.on('click', this.showFeaturedMixes);
     },
     fetchMixes: function() {
+      var data = {limit: 10};
+      if(RemixesPage.selectedTab == "featured") { data.featured = true}
       $.ajax({
         type: "GET",
         url: "/api/public/remixes",
+        data: data,
         beforeSend: function() {
          $.mobile.loading( 'show', {textVisible: true, theme: 'b'});
         },
@@ -191,6 +200,7 @@ jQuery(function ($){
           RemixesPage.curMix = RemixesPage.$mixSlider.find('.mix').first();
           RemixesPage.curMix.show();
           RemixesPage.$prevRemix.hide();
+          RemixesPage.$nextRemix.show();
           $.mobile.changePage('#remixesPage');
           $.mobile.loading( 'hide', {textVisible: true, theme: 'b'});
         },
@@ -218,20 +228,22 @@ jQuery(function ($){
         curMix.hide();
         RemixesPage.curMix.show();
       } else if (curIndex == (mixes.length-1)){
+        var data = {
+          limit: 5,
+          date_lt: RemixesPage.remixes[RemixesPage.remixes.length-1].created_at
+        };
+        if(RemixesPage.selectedTab == "featured") { data.featured = true}
         $.ajax({
           type: "GET",
           url: "/api/public/remixes",
-          data: {
-            limit: 5,
-            date_lt: RemixesPage.remixes[RemixesPage.remixes.length-1].created_at
-          },
+          data: data,
           beforeSend: function() {  
             $.mobile.loading( 'show', {textVisible: true, theme: 'b'});
             RemixesPage.$nextRemix.hide();
           },
           success: function(remixes) {
-            console.log(remixes);
             if(remixes.length > 0) {
+              console.log(remixes);
               RemixesPage.remixes = RemixesPage.remixes.concat(remixes);
               for(var i = 0; i < remixes.length; i++) {
                 $mix = $(RemixesPage.mixTemplate);
@@ -239,7 +251,6 @@ jQuery(function ($){
                 $mix.appendTo(RemixesPage.$mixSlider);
               }
               mixes = RemixesPage.$mixSlider.find('.mix');
-              console.log(mixes);
               RemixesPage.curMix = mixes.eq(curIndex+1);
               curMix.hide();
               RemixesPage.curMix.show();
@@ -307,7 +318,23 @@ jQuery(function ($){
           $fBtn.next().hide();
         }
       });
-    }
+    },
+    showAllMixes: function() {
+      if($(this).hasClass("ui-btn-active")){
+        //DO NOTHING
+      } else {
+        RemixesPage.selectedTab = "all";
+        RemixesPage.fetchMixes();
+      }
+    }, 
+    showFeaturedMixes: function() {
+      if($(this).hasClass("ui-btn-active")){
+        //DO NOTHING
+      } else {
+        RemixesPage.selectedTab = "featured";
+        RemixesPage.fetchMixes();
+      } 
+    } 
   };
   Login.init();
   Main.init();
