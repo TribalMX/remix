@@ -410,7 +410,6 @@ jQuery(function ($){
     },
     openNewClipPage: function() {
       App.returnTo = $.mobile.activePage.attr('id');
-      alert(App.returnTo);
       $.mobile.changePage('#newClip');
     },
     selectClip: function() {

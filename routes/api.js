@@ -24,7 +24,6 @@ exports.getRemixes = function(req, res) {
 	options.user = req.user;
 	if(req.path.indexOf('public/remixes') > 0) options.pub = true;
 
-    console.log(options);
 	Remix.findRemixes(options, function(err, remixes){
 		 if (err) {
 			console.log(err);
@@ -71,7 +70,6 @@ exports.getRemixes = function(req, res) {
 };
 exports.updateRemix = function(req, res) {
     Remix.findByIdAndUpdate(req.params.id,req.body,function(err, remix){
-      console.log(remix);
       if (err) {console.log(err); return res.send(500);}
       res.send(remix);
     }); 
@@ -150,7 +148,7 @@ exports.getAllUnapprovedClips = function(req, res) {
 };
 exports.approveClip = function(req, res) {
     Clip.findByIdAndUpdate(req.params.id,req.body,function(err, clip){
-      console.log(clip);
+      // console.log(clip);
       if (err) {console.log(err); return res.send(500);}
       res.send(clip);
     }); 
