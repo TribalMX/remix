@@ -133,7 +133,7 @@ jQuery(function ($){
       if(this.isLoginPage) {
         this.cacheElements();
         this.bindEvents();
-        this.fetchRecentMixes();
+        this.fetchFeaturedMixes();
       } else {
         this.cacheElements();
         this.bindEvents();
