@@ -17,7 +17,7 @@
   <div data-role="content"> 
     <div style="text-align: center;">
       <a id="newMixBtn" href="#newMix" data-role="button"  data-theme="a" data-inline="true"/>New Mix</a>
-      <a id="newClipBtn" href="#newClip" data-role="button"  data-theme="a" data-inline="true"/>New Clip</a>
+      <a id="newClipBtn" data-role="button" data-theme="a" data-inline="true"/>New Clip</a>
     </div>
     <div class ="tabs" data-role="navbar" style="width: 350px">
       <ul>
@@ -76,9 +76,9 @@
     </div>
 
     <div class="previewTitle">
-      <a id="prevRemix" href="#" data-role="button"  data-icon="arrow-l" data-theme="a" data-inline="true" class="back"/>back</a>
+      <a id="prevRemix" data-role="button"  data-icon="arrow-l" data-theme="a" data-inline="true" class="back"/>back</a>
       <div class="titleDiv">Rainy days...</div>
-      <a id="nextRemix" href="#" data-role="button"  data-icon="arrow-r" data-iconpos="right" data-theme="a" data-inline="true" class="next" />next</a>
+      <a id="nextRemix" data-role="button"  data-icon="arrow-r" data-iconpos="right" data-theme="a" data-inline="true" class="next" />next</a>
       <div style="clear:both;"></div>
     </div>
 
@@ -135,7 +135,7 @@
     </div>
     <div style="text-align: center;">
       <a id="cancelCreateMix" href="#main" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
-      <a id="createMix" href="#" data-role="button"  data-theme="a" data-inline="true"/>Create New Mix</a>
+      <a id="createMix" data-role="button"  data-theme="a" data-inline="true"/>Create New Mix</a>
     </div>
   </div><!-- /content -->
 
@@ -154,7 +154,7 @@
     <a id='moreClipsBtn' href="#" data-role=""  data-iconpos="right" data-theme="a" data-inline="false"/>Load More...</a>
     </br>
     <div style="text-align: center; background-color: #F7F7F7" data-position="fixed">
-      <a href="#newClip" data-role="button"  data-theme="a" data-inline="true"/>Upload Clip</a>
+      <a id="uploadClip" href="#" data-role="button"  data-theme="a" data-inline="true"/>Upload Clip</a>
       <a id ="closeLibrary" href="#newMix" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
     </div>
   </div><!-- /content -->
@@ -180,8 +180,8 @@
     
     <input id="fileInput" type="file" accept="video/*" style="position:absolute; top:-100px;">  
     <div style="text-align: center;">
-      <a id="upload" href="#" onclick="" data-role="button"  data-theme="a" data-inline="true"/>Upload Video</a>
-      <a id="cancelNewClip" href="#main" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
+      <a id="upload" onclick="" data-role="button"  data-theme="a" data-inline="true"/>Upload Video</a>
+      <a id="cancelNewClip" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
     </div>
   </div><!-- /content -->
 
@@ -208,7 +208,11 @@
       <p style="color:Green;">
       Upload completed! You and others can now find this clip when creating a new Mix :)
       </p>
-      <a id="backHome" href="#" data-role="button"  data-theme="a" data-inline="true"/>Back Home</a>
+      <a id="goToCreateMix" class="buttons fromMain" data-role="button"  data-theme="a" data-inline="true"/>Create Mix</a>
+      <br>
+      <a id="uploadMore" class="buttons fromMain" data-role="button"  data-theme="a" data-inline="true"/>Upload more Clips</a>
+      <br>
+      <a id="backToMix" class="buttons fromMix" data-role="button"  data-theme="a" data-inline="true"/>Back to Mix</a>
     </div>
   </div><!-- /content -->
 </div><!-- /page -->
@@ -237,9 +241,9 @@
 <script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
 <script type="text/javascript" src="javascripts/tolito-1.0.5.min.js"></script>
 <script src="javascripts/async.js"></script>
-<script src="javascripts/functions.js?2"></script>
-<script src="javascripts/uploader.js?2"></script> 
-<script src="javascripts/app.js?2"></script> 
+<script src="javascripts/functions.js?3"></script>
+<script src="javascripts/uploader.js?3"></script> 
+<script src="javascripts/app.js?3"></script> 
 </body>
 </html>
 

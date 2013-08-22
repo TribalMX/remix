@@ -127,6 +127,9 @@ jQuery(function ($){
       this.selectedFile = null;
       this.uploader = null;
 
+      //Id of the page to where page redirects
+      this.returnTo = "";
+
       this.isLoginPage = ($('#loginPage').length > 0);
 
       //initiate
@@ -150,15 +153,15 @@ jQuery(function ($){
       this.$prevRemix = this.$main.find('#prevRemix');
       this.$nextRemix = this.$main.find('#nextRemix');
       this.$mixSlider = this.$main.find('#mixSlider');
-      this.$newMixBtn = this.$main.find('#newMixBtn');
-      this.$newClipBtn = this.$main.find('#newClipBtn');
-      this.$newClip = this.$main.find('#newClip');
-      this.$featuredMixes = this.$main.find('#featuredMixes');
-      this.$recentMixes = this.$main.find('#recentMixes');
-      this.$myMixes = this.$main.find('#myMixes');
-      this.$username = this.$main.find("#username"); //Temp
 
       if(!App.isLoginPage){
+        this.$newMixBtn = this.$main.find('#newMixBtn');
+        this.$newClipBtn = this.$main.find('#newClipBtn');
+        this.$featuredMixes = this.$main.find('#featuredMixes');
+        this.$recentMixes = this.$main.find('#recentMixes');
+        this.$myMixes = this.$main.find('#myMixes');
+        this.$username = this.$main.find("#username"); //Temp
+
         //clip page
         this.$clip = $('#clip');
         this.$clipWrapper = this.$clip.find('#clipWrapper');
@@ -181,6 +184,7 @@ jQuery(function ($){
         this.$clipLibrary = $('#clipLibrary');
         this.$clipContainer = this.$clipLibrary.find('#clipContainer');
         this.$moreClipsBtn = this.$clipLibrary.find('#moreClipsBtn');
+        this.$uploadClip = this.$clipLibrary.find('#uploadClip');
         this.$closeLibrary = this.$clipLibrary.find('#closeLibrary');
 
         //newClip page
@@ -195,21 +199,21 @@ jQuery(function ($){
         this.$cancelUploading = this.$uploadingClip.find('#cancelUploading');
         this.$whileUploading = this.$uploadingClip.find('#whileUploading');
         this.$afterUploading = this.$uploadingClip.find('#afterUploading');
-        this.$backHome = this.$uploadingClip.find('#backHome');
+        this.$goToCreateMix = this.$uploadingClip.find('#goToCreateMix');
+        this.$uploadMore = this.$uploadingClip.find('#uploadMore');
+        this.$backToMix = this.$uploadingClip.find('#backToMix');
       }
     },
     bindEvents: function() {
       //main page
       this.$nextRemix.on('click', this.slideNext);
       this.$prevRemix.on('click', this.slidePrev);
-      // this.$featuredMixes.on('click', this.selectMyMixes);
-      // this.$recentMixes.on('click', this.selectRecentMixes);
-      // this.$myMixes.on('click', this.selectMyMixes);
-      this.$featuredMixes.on('click', this.selectTab);
-      this.$recentMixes.on('click', this.selectTab);
-      this.$myMixes.on('click', this.selectTab);
 
       if(!App.isLoginPage) {
+        this.$newClipBtn.on('click', this.openNewClipPage);
+        this.$featuredMixes.on('click', this.selectTab);
+        this.$recentMixes.on('click', this.selectTab);
+        this.$myMixes.on('click', this.selectTab);
         this.$mixSlider.on('click', '.mixPanel', this.selectClip);
 
         //clip page
@@ -225,14 +229,18 @@ jQuery(function ($){
         this.$clipLibrary.on('click', '.clip', this.addToMixPanel);
         this.$clipLibrary.on('click', '.notReady', this.openClipLibrary)
         this.$moreClipsBtn.on('click', this.loadMoreClips);
+        this.$uploadClip.on('click', this.openNewClipPage);
 
         //newClip page
         this.$upload.on('click', this.openFileChooser);
+        this.$cancelNewClip.on('click', this.returnToPrev);
         this.$fileInput.on('change', this.startUploading);
 
         //uploadingClip page
         this.$cancelUploading.on('click', this.cancelUploading);
-        this.$backHome.on('click', this.backToHome);
+        this.$goToCreateMix.on('click', this.openCreateMixPage);
+        this.$backToMix.on('click', this.openCreateMixPage);
+        this.$uploadMore.on('click', this.uploadMore);
       }
     },
 
@@ -396,7 +404,15 @@ jQuery(function ($){
     }, 
 
     // Main Page Functionalities
-
+    openCreateMixPage: function() {
+      App.clearMixPanel();
+      $.mobile.changePage('#newMix');
+    },
+    openNewClipPage: function() {
+      App.returnTo = $.mobile.activePage.attr('id');
+      alert(App.returnTo);
+      $.mobile.changePage('#newClip');
+    },
     selectClip: function() {
       $.mobile.changePage('#clip');
 
@@ -785,7 +801,7 @@ jQuery(function ($){
             App.remixes.unshift(remix);
             App.remixesCursor = 0;
             $.mobile.changePage('#main');
-            App.selectedTab = "";
+            App.$myMixes.removeClass('ui-btn-active');
             App.$myMixes.click();
 
             console.log(remix); 
@@ -810,10 +826,19 @@ jQuery(function ($){
     }, 
     cancelMixing: function() {
       App.clearMixPanel()
+      $.mobile.changePage
     }, 
 
-    // Uploading Functionalites
-
+    // NewClip Page and Uploading Functionalites
+    returnToPrev: function() {
+      //when it returns to uploading complete page
+      if(App.returnTo == "uploadingClip") {
+        App.$afterUploading.find('.fromMain').show();
+        App.$whileUploading.hide();
+        App.$afterUploading.show();
+      }
+      $.mobile.changePage('#'+App.returnTo);
+    },
     openFileChooser: function() {
        App.$fileInput.click();
     },
@@ -821,8 +846,9 @@ jQuery(function ($){
       App.selectedFile = event.target.files[0];
       if(App.selectedFile){
         $.mobile.changePage('#uploadingClip');
-        $("#whileUploading").show();
-        $("#afterUploading").hide();
+        App.$whileUploading.show();
+        App.$afterUploading.hide();
+        App.$afterUploading.find('.buttons').hide();
 
         //Progress bar //TODO: remove this and create new one
         var tolito = TolitoProgressBar('progressbar')
@@ -861,6 +887,11 @@ jQuery(function ($){
                   $clip.data("obj", clip);
                   $clip.prependTo(App.$clipContainer);
 
+                  if(App.returnTo == "main")  {
+                    App.$afterUploading.find('.fromMain').show();
+                  } else if(App.returnTo == "clipLibrary") {
+                    App.$afterUploading.find('.fromMix').show();
+                  }
                   App.$whileUploading.hide();
                   App.$afterUploading.show();
                   console.log(clip);
@@ -880,9 +911,10 @@ jQuery(function ($){
       App.selectedFile = null;
       App.uploader.cancel();
     },
-    backToHome: function() {
-      $.mobile.changePage('#main');
-    },
+    uploadMore: function() {
+      App.returnTo = $.mobile.activePage.attr('id');
+      $.mobile.changePage('#newClip');
+    }, 
     sample: function(){
 
     }
