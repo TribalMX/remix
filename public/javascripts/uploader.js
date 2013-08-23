@@ -198,35 +198,38 @@ function Uploader(args){
             xhr: function(){
                 var xhr = $.ajaxSettings.xhr();
                 if (xhr.upload){
-                    if (xhr.upload.addEventListener){
+                    if (xhr.upload.onprogress){
                         bug.send({
-                            msg: "addEventListener"
+                            msg: "xhr.upload.onprogress"
                         })
-                    } else if (xhr.upload.onprogrss){
-                        bug.send({
-                            msg: "onprogress"
-                        })
-                    } else {
-                        bug.send({
-                            msg: "no xhr progress listener"
-                        })
-                    }
-                    xhr.upload.addEventListener('progress', function(event) {
-                        bug.send({
-                            msg: "inside addEventListener"
-                        })
-                        if (event.lengthComputable) {
-                            var percentComplete = 100 * event.loaded / file.size + percent;
-                            bug.send({
-                                percentComplete: percentComplete
-                            })
-                            progress({percent: percentComplete})
-                        } else {
-                            bug.send({
-                                msg: "no event.lengthComputable"
-                            })
+                        xhr.upload.onprogress = function(event){
+                            if (event.lengthComputable) {
+                                var percentComplete = 100 * event.loaded / file.size + percent;
+                                bug.send({
+                                    percentComplete: percentComplete
+                                })
+                                progress({percent: percentComplete})
+                            } else {
+                                bug.send({
+                                    msg: "no event.lengthComputable"
+                                })
+                            }
                         }
-                    }, false);
+                    } else {
+                        xhr.upload.addEventListener('progress', function(event){
+                            if (event.lengthComputable) {
+                                var percentComplete = 100 * event.loaded / file.size + percent;
+                                bug.send({
+                                    percentComplete: percentComplete
+                                })
+                                progress({percent: percentComplete})
+                            } else {
+                                bug.send({
+                                    msg: "no event.lengthComputable"
+                                })
+                            }
+                        }, false);
+                    }
                 }
                 return xhr;
             }
