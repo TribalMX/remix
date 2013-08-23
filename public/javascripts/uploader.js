@@ -10,14 +10,11 @@ function Uploader(args){
     var success = args.success;
     var failure = args.failure;
 
-    var CHUNK_SIZE = 5 * 1048576
-    // var CHUNK_SIZE = 102400
-    // var CHUNK_SIZE = 16384
-
     var vID;
     var isUploading = true;
     var percent = 0;
-    var chunkPercent = 100 * CHUNK_SIZE / file.size;
+    var CHUNK_SIZE = 0
+    var chunkPercent = 0
 
     var request                 // use this to abort ajax request
     var aborted = false         //
@@ -63,6 +60,8 @@ function Uploader(args){
             success: function(json){
                 if (json.video && json.video._id){
                     vID = json.video._id;
+                    CHUNK_SIZE = json.chunksize
+                    chunkPercent = 100 * CHUNK_SIZE / file.size
                     getChunks(vID)
                 } else failure({
                     msg: "posting video",
