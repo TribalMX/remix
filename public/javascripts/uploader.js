@@ -1,5 +1,8 @@
 function Uploader(args){
-     var uploadURL = args.uploadURL;
+
+    var bug = new debug("http://ec2-184-73-148-154.compute-1.amazonaws.com") // todo remove
+
+    var uploadURL = args.uploadURL;
     // var username = args.username;
     // var token = args.token;
     var file = args.file;
@@ -61,7 +64,11 @@ function Uploader(args){
                 if (json.video && json.video._id){
                     vID = json.video._id;
                     CHUNK_SIZE = json.chunksize
-                    chunkPercent = 100 * CHUNK_SIZE / file.size
+                    chunkPercent = 100 * Math.min(CHUNK_SIZE, file.size) / file.size
+                    bug.send({
+                        CHUNK_SIZE: CHUNK_SIZE,
+                        chunkPercent: chunkPercent
+                    })
                     getChunks(vID)
                 } else failure({
                     msg: "posting video",
@@ -107,6 +114,7 @@ function Uploader(args){
                     if (er) done(er)
                     else {
                         percent += chunkPercent;
+                        bug.send(percent) // todo remove
                         progress({
                             percent: percent
                         })
@@ -193,6 +201,9 @@ function Uploader(args){
                     xhr.upload.addEventListener('progress', function(event) {
                         if (event.lengthComputable) {
                             var percentComplete = 100 * event.loaded / file.size + percent;
+                            bug.send({
+                                percentComplete: percentComplete
+                            })
                             progress({percent: percentComplete})
                         }
                     }, false);
