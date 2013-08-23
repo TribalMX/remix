@@ -886,10 +886,10 @@ jQuery(function ($){
                   $clip.data("obj", clip);
                   $clip.prependTo(App.$clipContainer);
 
-                  if(App.returnTo == "main")  {
-                    App.$afterUploading.find('.fromMain').show();
-                  } else if(App.returnTo == "clipLibrary") {
+                  if(App.returnTo == "clipLibrary")  {
                     App.$afterUploading.find('.fromMix').show();
+                  } else {
+                    App.$afterUploading.find('.fromMain').show();
                   }
                   App.$whileUploading.hide();
                   App.$afterUploading.show();
