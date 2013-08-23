@@ -78,6 +78,8 @@ jQuery(function ($){
 
   var App = {
     init: function() {
+      //Facebook login puts #_=_ to the url. So, remove it.
+      if (window.location.href.indexOf("#_=_") > 0) { window.location = window.location.href.replace(/#.*/, ""); return;}
 
       //Create collections and models
       this.Remixes = Util.Collection({url: "/api/remixes"});
@@ -617,92 +619,6 @@ jQuery(function ($){
       } 
       console.log("after next cursor: " + App[curName]);
     },
-    // selectRecentMixes: function() {
-    //   if(App.selectedTab != "recent") {
-    //     App.selectedTab = "recent";
-    //     App.$mixSlider.find('.mixPanel').data('clip', null);
-    //     App.$mixSlider.find('.mixPanel').css("background", "");
-    //     App.$mixSlider.find('.mixPanel').removeClass('loaded');
-
-    //     var cursor = App.pubRemixesCursor;
-    //     var remixes = App.publicRemixes.get();
-    //     if (remixes.length < 1 || cursor < 0) return;
-
-    //     App.$prevRemix.hide();
-    //     App.$nextRemix.hide();
-
-    //     $prevMix = App.$mixSlider.find('.mix:nth-child(1)');
-    //     $curMix = App.$mixSlider.find('.mix:nth-child(2)');
-    //     $nextMix = App.$mixSlider.find('.mix:nth-child(3)');
-
-    //     if(remixes.length == 1) {
-    //       if(cursor == 0) App.loadRemix(remixes[cursor], $curMix);
-    //     } else if (remixes.length > 1){
-    //       if(cursor == 0) {
-    //         App.loadRemix(remixes[cursor], $curMix);
-    //         App.loadRemix(remixes[cursor + 1], $nextMix);
-    //         App.$nextRemix.show();
-    //       } else if(cursor == remixes.length -1) {
-    //         App.loadRemix(remixes[cursor - 1], $prevMix);
-    //         App.loadRemix(remixes[cursor], $curMix);
-    //         App.$prevRemix.show()
-    //       } else {
-    //         App.loadRemix(remixes[cursor - 1], $prevMix);
-    //         App.loadRemix(remixes[cursor], $curMix);
-    //         App.loadRemix(remixes[cursor + 1], $nextMix);
-    //         App.$prevRemix.show();
-    //         App.$nextRemix.show();
-    //       }
-    //     }
-    //     console.log(App.selectedTab);
-    //   }
-    // },
-    // selectMyMixes: function() {
-    //   if(App.selectedTab != "my") {
-    //     App.selectedTab = "my";
-    //     App.$mixSlider.find('.mixPanel').data('clip', null);
-    //     App.$mixSlider.find('.mixPanel').css("background", "");
-    //     App.$mixSlider.find('.mixPanel').removeClass('loaded');
-
-    //     var cursor = App.remixesCursor;
-    //     var remixes = App.remixes.get();
-
-    //     console.log(App.selectedTab);
-    //     console.log(cursor);
-    //     console.log(remixes);
-    //     //If my remixes is not loaded yet, load
-    //     if(remixes.length < 1 || cursor < 0){
-    //       return;
-    //     }
-
-    //     App.$prevRemix.hide();
-    //     App.$nextRemix.hide();
-
-    //     $prevMix = App.$mixSlider.find('.mix:nth-child(1)');
-    //     $curMix = App.$mixSlider.find('.mix:nth-child(2)');
-    //     $nextMix = App.$mixSlider.find('.mix:nth-child(3)');
-
-    //     if(remixes.length == 1) {
-    //       if(cursor == 0) App.loadRemix(remixes[cursor], $curMix);
-    //     } else if (remixes.length > 1){
-    //       if(cursor == 0) {
-    //         App.loadRemix(remixes[cursor], $curMix);
-    //         App.loadRemix(remixes[cursor + 1], $nextMix);
-    //         App.$nextRemix.show();
-    //       } else if(cursor == remixes.length -1) {
-    //         App.loadRemix(remixes[cursor - 1], $prevMix);
-    //         App.loadRemix(remixes[cursor], $curMix);
-    //         App.$prevRemix.show()
-    //       } else {
-    //         App.loadRemix(remixes[cursor - 1], $prevMix);
-    //         App.loadRemix(remixes[cursor], $curMix);
-    //         App.loadRemix(remixes[cursor + 1], $nextMix);
-    //         App.$prevRemix.show();
-    //         App.$nextRemix.show();
-    //       }
-    //     }
-    //   }
-    // },
     selectTab: function() {
       //If this tab is not already selected
       if(!$(this).hasClass("ui-btn-active")) {
