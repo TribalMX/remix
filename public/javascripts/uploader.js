@@ -198,6 +198,9 @@ function Uploader(args){
             xhr: function(){
                 var xhr = $.ajaxSettings.xhr();
                 if(xhr.upload){
+                    bug.send({
+                        msg: "xhr.upload"
+                    })
                     xhr.upload.addEventListener('progress', function(event) {
                         if (event.lengthComputable) {
                             var percentComplete = 100 * event.loaded / file.size + percent;
@@ -205,8 +208,16 @@ function Uploader(args){
                                 percentComplete: percentComplete
                             })
                             progress({percent: percentComplete})
+                        } else {
+                            bug.send({
+                                msg: "no event.lengthComputable"
+                            })
                         }
                     }, false);
+                } else {
+                    bug.send({
+                        msg: "no xhr.upload"
+                    })
                 }
                 return xhr;
             }
