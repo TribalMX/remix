@@ -111,6 +111,28 @@ exports.getClips = function(req, res) {
 		}
 	});
 };
+exports.getClipById = function(req, res) {
+    Clip.findById(req.params.id, function(err, clip){
+        if (err) {console.log(err); return res.send(500);}
+        if(!clip) return res.send(404); 
+        //When addInfo, append additional information 
+        if(req.query.addInfo){
+            //Check if this user has same clip
+            Clip.find({user: req.user._id, videogami_vid: clip.videogami_vid}, function(err, result){
+                if (err) {console.log(err); return res.send(500);}
+                if(!clip) return res.send(404);
+                //User already has same clip
+                if(result.length > 0) {
+                    res.send({alreadyHave: true , clip: clip})
+                } else {
+                    res.send({alreadyHave: false , clip: clip});
+                }
+            });
+        } else {
+            res.send(clip);
+        }
+    });
+};
 exports.getAllUnapprovedClips = function(req, res) {
   var data = {}
     , options = req.query;

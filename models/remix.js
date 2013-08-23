@@ -32,23 +32,6 @@ RemixSchema.statics = {
 		if(!options.pub) {query.where('user').equals(options.user._id);}
 		if(typeof options.featured !== "undefined") {query.where('featured', options.featured);}
 		query.exec(cb);
-		// if(options.pub){
-		// 	var qr = this.find(qr)
-		// 		.sort({'created_at': -1})
-		// 		.limit(options.limit)
-		// 		.populate('user', 'name username')
-		// 		.populate('clips', 'videogami_vid gif created_by created_at approved');
-		// 	if(options.featured) qr.where('featured', true);
-		// 	qr.exec(cb);
-		// } else {
-		// 	this.find(qr)
-		// 		.where('user').equals(options.user._id)
-		// 		.sort({'created_at': -1})
-		// 		.limit(options.limit)
-		// 		.populate('user', 'name username')
-		// 		.populate('clips', 'videogami_vid gif created_by created_at')
-		// 		.exec(cb);
-		// }
 	},
 	findById: function(id, cb) {
 		this.findOne({'_id': id})

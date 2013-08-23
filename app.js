@@ -65,6 +65,7 @@ app.get('/api/remixes', auth.requiresLogin, api.getRemixes);
 app.post('/api/remixes', auth.requiresLogin, api.postRemix);
 
 app.get('/api/clips', auth.requiresLogin, api.getClips);
+app.get('/api/clips/:id', auth.requiresLogin, api.getClipById);
 app.post('/api/clips', auth.requiresLogin, api.postClip);
 
 //uploading api

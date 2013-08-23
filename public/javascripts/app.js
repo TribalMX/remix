@@ -415,26 +415,35 @@ jQuery(function ($){
     selectClip: function() {
       $.mobile.changePage('#clip');
 
+      App.$saveClip.addClass('ui-disabled');
+      App.$saveClip.find('.ui-btn-text').text('Save to My Clips');
       App.$clip.find('.info').html("Created by ...");
       App.$clipWrapper.data('clip', null);
       App.$clipWrapper.html(''); 
 
-
       var clip = $(this).data('clip');
-      App.$clipWrapper.data('clip', clip);
-      App.$clipWrapper.html('<img class="clip" src="'+clip.gif+'"/>'); 
-      //Get creator info 
+
+      //Request for additional clip info
       $.ajax({
-        url: '/api/users/' + clip.created_by,
-        success: function(user) {
-          App.$clip.find('.info').html("Created by " + user.name);
-        },
+        type: "GET",
+        url: '/api/clips/' + clip._id,
+        data: {addInfo: true},
         beforeSend: function() {
           $.mobile.loading( 'show', {textVisible: true, theme: 'b'});
         },
-        complete: function(){
+        success: function(result) {
+          console.log(result);
+          App.$clip.find('.info').html("Created by " + result.clip.created_by.name);
+          if(!result.alreadyHave) {
+            App.$saveClip.removeClass('ui-disabled');
+          } else {
+           
+          }
+        },
+        complete: function() {
+          App.$clipWrapper.data('clip', clip);
+          App.$clipWrapper.html('<img class="clip" src="'+clip.gif+'"/>'); 
           $.mobile.loading( 'hide', {textVisible: true, theme: 'b'});
-          console.log(App.$clipWrapper.data('clip'));
         }
       });
     },
@@ -448,8 +457,7 @@ jQuery(function ($){
         created_by: clipData.created_by
       },{
         beforeSend: function() {
-          App.$saveClip.hide();
-          App.$savingClip.show();
+          App.$saveClip.addClass('ui-disabled');
         },
         success: function(clip) {
           //Add clip to the collection
@@ -463,11 +471,11 @@ jQuery(function ($){
           $clip.prependTo(App.$clipContainer);
 
           //Clear data on the page
-          App.$clip.find('.info').html("Created by ...");
           App.$clipWrapper.data('clip', null);
         },
         complete: function() {
-          App.$savingClip.hide();
+          App.$saveClip.removeClass('ui-disabled');
+          App.$saveClip.hide();
           App.$savedClip.show();
           console.log(clip);
         }
