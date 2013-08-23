@@ -128,7 +128,7 @@ jQuery(function ($){
       this.uploader = null;
 
       //Id of the page to where page redirects
-      this.returnTo = "";
+      this.returnTo = "main";
 
       this.isLoginPage = ($('#loginPage').length > 0);
 
@@ -141,9 +141,10 @@ jQuery(function ($){
         this.cacheElements();
         this.bindEvents();
         //TODO: loading screen
+        this.fetchFeaturedMixes();
+        //TODO: LazyLoading
         this.fetchRecentMixes();
         this.fetchMyMixes();
-        this.fetchFeaturedMixes();
         this.fetchClips();
       }
     },
@@ -377,7 +378,7 @@ jQuery(function ($){
       $mix.find('.mixPanel2').css("background", "url('"+clips[1].gif+"') no-repeat");
       $mix.find('.mixPanel3').css("background", "url('"+clips[2].gif+"') no-repeat");
       $mix.find('.mixPanel4').css("background", "url('"+clips[3].gif+"') no-repeat");      
-      $mix.find('.titleRow').html('<a class="title" href="/remixes/'+remix._id+'">'+remix.title+'</a>' + str);
+      $mix.find('.titleRow').html(''+remix.title + str);
       $mix.addClass('loaded');
     },
     loadMoreClips: function() {
