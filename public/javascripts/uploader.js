@@ -1,5 +1,5 @@
 function Uploader(args){
-     var uploadURL = args.uploadURL;
+    var uploadURL = args.uploadURL;
     // var username = args.username;
     // var token = args.token;
     var file = args.file;
@@ -61,7 +61,7 @@ function Uploader(args){
                 if (json.video && json.video._id){
                     vID = json.video._id;
                     CHUNK_SIZE = json.chunksize
-                    chunkPercent = 100 * CHUNK_SIZE / file.size
+                    chunkPercent = 100 * Math.min(CHUNK_SIZE, file.size) / file.size
                     getChunks(vID)
                 } else failure({
                     msg: "posting video",
@@ -189,8 +189,8 @@ function Uploader(args){
             },
             xhr: function(){
                 var xhr = $.ajaxSettings.xhr();
-                if(xhr.upload){
-                    xhr.upload.addEventListener('progress', function(event) {
+                if (xhr.upload){
+                    xhr.upload.addEventListener('progress', function(event){
                         if (event.lengthComputable) {
                             var percentComplete = 100 * event.loaded / file.size + percent;
                             progress({percent: percentComplete})
