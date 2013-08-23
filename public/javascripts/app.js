@@ -166,7 +166,6 @@ jQuery(function ($){
         this.$clip = $('#clip');
         this.$clipWrapper = this.$clip.find('#clipWrapper');
         this.$saveClip = this.$clip.find('#saveClip');
-        this.$savingClip = this.$clip.find('#savingClip');
         this.$savedClip = this.$clip.find('#savedClip');
         this.$backFromClip = this.$clip.find('#backFromClip');
 
@@ -437,7 +436,8 @@ jQuery(function ($){
           if(!result.alreadyHave) {
             App.$saveClip.removeClass('ui-disabled');
           } else {
-           
+            App.$saveClip.hide();
+            App.$savedClip.show();
           }
         },
         complete: function() {
