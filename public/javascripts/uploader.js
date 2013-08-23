@@ -1,7 +1,4 @@
 function Uploader(args){
-
-    var bug = new debug("http://ec2-184-73-148-154.compute-1.amazonaws.com") // todo remove
-
     var uploadURL = args.uploadURL;
     // var username = args.username;
     // var token = args.token;
@@ -65,10 +62,6 @@ function Uploader(args){
                     vID = json.video._id;
                     CHUNK_SIZE = json.chunksize
                     chunkPercent = 100 * Math.min(CHUNK_SIZE, file.size) / file.size
-                    bug.send({
-                        CHUNK_SIZE: CHUNK_SIZE,
-                        chunkPercent: chunkPercent
-                    })
                     getChunks(vID)
                 } else failure({
                     msg: "posting video",
@@ -114,7 +107,6 @@ function Uploader(args){
                     if (er) done(er)
                     else {
                         percent += chunkPercent;
-                        bug.send(percent) // todo remove
                         progress({
                             percent: percent
                         })
@@ -198,38 +190,12 @@ function Uploader(args){
             xhr: function(){
                 var xhr = $.ajaxSettings.xhr();
                 if (xhr.upload){
-                    if (xhr.upload.onprogress){
-                        bug.send({
-                            msg: "xhr.upload.onprogress"
-                        })
-                        xhr.upload.onprogress = function(event){
-                            if (event.lengthComputable) {
-                                var percentComplete = 100 * event.loaded / file.size + percent;
-                                bug.send({
-                                    percentComplete: percentComplete
-                                })
-                                progress({percent: percentComplete})
-                            } else {
-                                bug.send({
-                                    msg: "no event.lengthComputable"
-                                })
-                            }
+                    xhr.upload.addEventListener('progress', function(event){
+                        if (event.lengthComputable) {
+                            var percentComplete = 100 * event.loaded / file.size + percent;
+                            progress({percent: percentComplete})
                         }
-                    } else {
-                        xhr.upload.addEventListener('progress', function(event){
-                            if (event.lengthComputable) {
-                                var percentComplete = 100 * event.loaded / file.size + percent;
-                                bug.send({
-                                    percentComplete: percentComplete
-                                })
-                                progress({percent: percentComplete})
-                            } else {
-                                bug.send({
-                                    msg: "no event.lengthComputable"
-                                })
-                            }
-                        }, false);
-                    }
+                    }, false);
                 }
                 return xhr;
             }
