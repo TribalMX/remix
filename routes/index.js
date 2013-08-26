@@ -45,8 +45,10 @@ exports.remix = function(req, res){
           }
           //When every gifs are loaded
           if(numGifs == remix.clips.length){
-            console.log(remix);
-            res.render('remix', {remix: remix});
+            // console.log(remix);
+            var url = "http://" + req.headers.host + req.url;
+            // console.log(url);
+            res.render('remix', {remix: remix, url: url});
           }
         });
       })(i);
