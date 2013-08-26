@@ -18,14 +18,15 @@
   </div><!-- /header -->
   <div data-role="content">   
     <div style="text-align: center;">
-      <a href="/auth/facebook" rel="external" data-role="button"  data-theme="a" data-inline="true"/>Login With Facebook</a> 
-      <a href="#kidpopup" data-rel="popup" data-role="button"  data-theme="a" data-inline="true"/>I'm under 13</a>
+      <p>Glad you're here. Start remixing your city.</p>
+      <a href="/auth/facebook" rel="external" data-role="button"  data-theme="a" data-inline="true"/>Log in with Facebook</a> 
+      <a href="#kidpopup" data-rel="popup" data-role="button"  data-theme="a" data-inline="true"/>Under 13? Log in Here</a>
       <div data-role="popup" id="kidpopup" style="padding: 10px;">
         <p>Enter Your Password</p>
         <form id="loginForm" data-ajax="false">
           <input type="hidden" name="username" value="remixKid">
           <input type="text" name="password">
-          <input type="submit" value="submit">
+          <input type="submit" value="OK">
         </form>
       </div>
     </div>
@@ -77,9 +78,9 @@
       </div>
     </div>
     <div class="previewTitle">
-      <a id="prevRemix" href="#" data-role="button" data-theme="a" data-inline="true" class="back"/>back</a>
+      <a id="prevRemix" href="#" data-role="button" data-theme="a" data-inline="true" class="back"/>Back</a>
       <div class="titleDiv">Rainy days...</div>
-      <a id="nextRemix" href="#" data-role="button" data-theme="a" data-inline="true" class="next" />next</a>
+      <a id="nextRemix" href="#" data-role="button" data-theme="a" data-inline="true" class="next" />Next</a>
       <div style="clear:both;"></div>
     </div>
 
@@ -97,7 +98,7 @@
 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
 <script src="javascripts/functions.js?r=9"></script>
-<script src="javascripts/app.js?r=9"></script> 
+<script src="javascripts/app.js?r=10"></script> 
 <script type="text/javascript">
   $('#loginForm').on('submit', function(event) {
     event.preventDefault();

@@ -16,8 +16,8 @@
   </div><!-- /header -->
   <div data-role="content">
     <div style="text-align: center;">
-      <a id="newMixBtn" href="#newMix" data-role="button"  data-theme="a" data-inline="true"/>New Mix</a>
-      <a id="newClipBtn" data-role="button" data-theme="a" data-inline="true"/>New Clip</a>
+      <a id="createMixBtn" href="#newMix" data-role="button"  data-theme="a" data-inline="true"/>Create Mix</a>
+      <a id="addVideoBtn" data-role="button" data-theme="a" data-inline="true"/>Add Video</a>
     </div>
     <div class ="tabs" data-role="navbar" style="width: 350px">
       <ul>
@@ -76,9 +76,9 @@
     </div>
 
     <div class="previewTitle">
-      <a id="prevRemix" data-role="button" data-theme="a" data-inline="true" class="back"/>back</a>
+      <a id="prevRemix" data-role="button" data-theme="a" data-inline="true" class="back"/>Back</a>
       <div class="titleDiv">Rainy days...</div>
-      <a id="nextRemix" data-role="button" data-theme="a" data-inline="true" class="next" />next</a>
+      <a id="nextRemix" data-role="button" data-theme="a" data-inline="true" class="next" />Next</a>
       <div style="clear:both;"></div>
     </div>
 
@@ -91,14 +91,14 @@
   </div><!-- /header -->
   <div data-role="content">
       <p class="info">
-      Created by ...
+      Video Created by ...
       </p>
       <div id="clipWrapper">
       clip goes here
       </div>
       <a id= "backFromClip" data-role="button" data-theme="c" data-inline="true"/>Back</a>
-      <a id="saveClip" data-role="button"  data-theme="a" data-inline="true"/>Save to My Clips</a>
-      <a id="savedClip" class="ui-disabled" data-role="button"  data-theme="e" data-inline="true" style="display: none;"/> Saved to My Clips </a>
+      <a id="saveClip" data-role="button"  data-theme="a" data-inline="true"/>Save to My Videos</a>
+      <a id="savedClip" class="ui-disabled" data-role="button"  data-theme="e" data-inline="true" style="display: none;"/> Saved to My Videos </a>
   </div><!-- /content -->
 </div><!-- /page -->
 
@@ -117,24 +117,24 @@
     <div class="mix">
       <div class="row1">
         <div class="mixPanel" id="panel1">
-          <a class="addClip">+</a>
+          <a class="addClip">+<span>Add Video</span></a>
         </div>
         <div class="mixPanel" id="panel2" >
-          <a class="addClip">+</a>
+          <a class="addClip">+<span>Add Video</span></a>
         </div>
       </div>
       <div class="row2">
         <div class="mixPanel" id="panel3" >
-          <a class="addClip">+</a>
+          <a class="addClip">+<span>Add Video</span></a>
         </div>
         <div class="mixPanel" id="panel4">
-          <a class="addClip">+</a>
+          <a class="addClip">+<span>Add Video</span></a>
         </div>
       </div>
     </div>
     <div style="text-align: center;">
       <a id="cancelCreateMix" href="#main" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
-      <a id="createMix" data-role="button"  data-theme="a" data-inline="true"/>Create New Mix</a>
+      <a id="createMix" data-role="button"  data-theme="a" data-inline="true"/>Create Mix</a>
     </div>
   </div><!-- /content -->
 
@@ -169,17 +169,17 @@
 
     <h1>Create a New Clip</h2>
     <p>
-      Choose a video on your phone / tablet / computer to turn into a clip. Remix The City would upload it to the Clip Library and turn it into a 3 second animation that you can use in your mixes.
+      Choose a video on your phone, tablet, or computer that you want to add. Remix the City will upload it, and turn it into a three-second animation. Then you can use it in your mixes.
     </p>
     <p>
-      We recomend you use videos less then 10 seconds to speed up the process and look nicer :)
+      Hint: We recommend you use videos that are recorded in landscape and are less than 10-seconds long in order to speed up the process. Plus, they look better.
     </p>
     <img src="/images/lanscape_mobile.png" style="max-width: 30%"/>
     <p>Record in Landscape</p>
 
     <input id="fileInput" type="file" accept="video/*" style="position:absolute; top:-100px;">
     <div style="text-align: center;">
-      <a id="upload" onclick="" data-role="button"  data-theme="a" data-inline="true"/>Upload Video</a>
+      <a id="upload" onclick="" data-role="button"  data-theme="a" data-inline="true"/>Add Video</a>
       <a id="cancelNewClip" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
     </div>
   </div><!-- /content -->
@@ -198,18 +198,18 @@
 
     <div style="text-align: center;" id="whileUploading">
       <p>
-      Please wait while Remix Your City is uploading and processing your new clip...
+      Hang on a few seconds while Remix the City adds and processes your video.
       </p>
       <div id="progressbar"></div>
       <a id="cancelUploading" href="#newClip" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
     </div>
     <div style="text-align: center; display:none;" id="afterUploading">
       <p style="color:Green;">
-      Upload completed! You and others can now find this clip when creating a new Mix :)
+      Hooray - your video has been added. Now you and your friends can use it when creating a Mix. 
       </p>
       <a id="goToCreateMix" class="buttons fromMain" data-role="button"  data-theme="a" data-inline="true"/>Create Mix</a>
       <br>
-      <a id="uploadMore" class="buttons fromMain" data-role="button"  data-theme="a" data-inline="true"/>Upload more Clips</a>
+      <a id="uploadMore" class="buttons fromMain" data-role="button"  data-theme="a" data-inline="true"/>Add Another Video</a>
       <br>
       <a id="backToMix" class="buttons fromMix" data-role="button"  data-theme="a" data-inline="true"/>Back to Mix</a>
     </div>
@@ -242,6 +242,6 @@
 <script src="javascripts/async.js"></script>
 <script src="javascripts/functions.js?r=9"></script>
 <script src="javascripts/uploader.js?r=9"></script>
-<script src="javascripts/app.js?r=9"></script>
+<script src="javascripts/app.js?r=10"></script>
 </body>
 </html>

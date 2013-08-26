@@ -104,6 +104,15 @@ div.mixPanel a {
 	font-size: 35px;
 	position: absolute;
 }
+div.mixPanel span {
+	position: absolute;
+	font-size: 14px;
+	color: #000;
+	opacity: 0.4;
+	top: 60px;
+	left: -11px;
+	min-width: 80px;
+}
 
 
 div.mixPanel a:hover {

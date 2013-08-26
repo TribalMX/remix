@@ -158,8 +158,8 @@ jQuery(function ($){
       this.$mixSlider = this.$main.find('#mixSlider');
 
       if(!App.isLoginPage){
-        this.$newMixBtn = this.$main.find('#newMixBtn');
-        this.$newClipBtn = this.$main.find('#newClipBtn');
+        this.$createMixBtn = this.$main.find('#createMixBtn');
+        this.$addVideoBtn = this.$main.find('#addVideoBtn');
         this.$featuredMixes = this.$main.find('#featuredMixes');
         this.$recentMixes = this.$main.find('#recentMixes');
         this.$myMixes = this.$main.find('#myMixes');
@@ -212,7 +212,7 @@ jQuery(function ($){
       this.$prevRemix.on('click', this.slidePrev);
 
       if(!App.isLoginPage) {
-        this.$newClipBtn.on('click', this.openNewClipPage);
+        this.$addVideoBtn.on('click', this.openNewClipPage);
         this.$featuredMixes.on('click', this.selectTab);
         this.$recentMixes.on('click', this.selectTab);
         this.$myMixes.on('click', this.selectTab);
@@ -435,7 +435,7 @@ jQuery(function ($){
         },
         success: function(result) {
           console.log(result);
-          App.$clip.find('.info').html("Created by " + result.clip.created_by.name);
+          App.$clip.find('.info').html("Video Created by " + result.clip.created_by.name);
           if(!result.alreadyHave) {
             App.$saveClip.removeClass('ui-disabled');
           } else {
