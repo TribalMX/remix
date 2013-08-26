@@ -21,8 +21,8 @@
     </div>
     <div class ="tabs" data-role="navbar" style="width: 350px">
       <ul>
-        <li class="fl"><a id="featuredMixes" class="ui-btn-active">Featured Mixes</a> </li>
-        <li class="fl"><a id="recentMixes">Recent Mixes</a> </li>
+        <li class="fl"><a id="featuredMixes" class="ui-btn-active">Featured</a> </li>
+        <li class="fl"><a id="recentMixes">Recent</a> </li>
         <li class="fl"><a id="myMixes">My Mixes</a></li>
       </ul>
     </div>
@@ -111,24 +111,25 @@
 
   <div data-role="content">
     <div data-role="fieldcontain" class="ui-hide-label">
+    <p>Make a mix. Just click the panel to add from your existing clips.</p>  
       <label for="mixTitle">Mix Title:</label>
       <input type="text" name="mixTitle" id="mixTitle" value="" placeholder="Title of New Mix"/>
     </div>
     <div class="mix">
       <div class="row1">
         <div class="mixPanel" id="panel1">
-          <a class="addClip">+<span>Add Video</span></a>
+          <a class="addClip">+<span>Add a Clip</span></a>
         </div>
         <div class="mixPanel" id="panel2" >
-          <a class="addClip">+<span>Add Video</span></a>
+          <a class="addClip">+<span>Add a Clip</span></a>
         </div>
       </div>
       <div class="row2">
         <div class="mixPanel" id="panel3" >
-          <a class="addClip">+<span>Add Video</span></a>
+          <a class="addClip">+<span>Add a Clip</span></a>
         </div>
         <div class="mixPanel" id="panel4">
-          <a class="addClip">+<span>Add Video</span></a>
+          <a class="addClip">+<span>Add a Clip</span></a>
         </div>
       </div>
     </div>
@@ -153,7 +154,7 @@
     <a id='moreClipsBtn' href="#" data-role=""  data-iconpos="right" data-theme="a" data-inline="false"/>Load More...</a>
     </br>
     <div style="text-align: center; background-color: #F7F7F7" data-position="fixed">
-      <a id="uploadClip" href="#" data-role="button"  data-theme="a" data-inline="true"/>Upload Clip</a>
+      <a id="uploadClip" href="#" data-role="button"  data-theme="a" data-inline="true"/>Add Video</a>
       <a id ="closeLibrary" href="#newMix" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
     </div>
   </div><!-- /content -->

@@ -369,6 +369,8 @@ jQuery(function ($){
       }
     },
     loadRemix: function(remix, $mix) {
+      console.log(location);
+      console.log(location.href);
       var remixUrl = encodeURIComponent(location.href+"remixes/" + remix._id);
       var str = '<a class="share" href="https://www.facebook.com/sharer/sharer.php?u='+remixUrl+'" target="_blank">Share on Facebook</a>';
       var clips = remix.clips;
