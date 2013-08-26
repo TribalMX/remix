@@ -22,8 +22,11 @@
       <a href="#kidpopup" data-rel="popup" data-role="button"  data-theme="a" data-inline="true"/>I'm under 13</a>
       <div data-role="popup" id="kidpopup" style="padding: 10px;">
         <p>Enter Your Password</p>
-        <input id="pwdField" type="text">
-        <button id="kidLoginBtn">Submit</button>
+        <form id="loginForm" data-ajax="false">
+          <input type="hidden" name="username" value="remixKid">
+          <input type="text" name="password">
+          <input type="submit" value="submit">
+        </form>
       </div>
     </div>
     <div id="mixSlider">
@@ -96,17 +99,21 @@
 <script src="javascripts/functions.js?r=9"></script>
 <script src="javascripts/app.js?r=9"></script> 
 <script type="text/javascript">
-  $('#kidLoginBtn').click( function() {
-    if($('#pwdField').val()){
-      $.post( '/login', {username: "remixKid", password: $('#pwdField').val()}, function(data) {
-        if(data.user){
-          window.location.replace("/");
+  $('#loginForm').on('submit', function(event) {
+    event.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url: '/login',
+      data: $(this).serialize(),
+      success: function(result) {
+        if(result.user){
+          window.location.replace('/');
         } else {
-          alert("Wrong Password");
+          alert("wrong Password");
         }
-      });
-    }
-  }); 
+      }
+    });
+  })
 </script> 
 </body>
 </html>
