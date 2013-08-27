@@ -631,6 +631,7 @@ jQuery(function ($){
         App.$mixSlider.find('.mixPanel').data('clip', null);
         App.$mixSlider.find('.mixPanel').css("background", "");
         App.$mixSlider.find('.mixPanel').removeClass('loaded');
+        App.$mixSlider.find('.titleRow').html('');
 
         var tabName = "";
         var tabId = $(this).attr('id');
