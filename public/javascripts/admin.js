@@ -320,17 +320,19 @@ jQuery(function ($){
       });
     },
     showAllMixes: function() {
-      if($(this).hasClass("ui-btn-active")){
+      if($(this).hasClass("selected")){
         //DO NOTHING
       } else {
+        RemixesPage.$featuredMixes.removeClass('selected');
         RemixesPage.selectedTab = "all";
         RemixesPage.fetchMixes();
       }
     }, 
     showFeaturedMixes: function() {
-      if($(this).hasClass("ui-btn-active")){
+      if($(this).hasClass("selected")){
         //DO NOTHING
       } else {
+        RemixesPage.$allMixes.removeClass('selected');
         RemixesPage.selectedTab = "featured";
         RemixesPage.fetchMixes();
       } 

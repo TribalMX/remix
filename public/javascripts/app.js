@@ -622,7 +622,12 @@ jQuery(function ($){
     },
     selectTab: function() {
       //If this tab is not already selected
-      if(!$(this).hasClass("ui-btn-active")) {
+      if(!$(this).hasClass("selected")) {
+        App.$featuredMixes.removeClass('selected');
+        App.$recentMixes.removeClass('selected');
+        App.$myMixes.removeClass('selected');
+        $(this).addClass("selected");
+
         App.$mixSlider.find('.mixPanel').data('clip', null);
         App.$mixSlider.find('.mixPanel').css("background", "");
         App.$mixSlider.find('.mixPanel').removeClass('loaded');
