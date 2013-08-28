@@ -520,7 +520,6 @@ jQuery(function ($){
       } else if (cursor == items.length-1){
         //hide next button;
         App.$nextRemix.hide();
-        //TODO
         //cursor is on the last index
         //Load More /TODO: show wheeling sign
         if(App.selectedTab == "my" || App.selectedTab == "featured"){
@@ -529,11 +528,8 @@ jQuery(function ($){
           //fetch only approved mixes
           App.fetchMoreRecentMixes(remixes, cursor);
         }
-
-
       }
       console.log("after next cursor: " + App[curName]);
-
     },
     fetchMoreRecentMixes: function(remixes, cursor) {
       remixes.fetchAndAppend({
