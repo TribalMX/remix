@@ -49,12 +49,18 @@ module.exports = function(passport, config) {
           return done(null, false, { message: 'Unknown user' });
         }
         //Passwords are hardcoded for now
-        if ( username == "remixKid" && !(password == "fabspaces")) {
-          return done(null, false, { message: 'Incorrect password.' });
-        } else if (username == "remixAdmin" && !(password == "adminPassword")) {
-          return done(null, false, { message: 'Incorrect password.' });
-        }
-        return done(null, user);
+        if( username == "remixKid") {
+          if(password != "fabspaces") {
+            return done(null, false, { message: 'Incorrect password.' });
+          }
+          return done(null, user);
+        } else if (username == "remixAdmin") {
+          if(password != "adminPassword") {
+            return done(null, false, { message: 'Incorrect password.' });
+          }
+          return done(null, user);
+        } 
+        return done(null, false, { message: 'Invalid user' });
       });
     }
   ));

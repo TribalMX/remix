@@ -260,65 +260,63 @@ jQuery(function ($){
             loaded++;
             if(loaded == total) {
               //cb
-              console.log("Loaded all images");
+              console.log("Preloaded all images");
             }
           });
         }
       }
     },
     fetchRecentMixes: function() {
-      var $mixSlider = this.$mixSlider;
-      App.$prevRemix.hide();
-      // App.$nextRemix.hide();
+      var options = {limit: 10};
+      var rmx = this.publicRemixes;
+      //If it's not initial fetch, fetch next remixes with date less than last fetched remixes
+      if(rmx.get().length > 0) {
+        options.date_lt =  rmx.getLast().created_at;
+      }
       //fetch remixes
-      this.publicRemixes.fetch({
-        limit: 10
-      }, {
+      rmx.fetchAndAppend(options, {
         success: function(remixes){
-          //filter out unapproved results
-          remixes = remixes.filter(function(element, index, array){
-            return element.clips[0].approved && element.clips[1].approved && element.clips[2].approved && element.clips[3].approved;
-          });
-          for(var i=0; i < remixes.length && i < 2; i++) {
-            if(i == 0) {
-              App.pubRemixesCursor = 0;
-              // $mix = App.$mixSlider.find('.mix:nth-child(2)');
+          //Get approved remixes from the collection
+          var approved = rmx.getApproved();
+          if(remixes.length > 0) {
+            // If less then two remixes are approved, fetch more
+            if(approved.length < 2) {
+              console.log(approved);
+              console.log("FetchRecentMixes: Not enough approved remixes are fetched (less than two), fetch more");
+              App.fetchRecentMixes();
             } else {
-              // $mix = App.$mixSlider.find('.mix:nth-child(3)');
+              App.pubRemixesCursor = 0;
+              App.preloadGifs(approved); 
+              console.log("FetchRecentMixes: result");
+              console.log(approved);
             }
-            // App.loadRemix(remixes[i], $mix);
-          }
-          // if(remixes.length > 1) App.$nextRemix.show();
-
-          //Preload gifs and cache them
-          App.preloadGifs(remixes); 
-
-          console.log("public Remixes");
-          console.log(remixes);
-      }});
+          } else {
+            //If there is no more items and tere is only one approved remix is fetched so far
+            if(approved.length == 1){
+              App.pubRemixesCursor = 0;
+              App.preloadGifs(approved); 
+              console.log("FetchRecentMixes: result");
+              console.log(approved);
+            } else {
+              // No approved items at all
+              console.log("FetchRecentMixes: result"); 
+              console.log(remixes); 
+            }
+          } 
+        }
+      });
     },
     fetchMyMixes: function() {
-      var $mixSlider = this.$mixSlider;
-      App.$prevRemix.hide();
-      // App.$nextRemix.hide();
       //fetch remixes
       this.remixes.fetch({
         limit: 10
       }, {
         success: function(remixes){
-          for(var i=0; i < remixes.length && i < 2; i++) {
-            if(i == 0) {
-              App.remixesCursor = 0;
-              // $mix = App.$mixSlider.find('.mix:nth-child(2)');
-            } else {
-              // $mix = App.$mixSlider.find('.mix:nth-child(3)');
-            }
-            // App.loadRemix(remixes[i], $mix);
+          if (remixes.length > 0) {
+            App.remixesCursor = 0;
+            App.preloadGifs(remixes);
           }
-          // if(remixes.length > 1) App.$nextRemix.show();
-          //Preload gifs and cache them
-          App.preloadGifs(remixes);
-          console.log("My Remixes");
+          console.log("FetchMyMixes: result");
           console.log(remixes);
       }});
     },
@@ -344,17 +342,16 @@ jQuery(function ($){
           if(remixes.length > 1) App.$nextRemix.show();
           //Preload gifs and cache them
           App.preloadGifs(remixes);
-          console.log("Featured Remixes");
+          console.log("FetchFeaturedMixes: result");
           console.log(remixes);
       }});
     },
     fetchClips: function() {
       var $clipContainer = this.$clipContainer;
-
       //fetch clips
       this.clips.fetch({limit: 10}, {success: function(clips){
         App.loadClips(clips);
-        console.log("my Clips");
+        console.log("FetchClips: result");
         console.log(clips);
       }});
     },
@@ -540,7 +537,7 @@ jQuery(function ($){
     },
     fetchMoreRecentMixes: function(remixes, cursor) {
       remixes.fetchAndAppend({
-        limit: 5,
+        limit: 10,
         date_lt: remixes.getLast().created_at
       },{
         success: function(result){
@@ -550,16 +547,23 @@ jQuery(function ($){
               return element.clips[0].approved && element.clips[1].approved && element.clips[2].approved && element.clips[3].approved;
             });
             if(approved.length == 0){
-              console.log("all of them all none approved, fetch again");
-              App.fetchMoreRecentMixes();
+              console.log(approved);
+              console.log("FetchMoreRecentMixes: All of them are not approved, fetch next");
+              App.fetchMoreRecentMixes(remixes, cursor);
             } else {
+              //Done
+              console.log("FetchMoreRecentMixes: result");
+              console.log(approved);
               App.preloadGifs(approved); 
               items = remixes.getApproved();
               App.loadRemix(items[cursor+1], App.$mixSlider.find('.mix:last'));
               App.$nextRemix.show();
             }
+          } else {
+            //Done
+            console.log("FetchMoreRecentMixes: result");
+            console.log(result);
           }
-          console.log(result);
         }
       });
     },
