@@ -287,7 +287,7 @@ jQuery(function ($){
             } else {
               App.pubRemixesCursor = 0;
               App.preloadGifs(approved); 
-              console.log("FetchRecentMixes: result");
+              console.log("FetchRecentMixes: ");
               console.log(approved);
             }
           } else {
@@ -295,11 +295,11 @@ jQuery(function ($){
             if(approved.length == 1){
               App.pubRemixesCursor = 0;
               App.preloadGifs(approved); 
-              console.log("FetchRecentMixes: result");
+              console.log("FetchRecentMixes: ");
               console.log(approved);
             } else {
               // No approved items at all
-              console.log("FetchRecentMixes: result"); 
+              console.log("FetchRecentMixes: "); 
               console.log(remixes); 
             }
           } 
@@ -316,7 +316,7 @@ jQuery(function ($){
             App.remixesCursor = 0;
             App.preloadGifs(remixes);
           }
-          console.log("FetchMyMixes: result");
+          console.log("FetchMyMixes: ");
           console.log(remixes);
       }});
     },
@@ -342,7 +342,7 @@ jQuery(function ($){
           if(remixes.length > 1) App.$nextRemix.show();
           //Preload gifs and cache them
           App.preloadGifs(remixes);
-          console.log("FetchFeaturedMixes: result");
+          console.log("FetchFeaturedMixes: ");
           console.log(remixes);
       }});
     },
@@ -351,7 +351,7 @@ jQuery(function ($){
       //fetch clips
       this.clips.fetch({limit: 10}, {success: function(clips){
         App.loadClips(clips);
-        console.log("FetchClips: result");
+        console.log("FetchClips: ");
         console.log(clips);
       }});
     },
@@ -552,7 +552,7 @@ jQuery(function ($){
               App.fetchMoreRecentMixes(remixes, cursor);
             } else {
               //Done
-              console.log("FetchMoreRecentMixes: result");
+              console.log("FetchMoreRecentMixes: ");
               console.log(approved);
               App.preloadGifs(approved); 
               items = remixes.getApproved();
@@ -561,7 +561,7 @@ jQuery(function ($){
             }
           } else {
             //Done
-            console.log("FetchMoreRecentMixes: result");
+            console.log("FetchMoreRecentMixes: ");
             console.log(result);
           }
         }
