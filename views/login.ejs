@@ -31,51 +31,6 @@
       </div>
     </div>
     <div id="mixSlider">
-      <div class="mix" style='display: none'>
-        <div class="row1">
-          <div class="mixPanel mixPanel1">
-          </div>
-          <div class="mixPanel mixPanel2">
-          </div>
-        </div>
-        <div class="row2">
-          <div class="mixPanel mixPanel3">
-          </div>
-          <div class="mixPanel mixPanel4">
-          </div>
-        </div>
-        <div class="titleRow"></div>
-      </div>
-      <div class="mix">
-        <div class="row1">
-          <div class="mixPanel mixPanel1">
-          </div>
-          <div class="mixPanel mixPanel2">
-          </div>
-        </div>
-        <div class="row2">
-          <div class="mixPanel mixPanel3">
-          </div>
-          <div class="mixPanel mixPanel4">
-          </div>
-        </div>
-        <div class="titleRow"></div>
-      </div>
-      <div class="mix" style='display: none'>
-        <div class="row1">
-          <div class="mixPanel mixPanel1">
-          </div>
-          <div class="mixPanel mixPanel2">
-          </div>
-        </div>
-        <div class="row2">
-          <div class="mixPanel mixPanel3">
-          </div>
-          <div class="mixPanel mixPanel4">
-          </div>
-        </div>
-        <div class="titleRow"></div>
-      </div>
     </div>
     <div class="previewTitle">
       <a id="prevRemix" href="#" data-role="button" data-theme="a" data-inline="true" class="back"/>Back</a>
@@ -98,23 +53,6 @@
 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
 <script src="javascripts/functions.js?r=9"></script>
-<script src="javascripts/app.js?r=15"></script> 
-<script type="text/javascript">
-  $('#loginForm').on('submit', function(event) {
-    event.preventDefault();
-    $.ajax({
-      type: 'POST',
-      url: '/login',
-      data: $(this).serialize(),
-      success: function(result) {
-        if(result.user){
-          window.location.replace('/');
-        } else {
-          alert("wrong Password");
-        }
-      }
-    });
-  })
-</script> 
+<script src="javascripts/login.js?r=1"></script> 
 </body>
 </html>
