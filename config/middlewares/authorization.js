@@ -2,7 +2,7 @@
  *  Generic require login routing middleware
  */
 exports.requiresLogin = function (req, res, next) {
-    if (!req.isAuthenticated()) {
+    if (!req.isAuthenticated() || !req.user.username) {
         return res.send('{status:Requires Authentication}', 401);
     }
     next();

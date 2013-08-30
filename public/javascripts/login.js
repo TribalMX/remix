@@ -5,7 +5,9 @@ jQuery(function ($){
       this.remixes = [];
       this.cacheElements();
       this.bindEvents();
-      this.fetchMixes();
+      if(Main.$mixSlider.length > 0) {
+        this.fetchMixes();
+      }
       this.mixTemplate = '<div class="mix" style="display: none">'
                 + '    <div class="row1">'
                 + '        <div class="mixPanel mixPanel1"></div>'
@@ -21,10 +23,12 @@ jQuery(function ($){
     },
     cacheElements: function() {
       this.$main = $('#main');
-      this.$loginForm = this.$main.find('#loginForm');
       this.$mixSlider = this.$main.find('#mixSlider');
       this.$prevRemix = this.$main.find('#prevRemix');
       this.$nextRemix = this.$main.find('#nextRemix');
+
+      this.$login = $('#login');
+      this.$loginForm = this.$login.find('#loginForm');
     },
     bindEvents: function() {
       this.$loginForm.on('submit', this.login);

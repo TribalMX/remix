@@ -1,0 +1,51 @@
+<div data-role="page" id="main"> <!--MAIN PAGE -->
+  <div data-role="header" class="banner">
+    <h1 class='logoHeader'></h1>
+  </div>
+  <div data-role="content">   
+    <div style="text-align: center;">
+      <p>Discover & Remix Your Surroundings </p>
+      <a href="#login" data-role="button" data-theme="a" data-inline="true">Sign Up Or Login</a>
+    </div>
+    <p>Featured Mixes</p>
+    <div id="mixSlider">
+    </div>
+    <div class="previewTitle">
+      <a id="prevRemix" data-role="button" data-theme="a" data-inline="true" class="back"/>Back</a>
+      <div class="titleDiv">Rainy days...</div>
+      <a id="nextRemix" data-role="button" data-theme="a" data-inline="true" class="next" />Next</a>
+      <div style="clear:both;"></div>
+    </div>
+  </div>
+</div><!-- /page -->
+
+<div data-role="page" id="login"> <!--LOGIN PAGE -->
+  <div data-role="header" class="banner">
+    <h1 class='logoHeader'></h1>
+  </div>
+  <div data-role="content">   
+    <div style="text-align: center;">
+      <p>Join Remix The City Now!</p>
+      <a href="/auth/facebook" rel="external" data-role="button"  data-theme="a" data-inline="true"/>Log in with Facebook</a> 
+      <p>Are you under 13, or do not have a Facebook account?</p>
+      <form id="loginForm" data-ajax="false">
+        <input type="text" name="username" placeholder="Your Email">
+        <input type="password" name="password" placeholder="Your Password">
+        <a href="#register" data-role="button" data-inline="true">New Account</a>
+        <input type="submit" value="Login" data-inline="true">
+      </form>
+      <a href="#">Forgot Password?</a>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" id="register"> <!--REGISTER PAGE -->
+  <div data-role="header" class="banner">
+    <h1 class='logoHeader'></h1>
+  </div>
+  <div data-role="content">   
+    <div style="text-align: center;">
+      <p>New user register here</p>
+    </div>
+  </div>
+</div>

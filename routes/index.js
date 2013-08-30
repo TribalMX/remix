@@ -11,10 +11,19 @@ var request = require('request')
  */
 
 exports.index = function(req, res){
-  if(!req.isAuthenticated()) {
-    res.render('login');
+  if(req.isAuthenticated()) {
+    if(!req.user.username) {
+    //If user is not full registerd yet(for fb user)
+      var user = req.user;
+      //Terminate the created session
+      req.logout();
+      res.render('login', {page: "fbUserRegister", user: user});
+    } else {
+    //Log in to the app
+      res.render('index'); 
+    }
   } else {
-    res.render('index');
+    res.render('login', {page: "main"});
   }
 }
 exports.remix = function(req, res){
@@ -22,7 +31,6 @@ exports.remix = function(req, res){
   data.username = videogami.user;
   data.token = videogami.api_key;
 
-  // Remix.findById('520adaa69cf9d5469e000002', function(err, remix){
   Remix.findById(req.params.id, function(err, remix){
     if (err) {console.log(err); return res.send(500);}
     if(!remix) return res.send(404);

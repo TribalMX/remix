@@ -9,38 +9,11 @@
   <link rel="stylesheet" media="only screen and (-webkit-min-device-pixel-ratio: 2)" type="text/css" href="stylesheets/retina.css" />
 </head> 
 <body> 
-
-<div data-role="page" id="main"> <!--MAIN PAGE -->
-  <div id="loginPage"></div>
-
-  <div data-role="header" class="banner">
-    <h1 class='logoHeader'></h1>
-  </div><!-- /header -->
-  <div data-role="content">   
-    <div style="text-align: center;">
-      <p>Glad you're here. Start remixing your city.</p>
-      <a href="/auth/facebook" rel="external" data-role="button"  data-theme="a" data-inline="true"/>Log in with Facebook</a> 
-      <a href="#kidpopup" data-rel="popup" data-role="button"  data-theme="a" data-inline="true"/>Under 13? Log in Here</a>
-      <div data-role="popup" id="kidpopup" style="padding: 10px;">
-        <p>Enter Your Password</p>
-        <form id="loginForm" data-ajax="false">
-          <input type="hidden" name="username" value="textile">
-          <input type="text" name="password">
-          <input type="submit" value="OK">
-        </form>
-      </div>
-    </div>
-    <div id="mixSlider">
-    </div>
-    <div class="previewTitle">
-      <a id="prevRemix" href="#" data-role="button" data-theme="a" data-inline="true" class="back"/>Back</a>
-      <div class="titleDiv">Rainy days...</div>
-      <a id="nextRemix" href="#" data-role="button" data-theme="a" data-inline="true" class="next" />Next</a>
-      <div style="clear:both;"></div>
-    </div>
-
-  </div><!-- /content -->
-</div><!-- /page -->
+<% if (page == "main") { %>
+  <% include login-main.ejs %>
+<% } else if (page == "fbUserRegister") {%>
+  <% include login-fbUsrReg.ejs %>
+<% } %>
 <script>
    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
