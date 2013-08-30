@@ -359,7 +359,7 @@ jQuery(function ($){
       App.$clipContainer.html('');
       for( var i =0; i < clips.length; i++) {
         var gifUrl = clips[i].gif;
-        var onerror = "this.src='/images/agifClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";               
+        var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";               
         var $clip = $('<a class="clip"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>');
         $clip.data("obj", clips[i]);
         $clip.appendTo(App.$clipContainer);
@@ -392,7 +392,7 @@ jQuery(function ($){
           if(clips.length > 0) {
             for( var i =0; i < clips.length; i++) {
               var gifUrl = clips[i].gif;
-              var onerror = "this.src='/images/agifClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
+              var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
               var $clip = $('<a class="clip"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>');
               $clip.data("obj", clips[i]);
               $clip.appendTo(App.$clipContainer);
@@ -466,7 +466,7 @@ jQuery(function ($){
 
           //prepend the clip to the library
           var gifUrl = clip.gif;
-          var onerror = "this.src='/images/agifClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
+          var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
           var $clip = $('<a class="clip"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>'); 
           $clip.data("obj", clip);
           $clip.prependTo(App.$clipContainer);
@@ -813,7 +813,7 @@ jQuery(function ($){
 
                   //prepend the clip to the library
                   var gifUrl = clip.gif;
-                  var onerror = "this.src='/images/agifClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
+                  var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
                   var $clip = $('<a class="clip"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>'); 
                   $clip.data("obj", clip);
                   $clip.prependTo(App.$clipContainer);
