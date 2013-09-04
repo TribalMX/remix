@@ -16,7 +16,7 @@ var express = require('express')
 // Bootstrap db connection
 mongoose.connect(config.db);
 // Bootstrap models
-var models_path = __dirname +   '/models'
+var models_path = __dirname +   '/models';
 fs.readdirSync(models_path).forEach(function (file) {
   if (~file.indexOf('.js')) require(models_path + '/' + file)
 })
@@ -92,6 +92,40 @@ app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/'}));
 app.get('/logout', routes.logout);
 
+//Test
+
+console.log("TEST START");
+var User = mongoose.model('User')
+// // create a user a new user
+var testUser = new User({
+    username: "test",
+    name: "testName",
+    email: "sample@sample.net",
+    password: "Password"
+});
+ 
+// save user to database
+testUser.save(function(err) {
+  if (err) throw err;
+  // fetch user and test password verification
+  User.findOne({ username: 'test' }, function(err, user) {
+      console.log(user);
+      if (err) throw err;
+      // test a matching password
+      user.comparePassword('Password', function(err, isMatch) {
+          if (err) throw err;
+          console.log('Password:', isMatch); // -&gt; Password123: true
+      });
+   
+      // test a failing password
+      user.comparePassword('123Password', function(err, isMatch) {
+          if (err) throw err;
+          console.log('123Password:', isMatch); // -&gt; 123Password: false
+      });
+      user.remove();
+  });
+});
+//Test Done
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Remix the City listening on port ' + app.get('port') + " for " + env);
 });

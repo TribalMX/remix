@@ -45,7 +45,22 @@
   </div>
   <div data-role="content">   
     <div style="text-align: center;">
-      <p>New user register here</p>
+      <p>Join Remix The City Now!</p>
+      <form id="registerForm" data-ajax="false" data-role="controlgroup">
+        <input type="text" name="name" placeholder="Your Name"> 
+        <input type="email" name="email" placeholder="Your Email"> 
+        <input type="text" name="username" placeholder="Choose username"> 
+        <input type="password" name="password" placeholder="Enter Password"> 
+        <input type="password" name="confirm" placeholder="Confirm Password"> 
+      </form> 
+      <fieldset data-role="controlgroup" data-mini="true">
+        <input type="checkbox" name="checkbox-terms" id="checkbox-terms" />
+        <label for="checkbox-terms">I agree to Terms & Conditions</label>
+        <input type="checkbox" name="checkbox-under13" id="checkbox-under13" / >
+        <label for="checkbox-under13">I'm under 13 & the email above belongs to my parents</label>
+      </fieldset>
+      <a href="#main" id="registerCancel" data-role="button" data-inline="true">Cancel</a> 
+      <a id="register" data-role="button" data-inline="true" class="ui-disabled" data-theme="b">Register</a> 
     </div>
   </div>
 </div>

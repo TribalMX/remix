@@ -24,10 +24,10 @@ module.exports = function(passport, config) {
       User.findOne({'facebook.id': profile.id}, function(err, user) {
         if (err) { return done(err);}
         if (!user) {
-          //When fb user is first login, save user info to db without username(indicates that user is not fully registered)
           user = new User({
             name: profile.displayName,
             email: profile.emails[0].value,
+            username: profile.username,
             provider: 'facebook',
             facebook: profile._json
           });
