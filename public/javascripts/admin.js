@@ -86,7 +86,7 @@ jQuery(function ($){
         success: function(clips) {
           ClipsPage.clips = clips;
           $.each(ClipsPage.clips, function(i, clip){
-            var onerror = "this.src='/images/agifClip.gif';this.parentNode.className='clip notReady ui-link';this.onload='';";
+            var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='clip notReady ui-link';this.onload='';";
             var onload = "this.parentNode.className='clip ui-link';";
             var $clip = $('<a class="clip notReady"><img src="'+ clip.gif +'" onload="'+onload+'" onerror="'+onerror+'"/></a>');
             $clip.appendTo(ClipsPage.$clipsContainer);
