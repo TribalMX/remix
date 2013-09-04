@@ -85,7 +85,8 @@ app.get('/', routes.index);
 app.get('/remixes/:id', routes.remix);
 app.get('/admin', routes.admin);
 
-//Authentication Routes
+//Authentication and User Routes
+app.post('/users', routes.createUser);
 app.post('/login', passport.authenticate('local', {failureRedirect: '/'}), routes.login);
 app.post('/loginAdmin', passport.authenticate('local', {failureRedirect: '/admin'}), routes.loginAdmin);
 app.get('/auth/facebook', passport.authenticate('facebook'));
@@ -98,17 +99,18 @@ console.log("TEST START");
 var User = mongoose.model('User')
 // // create a user a new user
 var testUser = new User({
-    username: "test",
+    username: "testPwd",
     name: "testName",
-    email: "sample@sample.net",
+    email: "sample@sample2.net",
     password: "Password"
 });
  
 // save user to database
 testUser.save(function(err) {
+  console.log("Password Hasing Test");
   if (err) throw err;
   // fetch user and test password verification
-  User.findOne({ username: 'test' }, function(err, user) {
+  User.findOne({ username: 'testPwd' }, function(err, user) {
       console.log(user);
       if (err) throw err;
       // test a matching password
@@ -125,6 +127,7 @@ testUser.save(function(err) {
       user.remove();
   });
 });
+
 //Test Done
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Remix the City listening on port ' + app.get('port') + " for " + env);
