@@ -6,6 +6,14 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "express": "3.3.4",
+    "ejs": "0.8.4",
+    "connect-mongo": "0.3.3",
+    "mongoose": "3.6.15",
+    "passport": "0.1.17",
+    "passport-facebook": "0.1.5",
+    "passport-local": "0.1.6",
+    "request": "2.25.0",
     "bcrypt": "0.7.6"
   }
 }

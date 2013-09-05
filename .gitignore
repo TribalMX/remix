@@ -1,3 +1,4 @@
 config/config.js
 config/videogami.js
+node_modules/bcrypt
 **~
