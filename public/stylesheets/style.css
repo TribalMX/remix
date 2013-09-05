@@ -163,7 +163,11 @@ p {
 	margin-bottom:15px;
 }
 
-
 .ui-tolito-progressbar-corner-all {
 	line-height: 2em;
+}
+
+/* Login Page*/
+.confirmation-field {
+	display: none;
 }

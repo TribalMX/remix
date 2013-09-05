@@ -95,18 +95,11 @@ exports.createUser = function(req, res){
       console.log(err);
       return res.send(500, err);
     }
-    //Create a session for this new user
-    // req.login(user, function(err) {
-      // if (err) {
-      //   console.log(err);
-      //   return res.send(500, err);
-      // }
     res.send({
       username: user.username,
       name: user.name,
       email: user.email
     }); 
-    // });
   }); //save
 };
 exports.login = function(req, res){

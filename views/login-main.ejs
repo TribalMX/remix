@@ -49,6 +49,10 @@
       <form id="registerForm" data-ajax="false" data-role="controlgroup">
         <input type="text" name="name" placeholder="Your Name"> 
         <input type="email" name="email" placeholder="Your Email"> 
+        <span class="confirmation-field"> <!-- Used for invisible captcha-->
+          <label for="email-confirmation">Email confirmation:</label>
+          <input type="text" class="ic" name="email-confirmation" value="" />
+        </span>
         <input type="text" name="username" placeholder="Choose Username"> 
         <input type="password" name="password" placeholder="Enter Password"> 
         <input type="password" name="confirm" placeholder="Confirm Password"> 

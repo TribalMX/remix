@@ -57,7 +57,7 @@ jQuery(function ($){
       //Check if all input feilds are not empty
       inputs = Main.$registerForm.find('input');
       $.each(inputs, function(i,value){
-        if(!$(value).val()) {
+        if(!$(value).hasClass('ic') && !$(value).val()) {
           isAllNoneEmpty = false;
         } 
       });
@@ -138,17 +138,25 @@ jQuery(function ($){
       var isValidEmail = false;
       var isValidPassword = false;
       var isPasswordMatch = false;
-      //email
+      var isHuman = false;
+
+      // Check Email
       var email = Main.$registerForm.find('input[name=email]').val();
       var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       isValidEmail = re.test(email);
-      //password
+
+      // Check Password
       var password = Main.$registerForm.find('input[name=password]').val();
       var confirm = Main.$registerForm.find('input[name=confirm]').val();
       isPasswordMatch = (password === confirm);
       isValidPassword = (password.length > 5);
 
-      if(isValidEmail && isValidPassword && isPasswordMatch) {
+      // Check Human
+       if(!Main.$registerForm.find('input[name=email-confirmation]').val()) {
+        isHuman = true;
+       }
+
+      if(isValidEmail && isValidPassword && isPasswordMatch && isHuman) {
         Main.$msgBox.html('<br>');
         Main.$registerForm.submit();
       } else if(!isValidEmail){
