@@ -116,7 +116,13 @@ exports.login = function(req, res){
 };
 exports.loginAdmin = function(req, res){
   var data = null;
-  if(req.user && req.user.username == "remixAdmin") data = {user: req.user.username};
+  if(req.user) {
+    if(req.user.username == "remixAdmin") {
+      data = {user: req.user.username};
+    } else {
+      req.logout();
+    }
+  } 
   res.send(data);
 };
 exports.logout = function(req, res){
