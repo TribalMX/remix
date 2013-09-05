@@ -82,12 +82,7 @@ exports.admin = function(req, res){
   }
 };
 exports.createUser = function(req, res){
-  //Testing Data
-  req.body.username = "test";
-  req.body.name = "test";
-  req.body.email = "test@test.net";
-  req.body.password = "testPwd";
-
+  //Create new user 
   var user = new User({
     username: req.body.username,
     name: req.body.name,
@@ -100,26 +95,18 @@ exports.createUser = function(req, res){
       console.log(err);
       return res.send(500, err);
     }
-    // Remove user for testing purpose //RM
-    User.findOne({ username: 'test' }, function(err, found) {
-      found.remove();
-
     //Create a session for this new user
-    req.login(user, function(err) {
-      if (err) {
-        console.log(err);
-        return res.send(500, err);
-      }
-      console.log(req.user);
-      return res.send({
-        username: req.user.username,
-        name: req.user.name,
-        email: req.user.email
-      }); 
-    });
-
-    });//User.findOne //RM
-
+    // req.login(user, function(err) {
+      // if (err) {
+      //   console.log(err);
+      //   return res.send(500, err);
+      // }
+    res.send({
+      username: user.username,
+      name: user.name,
+      email: user.email
+    }); 
+    // });
   }); //save
 };
 exports.login = function(req, res){

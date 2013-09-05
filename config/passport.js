@@ -32,7 +32,14 @@ module.exports = function(passport, config) {
             facebook: profile._json
           });
           user.save(function (err){
-            if (err) console.log(err);
+            if (err) { console.log(err); return done(err); }
+            return done(err, user);
+          });
+        //Some user created in  beta1 doesn't have email. So, create them
+        } else if(!user.email) {
+          user.email = profile.emails[0].value;
+          user.save(function (err){
+            if (err) { console.log(err); return done(err); }
             return done(err, user);
           });
         } else {
@@ -41,27 +48,26 @@ module.exports = function(passport, config) {
       });
     }
   ));
-  passport.use(new LocalStrategy(
-    function(username, password, done) {
-      User.findOne({'username': username}, function(err, user) {
+  // use local strategy
+  passport.use(new LocalStrategy({
+      usernameField: 'email',
+      passwordField: 'password'
+    },
+    function(email, password, done) {
+      User.findOne({ email: email }, function (err, user) {
         if (err) { return done(err); }
         if (!user) {
-          return done(null, false, { message: 'Unknown user' });
+          return done(null, false, { message: 'Unknown user' })
         }
-        //Passwords are hardcoded for now
-        if( username == "remixKid") {
-          if(password != "fabspaces") {
-            return done(null, false, { message: 'Incorrect password.' });
+        user.comparePassword(password, function(err, isMatch) {
+          if (err) { return done(err); } 
+          if(!isMatch) {
+            return done(null, false, { message: 'Invalid password' });
+          } else {
+            return done(null, user);
           }
-          return done(null, user);
-        } else if (username == "remixAdmin") {
-          if(password != "adminPassword") {
-            return done(null, false, { message: 'Incorrect password.' });
-          }
-          return done(null, user);
-        } 
-        return done(null, false, { message: 'Invalid user' });
-      });
+        });
+      })
     }
   ));
 }

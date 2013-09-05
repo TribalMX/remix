@@ -29,12 +29,12 @@
       <a href="/auth/facebook" rel="external" data-role="button"  data-theme="a" data-inline="true"/>Log in with Facebook</a> 
       <p>Are you under 13, or do not have a Facebook account?</p>
       <form id="loginForm" data-ajax="false">
-        <input type="text" name="username" placeholder="Your Email">
+        <input type="text" name="email" placeholder="Your Email">
         <input type="password" name="password" placeholder="Your Password">
         <a href="#register" data-role="button" data-inline="true">New Account</a>
         <input type="submit" value="Login" data-inline="true">
       </form>
-      <a href="#">Forgot Password?</a>
+      <!-- <a href="#">Forgot Password?</a> -->
     </div>
   </div>
 </div>
@@ -49,18 +49,33 @@
       <form id="registerForm" data-ajax="false" data-role="controlgroup">
         <input type="text" name="name" placeholder="Your Name"> 
         <input type="email" name="email" placeholder="Your Email"> 
-        <input type="text" name="username" placeholder="Choose username"> 
+        <input type="text" name="username" placeholder="Choose Username"> 
         <input type="password" name="password" placeholder="Enter Password"> 
+        <input type="password" name="confirm" placeholder="Confirm Password"> 
       </form> 
-      <input type="password" name="confirm" placeholder="Confirm Password"> 
-      <fieldset data-role="controlgroup" data-mini="true">
+      <fieldset id="checkboxes" data-role="controlgroup" data-mini="true">
         <input type="checkbox" name="checkbox-terms" id="checkbox-terms" />
         <label for="checkbox-terms">I agree to Terms & Conditions</label>
         <input type="checkbox" name="checkbox-under13" id="checkbox-under13" / >
         <label for="checkbox-under13">I'm under 13 & the email above belongs to my parents</label>
       </fieldset>
+      <div id="msgBox">
+        <br>
+      </div>
       <a href="#main" id="registerCancel" data-role="button" data-inline="true">Cancel</a> 
-      <a id="register" data-role="button" data-inline="true" class="ui-disabled" data-theme="b">Register</a> 
+      <a id="registerBtn" data-role="button" data-inline="true" class="ui-disabled" data-theme="b">Register</a> 
+    </div>
+  </div>
+</div>
+
+<div data-role="page" id="registered"> <!--LOGIN PAGE -->
+  <div data-role="header" class="banner">
+    <h1 class='logoHeader'></h1>
+  </div>
+  <div data-role="content">   
+    <div style="text-align: center;">
+      <p>You are now successfully registered!</p>
+      <a href="#login" data-role="button" data-inline="true" data-theme="b" >Go to Log In Page</a>
     </div>
   </div>
 </div>

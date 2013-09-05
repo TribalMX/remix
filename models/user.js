@@ -38,6 +38,9 @@ UserSchema.path('email').validate(function (email) {
 }, 'Email cannot be blank');
 
 UserSchema.path('email').validate(function (email, fn) {
+  //Facebook sometimes returns undefined for email
+  if(typeof email == 'undefined') return fn(true);
+
   var User = mongoose.model('User');
   var user = this;
   // Check only when it is a new user or when email field is modified
@@ -55,6 +58,19 @@ UserSchema.path('username').validate(function (username) {
   if (authTypes.indexOf(this.provider) !== -1) return true
   return username.length
 }, 'Username cannot be blank');
+
+UserSchema.path('username').validate(function (username, fn) {
+  var User = mongoose.model('User');
+  var user = this;
+  // Check only when it is a new user or when username field is modified
+  if (user.isNew || user.isModified('username')) {
+    User.find({ username: username }).exec(function (err, users) {
+      fn(err || users.length === 0);
+    });
+  } else {
+    fn(true); 
+  }
+}, 'Usernam already exists');
 
 UserSchema.path('password').validate(function (hashed_password) {
   // if you are authenticating by oauth provider, don't validate

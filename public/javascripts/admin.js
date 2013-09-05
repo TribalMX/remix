@@ -16,7 +16,7 @@ jQuery(function ($){
     },
     login: function() {
       if(Login.$username.val() && Login.$password.val()){
-        $.post( '/loginAdmin', {username: Login.$username.val(), password: Login.$password.val()}, function(data) {
+        $.post( '/loginAdmin', {email: Login.$username.val(), password: Login.$password.val()}, function(data) {
           if(data.user){
             window.location.replace("/admin");
           } else {
