@@ -208,41 +208,41 @@ jQuery(function ($){
     },
     bindEvents: function() {
       //main page
-      this.$nextRemix.on('click', this.slideNext);
-      this.$prevRemix.on('click', this.slidePrev);
+      this.$nextRemix.on('tap', this.slideNext);
+      this.$prevRemix.on('tap', this.slidePrev);
 
       if(!App.isLoginPage) {
-        this.$addVideoBtn.on('click', this.openNewClipPage);
-        this.$featuredMixes.on('click', this.selectTab);
-        this.$recentMixes.on('click', this.selectTab);
-        this.$myMixes.on('click', this.selectTab);
-        this.$mixSlider.on('click', '.mixPanel', this.selectClip);
+        this.$addVideoBtn.on('tap', this.openNewClipPage);
+        this.$featuredMixes.on('tap', this.selectTab);
+        this.$recentMixes.on('tap', this.selectTab);
+        this.$myMixes.on('tap', this.selectTab);
+        this.$mixSlider.on('tap', '.mixPanel', this.selectClip);
 
         //clip page
-        this.$saveClip.on('click', this.saveClip);
-        this.$backFromClip.on('click', this.backFromClip);
+        this.$saveClip.on('tap', this.saveClip);
+        this.$backFromClip.on('tap', this.backFromClip);
 
         //newMix page
-        this.$newMix.on('click', '.addClip', this.selectPanel);
-        this.$createMix.on('click', this.createMix);
-        this.$cancelCreateMix.on('click', this.cancelMixing);
+        this.$newMix.on('tap', '.addClip', this.selectPanel);
+        this.$createMix.on('tap', this.createMix);
+        this.$cancelCreateMix.on('tap', this.cancelMixing);
 
         //clipLibrary page
-        this.$clipLibrary.on('click', '.clip', this.addToMixPanel);
-        this.$clipLibrary.on('click', '.notReady', this.openClipLibrary)
-        this.$moreClipsBtn.on('click', this.loadMoreClips);
-        this.$uploadClip.on('click', this.openNewClipPage);
+        this.$clipLibrary.on('tap', '.clip', this.addToMixPanel);
+        this.$clipLibrary.on('tap', '.notReady', this.openClipLibrary)
+        this.$moreClipsBtn.on('tap', this.loadMoreClips);
+        this.$uploadClip.on('tap', this.openNewClipPage);
 
         //newClip page
-        this.$upload.on('click', this.openFileChooser);
-        this.$cancelNewClip.on('click', this.returnToPrev);
+        this.$upload.on('tap', this.openFileChooser);
+        this.$cancelNewClip.on('tap', this.returnToPrev);
         this.$fileInput.on('change', this.startUploading);
 
         //uploadingClip page
-        this.$cancelUploading.on('click', this.cancelUploading);
-        this.$goToCreateMix.on('click', this.openCreateMixPage);
-        this.$backToMix.on('click', this.openCreateMixPage);
-        this.$uploadMore.on('click', this.uploadMore);
+        this.$cancelUploading.on('tap', this.cancelUploading);
+        this.$goToCreateMix.on('tap', this.openCreateMixPage);
+        this.$backToMix.on('tap', this.openCreateMixPage);
+        this.$uploadMore.on('tap', this.uploadMore);
       }
     },
 
@@ -383,6 +383,7 @@ jQuery(function ($){
     },
     loadMoreClips: function() {
       var clips = App.clips.get();
+      if(clips.length < 1) return;
       //Load More /TODO: show wheeling sign
       App.clips.fetchAndAppend({
         limit: 5,

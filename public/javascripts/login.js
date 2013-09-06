@@ -38,8 +38,8 @@ jQuery(function ($){
     },
     bindEvents: function() {
       //main
-      this.$prevRemix.on('click', this.prevRemix);
-      this.$nextRemix.on('click', this.nextRemix);
+      this.$prevRemix.on('tap', this.prevRemix);
+      this.$nextRemix.on('tap', this.nextRemix);
 
       //login
       this.$loginForm.on('submit', this.login);
@@ -48,7 +48,7 @@ jQuery(function ($){
       this.$registerForm.on('keyup', 'input', this.validateInput);
       this.$checkboxes.on('change', 'input', this.validateInput);
       this.$registerForm.on('submit', this.register);
-      this.$registerBtn.on('click', this.submitRegisterForm);
+      this.$registerBtn.on('tap', this.submitRegisterForm);
     },
     validateInput: function() {
       var isAllNoneEmpty = true;
