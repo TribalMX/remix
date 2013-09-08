@@ -17,7 +17,6 @@
   <div data-role="content">
     <div style="text-align: center;">
       <a id="createMixBtn" href="#newMix" data-role="button"  data-theme="a" data-inline="true"/>Create Mix</a>
-      <a id="addVideoBtn" data-role="button" data-theme="a" data-inline="true"/>Add Video</a>
     </div>
     <div class ="tabs" data-role="navbar" style="width: 350px">
       <ul>
@@ -74,7 +73,6 @@
         <div class="titleRow"></div>
       </div>
     </div>
-
     <div class="previewTitle">
       <a id="prevRemix" data-role="button" data-theme="a" data-inline="true" class="back"/>Back</a>
       <div class="titleDiv">Rainy days...</div>
@@ -83,7 +81,41 @@
     </div>
 
   </div><!-- /content -->
+   <!-- Footer -->
+  <div class="footer" data-role="footer" data-theme="b" data-position="fixed" data-tap-toggle="false">   
+    <div data-role="navbar" >
+      <ul>
+      <li><a href="#main" class="ui-btn-active">Mixes</a></li>
+      <li><a href="#clipsMain">Clips</a></li>
+      </ul>
+    </div>
+  </div>
 </div><!-- /page -->
+
+<div data-role="page" id="clipsMain">
+  <div data-role="header" class="banner">
+    <h1 class='logoHeader'></h1>
+  </div><!-- /header -->
+  <div data-role="content">
+    <div style="text-align: center;">
+       <a id="addVideoBtn" data-role="button" data-theme="a" data-inline="true"/>Add Video</a> 
+       <div id="clipsBox" class="thumbnails"></div>
+    </div>
+    <br>
+    <a id='loadMore' data-role="button"  data-mini="true" data-theme="b" data-inline="true"/>Load More</a>
+    </br>
+  </div><!-- /content -->
+   <!-- Footer -->
+  <div class="footer" data-role="footer" data-theme="b" data-position="fixed" data-tap-toggle="false"> 
+    <div data-role="navbar" >
+      <ul>
+      <li><a href="#main">Mixes</a></li>
+      <li><a href="#clipsMain" class="ui-btn-active">Clips</a></li>
+      </ul>
+    </div>
+  </div>
+</div><!-- /page -->
+
 <div data-role="page" id="clip">
 
   <div data-role="header" class="banner">
@@ -138,7 +170,6 @@
       <a id="createMix" data-role="button"  data-theme="a" data-inline="true"/>Create Mix</a>
     </div>
   </div><!-- /content -->
-
 </div><!-- /page -->
 
 <div data-role="page" id="clipLibrary">
@@ -150,19 +181,17 @@
     <div id="clipContainer" class="thumbnails">
       <!-- Contains Clips -->
     </div>
-    <br>
-    <a id='moreClipsBtn' href="#" data-role=""  data-iconpos="right" data-theme="a" data-inline="false"/>Load More...</a>
+    <br> 
+    <a id='moreClipsBtn' data-role="button"  data-mini="true" data-theme="b" data-inline="true"/>Load More</a>
     </br>
     <div style="text-align: center; background-color: #F7F7F7" data-position="fixed">
       <a id="uploadClip" href="#" data-role="button"  data-theme="a" data-inline="true"/>Add Video</a>
       <a id ="closeLibrary" href="#newMix" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
     </div>
   </div><!-- /content -->
-
 </div><!-- /page -->
 
 <div data-role="page" id="newClip">
-
   <div data-role="header" class="banner">
     <h1 class='logoHeader'></h1>
   </div><!-- /header -->
@@ -184,8 +213,6 @@
       <a id="cancelNewClip" data-role="button"  data-theme="b" data-inline="true"/>Cancel</a>
     </div>
   </div><!-- /content -->
-
-
 </div><!-- /page -->
 
 <div data-role="page" id="uploadingClip">
@@ -208,9 +235,8 @@
       <p style="color:Green;">
       Hooray - your video has been added. Now you and your friends can use it when creating a Mix. 
       </p>
-      <a id="goToCreateMix" class="buttons fromMain" data-role="button"  data-theme="a" data-inline="true"/>Create Mix</a>
       <br>
-      <a id="uploadMore" class="buttons fromMain" data-role="button"  data-theme="a" data-inline="true"/>Add Another Video</a>
+      <a href="#clipsMain" class="buttons fromMain" data-role="button"  data-theme="b" data-inline="true"/>Close</a>
       <br>
       <a id="backToMix" class="buttons fromMix" data-role="button"  data-theme="a" data-inline="true"/>Back to Mix</a>
     </div>

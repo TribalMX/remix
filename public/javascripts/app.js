@@ -130,120 +130,119 @@ jQuery(function ($){
       this.uploader = null;
 
       //Id of the page to where page redirects
-      this.returnTo = "main";
-
-      this.isLoginPage = ($('#loginPage').length > 0);
+      this.returnTo = "clipsMain";
 
       //initiate
-      if(this.isLoginPage) {
-        this.cacheElements();
-        this.bindEvents();
-        this.fetchFeaturedMixes();
-      } else {
-        this.cacheElements();
-        this.bindEvents();
-        //TODO: loading screen
-        this.fetchFeaturedMixes();
-        //TODO: LazyLoading
-        this.fetchRecentMixes();
-        this.fetchMyMixes();
-        this.fetchClips();
-      }
+      this.cacheElements();
+      this.bindEvents();
+      //TODO: loading screen
+      this.fetchFeaturedMixes();
+      //TODO: LazyLoading
+      this.fetchRecentMixes();
+      this.fetchMyMixes();
+      this.fetchClips();
     },
     cacheElements: function() {
-      //main page
+      //main page (mixes page)
       this.$main = $('#main');
       this.$prevRemix = this.$main.find('#prevRemix');
       this.$nextRemix = this.$main.find('#nextRemix');
       this.$mixSlider = this.$main.find('#mixSlider');
+      this.$createMixBtn = this.$main.find('#createMixBtn');
+      this.$featuredMixes = this.$main.find('#featuredMixes');
+      this.$recentMixes = this.$main.find('#recentMixes');
+      this.$myMixes = this.$main.find('#myMixes');
+      this.$username = this.$main.find("#username"); //Temp
 
-      if(!App.isLoginPage){
-        this.$createMixBtn = this.$main.find('#createMixBtn');
-        this.$addVideoBtn = this.$main.find('#addVideoBtn');
-        this.$featuredMixes = this.$main.find('#featuredMixes');
-        this.$recentMixes = this.$main.find('#recentMixes');
-        this.$myMixes = this.$main.find('#myMixes');
-        this.$username = this.$main.find("#username"); //Temp
+      //main clips page
+      this.$clipsMain = $('#clipsMain');
+      this.$addVideoBtn = this.$clipsMain.find('#addVideoBtn');
+      this.$clipsBox = this.$clipsMain.find('#clipsBox');
+      this.$loadMore = this.$clipsMain.find('#loadMore');
 
-        //clip page
-        this.$clip = $('#clip');
-        this.$clipWrapper = this.$clip.find('#clipWrapper');
-        this.$saveClip = this.$clip.find('#saveClip');
-        this.$savedClip = this.$clip.find('#savedClip');
-        this.$backFromClip = this.$clip.find('#backFromClip');
+      // individual clip page
+      this.$clip = $('#clip');
+      this.$clipWrapper = this.$clip.find('#clipWrapper');
+      this.$saveClip = this.$clip.find('#saveClip');
+      this.$savedClip = this.$clip.find('#savedClip');
+      this.$backFromClip = this.$clip.find('#backFromClip');
 
-        //newMix page
-        this.$newMix = $('#newMix');
-        this.$mixTitle =this.$newMix.find('#mixTitle');
-        this.$panel1 = this.$newMix.find('#panel1');
-        this.$panel2 = this.$newMix.find('#panel2');
-        this.$panel3 = this.$newMix.find('#panel3');
-        this.$panel4 = this.$newMix.find('#panel4');
-        this.$createMix = this.$newMix.find('#createMix');
-        this.$cancelCreateMix = this.$newMix.find('#cancelCreateMix');
+      //newMix page
+      this.$newMix = $('#newMix');
+      this.$mixTitle =this.$newMix.find('#mixTitle');
+      this.$panel1 = this.$newMix.find('#panel1');
+      this.$panel2 = this.$newMix.find('#panel2');
+      this.$panel3 = this.$newMix.find('#panel3');
+      this.$panel4 = this.$newMix.find('#panel4');
+      this.$createMix = this.$newMix.find('#createMix');
+      this.$cancelCreateMix = this.$newMix.find('#cancelCreateMix');
 
-        //clipLibrary page
-        this.$clipLibrary = $('#clipLibrary');
-        this.$clipContainer = this.$clipLibrary.find('#clipContainer');
-        this.$moreClipsBtn = this.$clipLibrary.find('#moreClipsBtn');
-        this.$uploadClip = this.$clipLibrary.find('#uploadClip');
-        this.$closeLibrary = this.$clipLibrary.find('#closeLibrary');
+      //clipLibrary page
+      this.$clipLibrary = $('#clipLibrary');
+      this.$clipContainer = this.$clipLibrary.find('#clipContainer');
+      this.$moreClipsBtn = this.$clipLibrary.find('#moreClipsBtn');
+      this.$uploadClip = this.$clipLibrary.find('#uploadClip');
+      this.$closeLibrary = this.$clipLibrary.find('#closeLibrary');
 
-        //newClip page
-        this.$newClip = $('#newClip');
-        this.$fileInput = this.$newClip.find('#fileInput');
-        this.$upload = this.$newClip.find('#upload');
-        this.$cancelNewClip = this.$newClip.find('#cancelNewClip'); 
+      //newClip page
+      this.$newClip = $('#newClip');
+      this.$fileInput = this.$newClip.find('#fileInput');
+      this.$upload = this.$newClip.find('#upload');
+      this.$cancelNewClip = this.$newClip.find('#cancelNewClip'); 
 
-        //uploadingClip page
-        this.$uploadingClip = $('#uploadingClip');
-        this.$progressbar = this.$uploadingClip.find('#progressbar');
-        this.$cancelUploading = this.$uploadingClip.find('#cancelUploading');
-        this.$whileUploading = this.$uploadingClip.find('#whileUploading');
-        this.$afterUploading = this.$uploadingClip.find('#afterUploading');
-        this.$goToCreateMix = this.$uploadingClip.find('#goToCreateMix');
-        this.$uploadMore = this.$uploadingClip.find('#uploadMore');
-        this.$backToMix = this.$uploadingClip.find('#backToMix');
-      }
+      //uploadingClip page
+      this.$uploadingClip = $('#uploadingClip');
+      this.$progressbar = this.$uploadingClip.find('#progressbar');
+      this.$cancelUploading = this.$uploadingClip.find('#cancelUploading');
+      this.$whileUploading = this.$uploadingClip.find('#whileUploading');
+      this.$afterUploading = this.$uploadingClip.find('#afterUploading');
+      this.$backToMix = this.$uploadingClip.find('#backToMix');
     },
     bindEvents: function() {
+      //Navigation footer
+      // $('.footer').on('tap', 'a', function(){
+      //   alert($(this).attr('href'));
+      // });
+
       //main page
+      this.$main.on('pagebeforeshow', this.selectFooterTab);
       this.$nextRemix.on('tap', this.slideNext);
       this.$prevRemix.on('tap', this.slidePrev);
+      this.$featuredMixes.on('tap', this.selectTab);
+      this.$recentMixes.on('tap', this.selectTab);
+      this.$myMixes.on('tap', this.selectTab);
+      this.$mixSlider.on('tap', '.mixPanel', this.selectClip);
 
-      if(!App.isLoginPage) {
-        this.$addVideoBtn.on('tap', this.openNewClipPage);
-        this.$featuredMixes.on('tap', this.selectTab);
-        this.$recentMixes.on('tap', this.selectTab);
-        this.$myMixes.on('tap', this.selectTab);
-        this.$mixSlider.on('tap', '.mixPanel', this.selectClip);
+      //main clips page
+      this.$clipsMain.on('pagebeforeshow', this.selectFooterTab);
+      this.$clipsMain.on('pagebeforeshow', this.reloadProcessingClips);
+      this.$clipsBox.on('tap', '.notReady', this.reloadProcessingClips);
+      this.$addVideoBtn.on('tap', this.openNewClipPage);
+      this.$loadMore.on('tap', this.loadMoreClips);
 
-        //clip page
-        this.$saveClip.on('tap', this.saveClip);
-        this.$backFromClip.on('tap', this.backFromClip);
+      //individual clip page
+      this.$saveClip.on('tap', this.saveClip);
+      this.$backFromClip.on('tap', this.backFromClip);
 
-        //newMix page
-        this.$newMix.on('tap', '.addClip', this.selectPanel);
-        this.$createMix.on('tap', this.createMix);
-        this.$cancelCreateMix.on('tap', this.cancelMixing);
+      //newMix page
+      this.$newMix.on('tap', '.addClip', this.selectPanel);
+      this.$createMix.on('tap', this.createMix);
+      this.$cancelCreateMix.on('tap', this.cancelMixing);
 
-        //clipLibrary page
-        this.$clipLibrary.on('tap', '.clip', this.addToMixPanel);
-        this.$clipLibrary.on('tap', '.notReady', this.openClipLibrary)
-        this.$moreClipsBtn.on('tap', this.loadMoreClips);
-        this.$uploadClip.on('tap', this.openNewClipPage);
+      //clipLibrary page
+      this.$clipLibrary.on('tap', '.clip', this.addToMixPanel);
+      this.$clipLibrary.on('tap', '.notReady', this.openClipLibrary);
+      this.$moreClipsBtn.on('tap', this.loadMoreClips);
+      this.$uploadClip.on('tap', this.openNewClipPage);
 
-        //newClip page
-        this.$upload.on('tap', this.openFileChooser);
-        this.$cancelNewClip.on('tap', this.returnToPrev);
-        this.$fileInput.on('change', this.startUploading);
+      //newClip page
+      this.$upload.on('tap', this.openFileChooser);
+      this.$cancelNewClip.on('tap', this.returnToPrev);
+      this.$fileInput.on('change', this.startUploading);
 
-        //uploadingClip page
-        this.$cancelUploading.on('tap', this.cancelUploading);
-        this.$goToCreateMix.on('tap', this.openCreateMixPage);
-        this.$backToMix.on('tap', this.openCreateMixPage);
-        this.$uploadMore.on('tap', this.uploadMore);
-      }
+      //uploadingClip page
+      this.$cancelUploading.on('tap', this.cancelUploading);
+      this.$backToMix.on('tap', this.openCreateMixPage);
     },
 
     // Loaders
@@ -347,7 +346,6 @@ jQuery(function ($){
       }});
     },
     fetchClips: function() {
-      var $clipContainer = this.$clipContainer;
       //fetch clips
       this.clips.fetch({limit: 10}, {success: function(clips){
         App.loadClips(clips);
@@ -356,13 +354,15 @@ jQuery(function ($){
       }});
     },
     loadClips: function(clips) {
-      App.$clipContainer.html('');
+      App.$clipContainer.html(''); //clipLibrary
+      App.$clipsBox.html(''); //main clip page
       for( var i =0; i < clips.length; i++) {
         var gifUrl = clips[i].gif;
-        var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";               
+        var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';";               
         var $clip = $('<a class="clip"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>');
         $clip.data("obj", clips[i]);
         $clip.appendTo(App.$clipContainer);
+        $clip.clone().data("obj", clips[i]).appendTo(App.$clipsBox);
       }
     },
     loadRemix: function(remix, $mix) {
@@ -382,6 +382,7 @@ jQuery(function ($){
       $mix.addClass('loaded');
     },
     loadMoreClips: function() {
+      var $btn = $(this);
       var clips = App.clips.get();
       if(clips.length < 1) return;
       //Load More /TODO: show wheeling sign
@@ -389,29 +390,37 @@ jQuery(function ($){
         limit: 5,
         date_lt: clips[clips.length-1].created_at
       },{
+        beforeSend: function() {
+          $btn.addClass('ui-disabled');
+        },
         success: function(clips){
           if(clips.length > 0) {
             for( var i =0; i < clips.length; i++) {
               var gifUrl = clips[i].gif;
-              var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
+              var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';";
               var $clip = $('<a class="clip"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>');
               $clip.data("obj", clips[i]);
               $clip.appendTo(App.$clipContainer);
+              $clip.clone().data("obj", clips[i]).appendTo(App.$clipsBox);
             }
           }
           console.log(clips);
+        },
+        complete: function() {
+          $btn.removeClass('ui-disabled');
         }
       });
     }, 
 
     // Main Page Functionalities
+    selectFooterTab: function() {
+      var $footer = $(this).find('.footer');
+      $footer.find('a').removeClass('ui-btn-active');
+      $footer.find('a[href="#'+$(this).attr('id')+'"]').addClass('ui-btn-active');
+    },
     openCreateMixPage: function() {
       App.clearMixPanel();
       $.mobile.changePage('#newMix');
-    },
-    openNewClipPage: function() {
-      App.returnTo = $.mobile.activePage.attr('id');
-      $.mobile.changePage('#newClip');
     },
     selectClip: function() {
       $.mobile.changePage('#clip');
@@ -434,7 +443,7 @@ jQuery(function ($){
         },
         success: function(result) {
           console.log(result);
-          App.$clip.find('.info').html("Video Created by " + result.clip.created_by.name);
+          App.$clip.find('.info').html("Video Created by " + result.clip.created_by.username);
           if(!result.alreadyHave) {
             App.$saveClip.removeClass('ui-disabled');
           } else {
@@ -467,10 +476,11 @@ jQuery(function ($){
 
           //prepend the clip to the library
           var gifUrl = clip.gif;
-          var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
+          var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';";
           var $clip = $('<a class="clip"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>'); 
           $clip.data("obj", clip);
           $clip.prependTo(App.$clipContainer);
+          $clip.clone().data("obj", clip).prependTo(App.$clipsBox);
 
           //Clear data on the page
           App.$clipWrapper.data('clip', null);
@@ -691,6 +701,22 @@ jQuery(function ($){
       }
     },
 
+    //Main Clips Page
+
+    reloadProcessingClips: function() {
+      //Reload notready clips
+      App.$clipsBox.find('.notReady').each(function(){
+        var gifUrl = $(this).data('obj').gif;
+        $(this).removeClass('notReady');
+        $(this).addClass('clip');
+        $(this).find('img').attr('src',gifUrl);
+      });
+    },
+    openNewClipPage: function() {
+      App.returnTo = $.mobile.activePage.attr('id');
+      $.mobile.changePage('#newClip');
+    },
+
     //Mixing, Clip Library Functionalities
 
     selectPanel: function() {
@@ -763,12 +789,6 @@ jQuery(function ($){
 
     // NewClip Page and Uploading Functionalites
     returnToPrev: function() {
-      //when it returns to uploading complete page
-      if(App.returnTo == "uploadingClip") {
-        App.$afterUploading.find('.fromMain').show();
-        App.$whileUploading.hide();
-        App.$afterUploading.show();
-      }
       $.mobile.changePage('#'+App.returnTo);
     },
     openFileChooser: function() {
@@ -776,6 +796,8 @@ jQuery(function ($){
     },
     startUploading: function(event) {
       App.selectedFile = event.target.files[0];
+      $(this).val(''); //reset input val to change event get triggerd for same file
+
       if(App.selectedFile){
         $.mobile.changePage('#uploadingClip');
         App.$whileUploading.show();
@@ -814,10 +836,11 @@ jQuery(function ($){
 
                   //prepend the clip to the library
                   var gifUrl = clip.gif;
-                  var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';this.parentNode.href='#'";
+                  var onerror = "this.src='/images/processingClip.gif';this.parentNode.className='notReady ui-link';";
                   var $clip = $('<a class="clip"><img src="'+ gifUrl +'" onerror="'+onerror+'"/></a>'); 
                   $clip.data("obj", clip);
                   $clip.prependTo(App.$clipContainer);
+                  $clip.clone().data("obj", clip).prependTo(App.$clipsBox);
 
                   if(App.returnTo == "clipLibrary")  {
                     App.$afterUploading.find('.fromMix').show();
@@ -843,10 +866,6 @@ jQuery(function ($){
       App.selectedFile = null;
       App.uploader.cancel();
     },
-    uploadMore: function() {
-      App.returnTo = $.mobile.activePage.attr('id');
-      $.mobile.changePage('#newClip');
-    }, 
     sample: function(){
 
     }
