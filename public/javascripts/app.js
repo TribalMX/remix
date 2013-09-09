@@ -439,7 +439,6 @@ jQuery(function ($){
       $footer.find('a[href="#'+$(this).attr('id')+'"]').addClass('ui-btn-active');
     },
     openCreateMixPage: function() {
-      App.clearMixPanel();
       $.mobile.changePage('#newMix');
     },
     selectClip: function() {
@@ -783,7 +782,9 @@ jQuery(function ($){
             App.remixes.unshift(remix);
             App.remixesCursor = 0;
             $.mobile.changePage('#main');
-            App.$myMixes.removeClass("selected");
+            App.$main.find('.tabs').find('.selected').removeClass('selected');
+            App.$main.find('.tabs').find('.ui-btn-active').removeClass('ui-btn-active');
+            App.$myMixes.addClass("ui-btn-active");
             App.$myMixes.trigger('tap');
 
             console.log(remix); 
