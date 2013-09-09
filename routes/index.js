@@ -37,7 +37,7 @@ exports.remix = function(req, res){
   var data = {}
   data.username = videogami.user;
   data.token = videogami.api_key;
-
+  console.log(req.query.back);
   Remix.findById(req.params.id, function(err, remix){
     if (err) {console.log(err); return res.send(500);}
     if(!remix) return res.send(404);
@@ -63,7 +63,7 @@ exports.remix = function(req, res){
             // console.log(remix);
             var url = "http://" + req.headers.host + req.url;
             // console.log(url);
-            res.render('remix', {remix: remix, url: url});
+            res.render('remix', {remix: remix, url: url, back: req.query.back});
           }
         });
       })(i);

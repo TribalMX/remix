@@ -398,7 +398,7 @@ jQuery(function ($){
       $mix.find('.mixPanel2').css("background", "url('"+clips[1].gif+"') no-repeat");
       $mix.find('.mixPanel3').css("background", "url('"+clips[2].gif+"') no-repeat");
       $mix.find('.mixPanel4').css("background", "url('"+clips[3].gif+"') no-repeat");      
-      $mix.find('.titleRow').html('<a class="title" href="/remixes/'+remix._id+'">'+remix.title+'</a><br>' + creater + share + clear);
+      $mix.find('.titleRow').html('<a class="title" href="/remixes/'+remix._id+'?back=true">'+remix.title+'</a><br>' + creater + share + clear);
       $mix.addClass('loaded');
     },
     loadMoreClips: function() {

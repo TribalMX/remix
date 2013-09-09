@@ -36,11 +36,25 @@
           <div class="mixPanel mixPanel4" style="background: url('<%= remix.gifs[3] %>') no-repeat">
           </div>
         </div>
-        <div class="titleRow"><%= remix.title %></div>
+        <div class="titleRow">
+          <%= remix.title %>
+          <br>
+          <% var user = remix.user; %>
+          <% var username = "unknown user" %>
+          <% if(user) { %>
+          <%  username = remix.user.username; %>
+          <% } %>
+          <a class="creater fl">By <%= username %></a>
+          <div style="clear:both;"></div>
+        </div>
       </div>
     </div>
     <div style="text-align: center;">
-      <a data-role="button" data-theme="a" data-inline="true" onclick="window.location.replace('/')"/>Visit Remix the City Home</a>
+      <% if(back) { %>
+        <a data-role="button" data-theme="b" data-inline="true" onclick="window.history.back()"/>Back</a>
+      <% } else { %>
+        <a data-role="button" data-theme="a" data-inline="true" onclick="window.location.replace('/')"/>Visit Remix the City Home</a>
+      <% } %>
     </div>
   </div><!-- /content -->
 </div><!-- /page -->
