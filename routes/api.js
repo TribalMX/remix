@@ -7,7 +7,7 @@ var request = require('request')
   , Clip = mongoose.model('Clip');
 
 exports.getLoginUser = function(req, res) {
-	res.send({name: req.user.name, username: req.user.username});
+	res.send({name: req.user.name, username: req.user.username, email: req.user.email});
 };
 exports.getUserById = function(req, res) {
   User.findOne({'_id': req.params.id}, function(err, user){

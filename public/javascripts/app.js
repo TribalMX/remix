@@ -82,21 +82,25 @@ jQuery(function ($){
       if (window.location.href.indexOf("#_=_") > 0) { window.location = window.location.href.replace(/#.*/, ""); return;}
 
       //Create collections and models
+      //collection
       this.Remixes = Util.Collection({url: "/api/remixes"});
-      this.publicRemixes = Util.Collection({url: "/api/public/remixes"});
-      this.featuredRemixes = Util.Collection({url: "/api/public/remixes"});
+      this.PublicRemixes = Util.Collection({url: "/api/public/remixes"});
       this.Clips = Util.Collection({url: "/api/clips"});
+
+      //models
       this.Remix = Util.Model({url: "/api/remixes"});
       this.Clip = Util.Model({url: "/api/clips"});
 
       //local variables
-      this.publicRemixes = new this.publicRemixes();
-      this.featuredRemixes = new this.featuredRemixes();
+
+      //collections
+      this.publicRemixes = new this.PublicRemixes();
+      this.featuredRemixes = new this.PublicRemixes();
       this.remixes = new this.Remixes();
       this.clips = new this.Clips();
 
       //User
-      this.user = {};
+      this.user = null;
 
       //For main
       this.selectedTab = "featured"; //featured, recent, or my
@@ -137,10 +141,10 @@ jQuery(function ($){
       this.bindEvents();
       //TODO: loading screen
       this.fetchFeaturedMixes();
-      //TODO: LazyLoading
       this.fetchRecentMixes();
       this.fetchMyMixes();
       this.fetchClips();
+      this.fetchUser();
     },
     cacheElements: function() {
       //main page (mixes page)
@@ -199,11 +203,6 @@ jQuery(function ($){
       this.$backToMix = this.$uploadingClip.find('#backToMix');
     },
     bindEvents: function() {
-      //Navigation footer
-      // $('.footer').on('tap', 'a', function(){
-      //   alert($(this).attr('href'));
-      // });
-
       //main page
       this.$main.on('pagebeforeshow', this.selectFooterTab);
       this.$nextRemix.on('tap', this.slideNext);
@@ -265,6 +264,19 @@ jQuery(function ($){
         }
       }
     },
+    fetchUser: function() {
+       $.ajax({
+          url: '/api/users/login',
+          type: "GET",
+          success: function(user) {
+            if(user) {
+              App.user = user;
+              console.log("FetchUser: ");
+              console.log(App.user);
+            } 
+          },
+        });
+    },
     fetchRecentMixes: function() {
       var options = {limit: 10};
       var rmx = this.publicRemixes;
@@ -280,8 +292,9 @@ jQuery(function ($){
           if(remixes.length > 0) {
             // If less then two remixes are approved, fetch more
             if(approved.length < 2) {
+              console.log("FetchRecentMixes: ");
               console.log(approved);
-              console.log("FetchRecentMixes: Not enough approved remixes are fetched (less than two), fetch more");
+              console.log("Not enough approved remixes are fetched (less than two), fetch more");
               App.fetchRecentMixes();
             } else {
               App.pubRemixesCursor = 0;
@@ -368,7 +381,14 @@ jQuery(function ($){
     loadRemix: function(remix, $mix) {
       var host = location.protocol+'//'+location.host;
       var remixUrl = encodeURIComponent(host+"/remixes/" + remix._id);
-      var str = '<a class="share" href="https://www.facebook.com/sharer/sharer.php?u='+remixUrl+'" target="_blank">Share on Facebook</a>';
+      var user = remix.user;
+      var username = "unknown user";
+      if(user) {
+        username = remix.user.username;    
+      }
+      var creater = '<a class="creater fl">By '+ username +'</a>';
+      var share = '<a class="share fr" href="https://www.facebook.com/sharer/sharer.php?u='+remixUrl+'" target="_blank">Share on Facebook</a>';
+      var clear = '<div style="clear:both;"></div>';
       var clips = remix.clips;
       $mix.find('.mixPanel1').data('clip',clips[0]);
       $mix.find('.mixPanel2').data('clip',clips[1]);
@@ -378,7 +398,7 @@ jQuery(function ($){
       $mix.find('.mixPanel2').css("background", "url('"+clips[1].gif+"') no-repeat");
       $mix.find('.mixPanel3').css("background", "url('"+clips[2].gif+"') no-repeat");
       $mix.find('.mixPanel4').css("background", "url('"+clips[3].gif+"') no-repeat");      
-      $mix.find('.titleRow').html(''+remix.title + str);
+      $mix.find('.titleRow').html('<a class="title" href="/remixes/'+remix._id+'">'+remix.title+'</a><br>' + creater + share + clear);
       $mix.addClass('loaded');
     },
     loadMoreClips: function() {
@@ -554,8 +574,9 @@ jQuery(function ($){
               return element.clips[0].approved && element.clips[1].approved && element.clips[2].approved && element.clips[3].approved;
             });
             if(approved.length == 0){
+              console.log("FetchMoreRecentMixes: ");
               console.log(approved);
-              console.log("FetchMoreRecentMixes: All of them are not approved, fetch next");
+              console.log("All of them are not approved, fetch next");
               App.fetchMoreRecentMixes(remixes, cursor);
             } else {
               //Done
@@ -751,7 +772,10 @@ jQuery(function ($){
         remix.save({title: title, clips: clips}, {
           success: function(remix) {
             App.clearMixPanel();
-            //Check if result and input matches
+            //replace userid with user object
+            App.user._id = remix.user; 
+            remix.user = App.user;
+            //Check if result and input matches. Replace clip id with clip object
             for (var i =0; i < clips.length; i++ ){
               if (remix.clips[i] == clips[i]._id) remix.clips[i] = clips[i];
             }
@@ -759,8 +783,8 @@ jQuery(function ($){
             App.remixes.unshift(remix);
             App.remixesCursor = 0;
             $.mobile.changePage('#main');
-            App.$myMixes.removeClass('ui-btn-active');
-            App.$myMixes.click();
+            App.$myMixes.removeClass("selected");
+            App.$myMixes.trigger('tap');
 
             console.log(remix); 
           }
