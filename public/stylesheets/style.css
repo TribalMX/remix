@@ -68,9 +68,12 @@ div.ui-field-contain {
 div.mix {
 	text-align: center;
 	background: black;
-	margin: 5px 0;
 	border-radius: 5px;
 	padding: 5px;
+}
+div#mixSlider.appMain .mix {
+	position: absolute;
+	display: block!important;
 }
 
 div.mix .titleRow{

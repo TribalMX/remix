@@ -211,6 +211,8 @@ jQuery(function ($){
       this.$recentMixes.on('tap', this.selectTab);
       this.$myMixes.on('tap', this.selectTab);
       this.$mixSlider.on('tap', '.mixPanel', this.selectClip);
+      this.$mixSlider.on('swipeleft', this.slideNext);
+      this.$mixSlider.on('swiperight', this.slidePrev);
 
       //main clips page
       this.$clipsMain.on('pagebeforeshow', this.selectFooterTab);
@@ -537,10 +539,20 @@ jQuery(function ($){
       if(cursor == 0) App.$prevRemix.show();
 
       if (cursor < items.length-1){
-        App.$mixSlider.find('.mix:nth-child(2)').slideUp();
-        App.$mixSlider.find('.mix:nth-child(3)').slideDown();
+
+        //Slide left
+        $('.mix', App.$mixSlider).animate({
+          left: '-=' + (Slider.width + 5)
+        }, 500, function() {
+          Slider.resize();
+        });
+
         App.$mixSlider.find('.mix').first().remove();
         App.$mixSlider.append(App.mixTemplate);
+        App.$mixSlider.find('.mix:last').css({
+          left: (Slider.width*2) + 15
+        });
+
         cursor = cursor + 1;
         App[curName] = cursor;
       }
@@ -633,12 +645,20 @@ jQuery(function ($){
       if(cursor <= 0 || cursor >= items.length) return;
       if(cursor == items.length-1) App.$nextRemix.show();
       if (cursor > 0){
-        App.$mixSlider.find('.mix:nth-child(1)').slideDown();
-        App.$mixSlider.find('.mix:nth-child(2)').slideUp();
-        // App.$mixSlider.find('.mix:nth-child(1)').show();
-        // App.$mixSlider.find('.mix:nth-child(2)').hide();
+
+        //Slide right
+        $('.mix', App.$mixSlider).animate({
+          left: '+=' + (Slider.width + 5)
+        }, 500, function() {
+          Slider.resize();
+        });
+
         App.$mixSlider.find('.mix:last').remove();
         App.$mixSlider.prepend(App.mixTemplate);
+        App.$mixSlider.find('.mix:last').css({
+          left: (Slider.width*2) + 15
+        });
+
         cursor = cursor - 1;
         App[curName] = cursor;
       }
