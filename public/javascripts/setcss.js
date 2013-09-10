@@ -36,12 +36,12 @@ function resizePanel(){
         mpsize = Math.min((wh-190)/2, (ww-50)/2)
     }
     Slider.width = $(window).width()-10;
-    $('#mixSlider .mix').width($(window).width()-20); //-10px for right left -5px padding
+    $('#mixSlider .mix').width(Slider.width-10); //-10px for right left -5px padding
     $('#mixSlider').height(mpsize*2+62+15);
 
     //set position for mixes in mix slide
     $('#main #mixSlider').find('.mix:nth-child(1)').css('left', -Slider.width);
-    $('#main #mixSlider').find('.mix:nth-child(2)').css('left', 5);
+    $('#main #mixSlider').find('.mix:nth-child(2)').css('left', 0);
     $('#main #mixSlider').find('.mix:nth-child(3)').css('left', Slider.width+10);
 
     $('.mixPanel').height(mpsize);

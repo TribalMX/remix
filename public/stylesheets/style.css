@@ -71,6 +71,10 @@ div.mix {
 	border-radius: 5px;
 	padding: 5px;
 }
+div#mixSlider.appMain {
+	position: relative;
+	overflow: hidden;
+}
 div#mixSlider.appMain .mix {
 	position: absolute;
 	display: block!important;
