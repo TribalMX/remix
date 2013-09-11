@@ -204,6 +204,7 @@ jQuery(function ($){
     },
     bindEvents: function() {
       //main page
+      this.$main.on('pagebeforeshow', this.activateTab);
       this.$main.on('pagebeforeshow', this.selectFooterTab);
       this.$nextRemix.on('click', this.slideNext);
       this.$prevRemix.on('click', this.slidePrev);
@@ -435,6 +436,19 @@ jQuery(function ($){
     }, 
 
     // Main Page Functionalities
+    activateTab: function() {
+      switch (App.selectedTab) {
+        case "featured":
+          App.$featuredMixes.addClass('ui-btn-active');
+          break;
+        case "recent":
+          App.$recentMixes.addClass('ui-btn-active');
+          break;
+        case "my":
+          App.$myMixes.addClass('ui-btn-active');
+          break;
+      }
+    },
     selectFooterTab: function() {
       var $footer = $(this).find('.footer');
       $footer.find('a').removeClass('ui-btn-active');
