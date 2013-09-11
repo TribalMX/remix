@@ -12,7 +12,7 @@ jQuery(function ($){
       this.$loginBtn = this.$login.find('#loginBtn');
     },
     bindEvents: function() {
-      this.$loginBtn.on('tap', this.login);
+      this.$loginBtn.on('click', this.login);
     },
     login: function() {
       if(Login.$username.val() && Login.$password.val()){
@@ -38,9 +38,9 @@ jQuery(function ($){
       this.$remixes = this.$main.find('#remixes');
     },
     bindEvents: function() {
-      this.$approveClips.on('tap', Main.openClipsPage);
-      this.$remixes.on('tap', Main.openRemixesPage);
-      this.$logoutBtn.on('tap', Main.logout);
+      this.$approveClips.on('click', Main.openClipsPage);
+      this.$remixes.on('click', Main.openRemixesPage);
+      this.$logoutBtn.on('click', Main.logout);
     },
     openClipsPage: function() {
       ClipsPage.loadClips();
@@ -69,10 +69,10 @@ jQuery(function ($){
       this.$removeUnprocessed = this.$clipsPage.find('#removeUnprocessed');
     },
     bindEvents: function() {
-      this.$clipsContainer.on('tap', '.clip', this.removeClip);
-      this.$approveAll.on('tap', this.aproveAllClips);
-      this.$cancelApproval.on('tap', this.cancelApproval);
-      this.$removeUnprocessed.on('tap', this.removeUnprocessed);
+      this.$clipsContainer.on('click', '.clip', this.removeClip);
+      this.$approveAll.on('click', this.aproveAllClips);
+      this.$cancelApproval.on('click', this.cancelApproval);
+      this.$removeUnprocessed.on('click', this.removeUnprocessed);
     },
     loadClips: function() {
       $.ajax({
@@ -169,12 +169,12 @@ jQuery(function ($){
       this.$featuredMixes = this.$remixesPage.find('#featuredMixes');
     },
     bindEvents: function() {
-      this.$prevRemix.on('tap', this.prevRemix);
-      this.$nextRemix.on('tap', this.nextRemix);
-      this.$mixSlider.on('tap', '.nFeatured', this.makeFetured);
-      this.$mixSlider.on('tap', '.featured', this.makeUnFetured);
-      this.$allMixes.on('tap', this.showAllMixes);
-      this.$featuredMixes.on('tap', this.showFeaturedMixes);
+      this.$prevRemix.on('click', this.prevRemix);
+      this.$nextRemix.on('click', this.nextRemix);
+      this.$mixSlider.on('click', '.nFeatured', this.makeFetured);
+      this.$mixSlider.on('click', '.featured', this.makeUnFetured);
+      this.$allMixes.on('click', this.showAllMixes);
+      this.$featuredMixes.on('click', this.showFeaturedMixes);
     },
     fetchMixes: function() {
       var data = {limit: 10};

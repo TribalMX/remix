@@ -205,45 +205,45 @@ jQuery(function ($){
     bindEvents: function() {
       //main page
       this.$main.on('pagebeforeshow', this.selectFooterTab);
-      this.$nextRemix.on('tap', this.slideNext);
-      this.$prevRemix.on('tap', this.slidePrev);
-      this.$featuredMixes.on('tap', this.selectTab);
-      this.$recentMixes.on('tap', this.selectTab);
-      this.$myMixes.on('tap', this.selectTab);
-      this.$mixSlider.on('tap', '.mixPanel', this.selectClip);
+      this.$nextRemix.on('click', this.slideNext);
+      this.$prevRemix.on('click', this.slidePrev);
+      this.$featuredMixes.on('click', this.selectTab);
+      this.$recentMixes.on('click', this.selectTab);
+      this.$myMixes.on('click', this.selectTab);
+      this.$mixSlider.on('click', '.mixPanel', this.selectClip);
       this.$mixSlider.on('swipeleft', this.slideNext);
       this.$mixSlider.on('swiperight', this.slidePrev);
 
       //main clips page
       this.$clipsMain.on('pagebeforeshow', this.selectFooterTab);
       this.$clipsMain.on('pagebeforeshow', this.reloadProcessingClips);
-      this.$clipsBox.on('tap', '.notReady', this.reloadProcessingClips);
-      this.$addVideoBtn.on('tap', this.openNewClipPage);
-      this.$loadMore.on('tap', this.loadMoreClips);
+      this.$clipsBox.on('click', '.notReady', this.reloadProcessingClips);
+      this.$addVideoBtn.on('click', this.openNewClipPage);
+      this.$loadMore.on('click', this.loadMoreClips);
 
       //individual clip page
-      this.$saveClip.on('tap', this.saveClip);
-      this.$backFromClip.on('tap', this.backFromClip);
+      this.$saveClip.on('click', this.saveClip);
+      this.$backFromClip.on('click', this.backFromClip);
 
       //newMix page
-      this.$newMix.on('tap', '.addClip', this.selectPanel);
-      this.$createMix.on('tap', this.createMix);
-      this.$cancelCreateMix.on('tap', this.cancelMixing);
+      this.$newMix.on('click', '.addClip', this.selectPanel);
+      this.$createMix.on('click', this.createMix);
+      this.$cancelCreateMix.on('click', this.cancelMixing);
 
       //clipLibrary page
-      this.$clipLibrary.on('tap', '.clip', this.addToMixPanel);
-      this.$clipLibrary.on('tap', '.notReady', this.openClipLibrary);
-      this.$moreClipsBtn.on('tap', this.loadMoreClips);
-      this.$uploadClip.on('tap', this.openNewClipPage);
+      this.$clipLibrary.on('click', '.clip', this.addToMixPanel);
+      this.$clipLibrary.on('click', '.notReady', this.openClipLibrary);
+      this.$moreClipsBtn.on('click', this.loadMoreClips);
+      this.$uploadClip.on('click', this.openNewClipPage);
 
       //newClip page
-      this.$upload.on('tap', this.openFileChooser);
-      this.$cancelNewClip.on('tap', this.returnToPrev);
+      this.$upload.on('click', this.openFileChooser);
+      this.$cancelNewClip.on('click', this.returnToPrev);
       this.$fileInput.on('change', this.startUploading);
 
       //uploadingClip page
-      this.$cancelUploading.on('tap', this.cancelUploading);
-      this.$backToMix.on('tap', this.openCreateMixPage);
+      this.$cancelUploading.on('click', this.cancelUploading);
+      this.$backToMix.on('click', this.openCreateMixPage);
     },
 
     // Loaders
@@ -805,7 +805,7 @@ jQuery(function ($){
             App.$main.find('.tabs').find('.selected').removeClass('selected');
             App.$main.find('.tabs').find('.ui-btn-active').removeClass('ui-btn-active');
             App.$myMixes.addClass("ui-btn-active");
-            App.$myMixes.trigger('tap');
+            App.$myMixes.trigger('click');
 
             console.log(remix); 
           }
