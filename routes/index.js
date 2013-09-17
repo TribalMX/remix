@@ -62,7 +62,7 @@ exports.remix = function(req, res){
           if(numGifs == remix.clips.length){
             // console.log(remix);
             var url = "http://" + req.headers.host + req.url;
-            // console.log(url);
+            console.log(remix);
             res.render('remix', {remix: remix, url: url, back: req.query.back});
           }
         });

@@ -11,6 +11,7 @@ var RemixSchema = new Schema({
 	clips: [{type: Schema.ObjectId, ref: 'Clip'}],
 	created_at: {type : Date, default : Date.now},
 	featured: {type: Boolean, default : false},
+	gif: {type: String, default : ''},
 	videogami_rid: {},
 	gifs: [],
 });

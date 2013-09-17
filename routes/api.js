@@ -198,22 +198,38 @@ exports.postRemix = function(req, res) {
 		form: data,
 		json: true,
 	}, function (error, response, body) {
+        if (error) return res.send(500);
 		if(body.remix){
-			var obj = {
-				title: req.body.title,
-				user: req.user,
-				clips: clip_ids,
-				videogami_rid: body.remix._id,
-			};
-			var remix = new Remix(obj);
-			remix.save(function(err, result){
-				remix.gifs = clip_gifs;
-				if (err) {
-					console.log("Error saving remix", err);
-					return res.send(500);
-				}
-				res.send(remix);
-			});
+            console.log("/REMIX")
+            console.log(body.remix);
+            //send request to create combo gif
+            request.post({
+                uri: videogami.host + '/city/remix/' + body.remix._id + '/gif',
+                form: {username: data.username, token: data.token},
+                json: true
+            }, function (error, response, body) {
+                if(error) return res.send(500);
+                console.log('Remix after combo request');
+                console.log(body);
+
+                //Create New remix and save to db
+    			var obj = {
+    				title: req.body.title,
+    				user: req.user,
+    				clips: clip_ids,
+                    gif: body.remix.gif,
+    				videogami_rid: body.remix._id,
+    			};
+    			var remix = new Remix(obj);
+    			remix.save(function(err, result){
+    				remix.gifs = clip_gifs;
+    				if (err) {
+    					console.log("Error saving remix", err);
+    					return res.send(500);
+    				}
+    				res.send(remix);
+    			});
+            });
 		} else {
 			//Handle error
 		}
