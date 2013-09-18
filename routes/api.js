@@ -200,8 +200,6 @@ exports.postRemix = function(req, res) {
 	}, function (error, response, body) {
         if (error) return res.send(500);
 		if(body.remix){
-            console.log("/REMIX")
-            console.log(body.remix);
             //send request to create combo gif
             request.post({
                 uri: videogami.host + '/city/remix/' + body.remix._id + '/gif',
@@ -209,9 +207,6 @@ exports.postRemix = function(req, res) {
                 json: true
             }, function (error, response, body) {
                 if(error) return res.send(500);
-                console.log('Remix after combo request');
-                console.log(body);
-
                 //Create New remix and save to db
     			var obj = {
     				title: req.body.title,

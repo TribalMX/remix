@@ -27,6 +27,7 @@ var request = require('request')
 //   }
 // }
 exports.index = function(req, res){
+  console.log(req.user);
   if(req.isAuthenticated()) {
     res.render('index'); 
   } else {
@@ -62,7 +63,6 @@ exports.remix = function(req, res){
           if(numGifs == remix.clips.length){
             // console.log(remix);
             var url = "http://" + req.headers.host + req.url;
-            console.log(remix);
             res.render('remix', {remix: remix, url: url, back: req.query.back});
           }
         });
@@ -95,11 +95,15 @@ exports.createUser = function(req, res){
       console.log(err);
       return res.send(500, err);
     }
-    res.send({
-      username: user.username,
-      name: user.name,
-      email: user.email
-    }); 
+    //Create session for this user
+    req.login(user, function(err) {
+      if (err) { return res.send(500, err) }
+      res.send({
+        username: user.username,
+        name: user.name,
+        email: user.email
+      }); 
+    }); //login
   }); //save
 };
 exports.login = function(req, res){
