@@ -50,11 +50,17 @@ module.exports = function(passport, config) {
   ));
   // use local strategy
   passport.use(new LocalStrategy({
-      usernameField: 'email',
+      usernameField: 'email', // accepts email or username
       passwordField: 'password'
     },
     function(email, password, done) {
-      User.findOne({ email: email }, function (err, user) {
+      var query = {username: email};
+      //check for valid email
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if(re.test(email)){
+        query = {email: email};
+      } 
+      User.findOne(query, function (err, user) {
         if (err) { return done(err); }
         if (!user) {
           return done(null, false, { message: 'Unknown user' })

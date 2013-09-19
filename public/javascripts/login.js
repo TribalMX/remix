@@ -135,6 +135,7 @@ jQuery(function ($){
     },
     submitRegisterForm: function() {
       //Validate email and password before submitting form
+      var isValidUsername = false;
       var isValidEmail = false;
       var isValidPassword = false;
       var isPasswordMatch = false;
@@ -144,6 +145,10 @@ jQuery(function ($){
       var email = Main.$registerForm.find('input[name=email]').val();
       var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       isValidEmail = re.test(email);
+
+      // Check if username contains special character 
+      var username = Main.$registerForm.find('input[name=username]').val();
+      isValidUsername = !/[~`!#$%\^&*+=\-\[\]\\';,"/{}|:<>\?.@]/g.test(username);
 
       // Check Password
       var password = Main.$registerForm.find('input[name=password]').val();
@@ -161,6 +166,8 @@ jQuery(function ($){
         Main.$registerForm.submit();
       } else if(!isValidEmail){
         Main.$msgBox.html('<span style="color: red">Email address is not a valid email address</span>');
+      } else if(!isValidUsername){
+        Main.$msgBox.html('<span style="color: red">Username can not contain any special characters</span>');
       } else if(!isValidPassword) {
         Main.$msgBox.html('<span style="color: red">Password must be at least 6 characters</span>');
       } else if(!isPasswordMatch) {

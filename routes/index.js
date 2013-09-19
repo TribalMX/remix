@@ -27,7 +27,6 @@ var request = require('request')
 //   }
 // }
 exports.index = function(req, res){
-  console.log(req.user);
   if(req.isAuthenticated()) {
     res.render('index'); 
   } else {
@@ -38,7 +37,6 @@ exports.remix = function(req, res){
   var data = {}
   data.username = videogami.user;
   data.token = videogami.api_key;
-  console.log(req.query.back);
   Remix.findById(req.params.id, function(err, remix){
     if (err) {console.log(err); return res.send(500);}
     if(!remix) return res.send(404);
